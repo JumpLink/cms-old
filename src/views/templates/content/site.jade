@@ -1,0 +1,8 @@
+div.site-header
+  div(ng-switch , on="site.header.type")
+    div(ng-switch-when="carousel", carousel="site.header.carousel")
+.container
+  ol.breadcrumb
+    li: a(href='#') Home
+    li.active {{site.name}}
+  span(ng-repeat="(index, row) in site.rows", row="row", index="index", class="{{site.type}}")

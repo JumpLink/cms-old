@@ -1,0 +1,14 @@
+//- image for top position
+img(ng-if=" getImagePosition(column.image) == 'top' ", ng-src="images/{{column.image.src}}", class="img-{{column.image.type}}")
+//- image for left position
+img(ng-if=" getImagePosition(column.image) == 'left' ", ng-src="images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+//- span with col-md-5 for left images and col-md-7 for right images
+span(ng-class="{'col-md-5': {{getImagePosition(column.image) == 'left' }}, 'col-md-7': {{getImagePosition(column.image) == 'right' }} }", style="padding-top: {{column.image.height/4}}px")
+  div(class="h{{column.header.size}} {{row.type}}-heading") {{column.header.content}}
+    span(ng-class="{ 'text-muted': {{column.subtext.type == 'muted'}} }")  {{column.subtext.content}}
+  p(ng-repeat="(index, paragraph) in column.paragraphs", class="{{paragraph.type}}", ng-bind-html="paragraph.content")
+  //- The carousel is compiled and included in the compiler-function of the column directive
+  div.carousel-placeholder
+  a.btn(type="button", ng-if="column.button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content}}
+//- image for right position
+img(ng-if=" getImagePosition(column.image) == 'right' ", ng-src="images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")

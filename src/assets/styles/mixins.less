@@ -1,0 +1,17 @@
+@import "@{bootstrap-less-path}/mixins.less";
+
+.input-icon-addon-every(@n, @move, @static) {
+  @t: ~":nth-child(@{n})";
+  &@{t} {
+    &.input-lg {
+      margin-left: -((@n*@move)+@static);
+    }
+  }
+}
+
+.background-size(@size: cover) {
+  -webkit-background-size: @size;
+  -moz-background-size: @size;
+  -o-background-size: @size;
+  background-size: @size;
+}

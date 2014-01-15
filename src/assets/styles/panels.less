@@ -1,0 +1,11 @@
+@import "@{bootstrap-less-path}/panels.less";
+
+.panel[disabled=disabled] {
+  .panel-variant(@panel-disabled-border; @panel-disabled-text; @panel-disabled-heading-bg; @panel-disabled-border);
+  > .panel-body {
+    background-color: @panel-disabled-body-bg;
+  }
+  > .panel-footer {
+    background-color: @panel-disabled-footer-bg;
+  }
+}

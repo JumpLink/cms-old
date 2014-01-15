@@ -1,0 +1,81 @@
+a: header
+b: paragraph
+c: button
+d: image
+e: subtext
+
+sites : [
+  0: {
+    title: "String"
+    roms: [
+      1: {
+          columns: [
+            1: {
+              type: jumbotron | carousel | marketing | normal
+            }
+          ]
+      }
+    ]
+  }
+]
+
+
+header: {
+  content : "Hello, world!",
+  size: 2
+}
+
+subtext: {
+  content : "Hello, world!",
+  size: 2
+}
+
+paragraph: {
+  0: {
+    content: {
+      "paragraph1",
+    }
+  },
+  1: {
+    content: {
+      "paragraph2",
+    }
+  }
+}
+
+image: {
+  type: circle | normal | rounded | thumbnail
+  size: 140
+}
+
+button: {
+  type: "success"
+  , icon: "refresh"
+  , content: "Hello, world!"
+  , href: "#"
+}
+
+1.
+  roms: [
+    0: {
+      columns: [
+        0: {
+          type: "jumbotron",
+          header: {
+            content: "Hello, world!",
+            size: 2
+          }
+          paragraph: {
+            0 : {
+              content: "This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique."
+            }
+          }
+          button: {
+            type: "text",
+            content: "Learn more »",
+            href: "#"
+          }
+        }
+      ]
+    }
+  ]

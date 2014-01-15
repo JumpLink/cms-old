@@ -1,0 +1,37 @@
+{
+  "name": "jumplink-cms",
+  "version": "0.0.0",
+  "authors": [
+    "JumpLink <jumplink@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "1.2.*",
+    "angular-sails": "~0.0.3",
+    "angular-route": "1.2.*",
+    "angular-animate": "1.2.*",
+    "angular-touch": "1.2.*",
+    "angular-strap": "~2.0.*",
+    "angular-gettext": "~0.1.*",
+    "angular-socket-io": "~0.2.*",
+    "angular-toggle-switch": "*",
+    "angular-bootstrap-colorpicker": "~3.0.*",
+    "angular-sanitize": "1.2.*",
+    "angular-underscore": "*",
+    "angular-snap": "~1.2.*",
+    "bootstrap": "~3.*",
+    "components-font-awesome": "~4.0.*",
+    "underscore": "~1.5.*",
+    "async": "~0.2.*",
+    "lr-notifier": "https://github.com/lorenzofox3/lr-notifier.git",
+    "revolunet-angular-carousel": "~0.1.4"
+  }
+}

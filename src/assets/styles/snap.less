@@ -1,0 +1,40 @@
+//@import (less) "../../bower_components/snapjs/snap.css"; // uncomment this on production
+@import (less) "@{angular-snap-path}/angular-snap.css";
+
+.snap-content {
+  background-color: @snap-content-bg;
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden; /* Chrome and Safari */
+  -moz-backface-visibility:hidden; /* Firefox */
+  -ms-backface-visibility:hidden; /* Internet Explorer 10+ */
+}
+
+.snap-drawer {
+  background-color: @snap-drawer-bg;
+  padding: 15px;
+}
+
+
+
+.navbar-snap-toggle {
+  .navbar-brand();
+  cursor:pointer;
+  .fa {
+    font-size: 20px;
+  }
+  &.left {
+    padding-right: 0;
+    .fa-ellipsis-v {
+      padding-right: 5px;
+    }
+  }
+  &.right {
+    .fa {
+      float: right;
+    }
+     padding-left: 0;
+    .fa-ellipsis-v {
+      padding-left: 5px;
+    }
+  }
+}

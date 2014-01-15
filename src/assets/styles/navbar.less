@@ -1,0 +1,30 @@
+@import "@{bootstrap-less-path}/navbar.less";
+
+.navbar-default {
+  .navbar-toggle {
+
+    border-color: @navbar-default-link-color;
+
+    &:hover, &:focus {
+
+    }
+
+    .fa {
+      display: block;
+      color: @navbar-default-link-color;
+      margin-top: -4px;
+      margin-bottom: -4px;
+    }
+  }
+}
+
+.navbar-brand-center {
+  padding: 0;
+  .navbar-brand {
+    .center-block();
+    padding-left: 0px;
+    padding-right: 0px;
+    display: table;
+    float: none;
+  }
+}

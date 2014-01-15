@@ -1,0 +1,182 @@
+{
+  "sites": [
+    {
+      "name": "Examples",
+      "roms": [
+        {
+          "columns": [
+            {
+              "type": "jumbotron",
+              "header": {
+                "content": "Hello, world!",
+                "size": 1
+              },
+              "paragraphs": [
+                "This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique."
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "type": "normal",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
+              ]
+            },
+            {
+              "type": "normal",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
+              ]
+            },
+            {
+              "type": "normal",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui."
+              ]
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "type": "marketing",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna."
+              ],
+              "image": {
+                "position": "top",
+                "type": "circle",
+                "src": "140x140.png"
+              },
+              "button": {
+                "type": "default",
+                "content": "View details »",
+                "href": "#"
+              }
+            },
+            {
+              "type": "marketing",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna."
+              ],
+              "image": {
+                "position": "top",
+                "type": "circle",
+                "src": "140x140.png"
+              },
+              "button": {
+                "type": "default",
+                "content": "View details »",
+                "href": "#"
+              }
+            },
+            {
+              "type": "marketing",
+              "header": {
+                "content": "Heading",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna."
+              ],
+              "image": {
+                "position": "top",
+                "type": "circle",
+                "src": "140x140.png"
+              },
+              "button": {
+                "type": "default",
+                "content": "View details »",
+                "href": "#"
+              }
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "type": "featurette",
+              "header": {
+                "content": "Oh yeah, it's that good.",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo."
+              ],
+              "image": {
+                "position": "flip",
+                "type": "normal",
+                "src": "500x500.png"
+              }
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "type": "featurette",
+              "header": {
+                "content": "Oh yeah, it's that good.",
+                "size": 2
+              },
+              "paragraphs": [
+                "Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo."
+              ],
+              "image": {
+                "position": "flip",
+                "type": "normal",
+                "src": "500x500.png"
+              }
+            }
+          ]
+        },
+        {
+          "columns": [
+            {
+              "type": "jumbotron",
+              "style": {
+                "text-align": "center",
+                "background-color": "transparent"
+              },
+              "header": {
+                "content": "Marketing stuff!",
+                "size": 2
+              },
+              "paragraphs": [
+                "Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet."
+              ],
+              "button": {
+                "type": "success",
+                "content": "Get started today",
+                "href": "#"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
