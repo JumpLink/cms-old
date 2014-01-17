@@ -4,8 +4,8 @@ jumplink.cms.config(['$routeProvider',
       when('/:site', {
         templateUrl: 'content/site.jade',
         controller: 'SiteController'
-      }).
-      otherwise({
-        redirectTo: '/'
-      });
+      })
+      // , otherwise({
+      //   redirectTo: '/'
+      // });
   }]);

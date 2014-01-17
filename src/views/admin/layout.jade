@@ -43,31 +43,14 @@ html(ng-app="jumplink.cms")
     //- TODO CSRF_TOKEN
     script.
       angular.module("jumplink.cms").constant('CSRF_TOKEN', 'placeholder');
-    
-    //- Stylesheets and Preprocessors
-    //- ==============================
-
-    //- You can always bring in CSS files manually with `link` tags, or asynchronously
-    //- on the client using a solution like AMD (RequireJS).  Or, if you like, you can
-    //- take advantage of Sails' boilerplate asset management.
-
-    //- By default, stylesheets from your `assets/linker/styles` folder are included
-    //- here automatically.  Both CSS (.css) and LESS (.less) are supported.
-    //- In production, your styles will be minified and concatenated into a single file.
-    
-    //- To customize any part of the built-in behavior, just edit your Gruntfile.
-    //- For example, here are a few things you could do:
-        
-    //-     + Change the order of your CSS files
-    //-     + Import stylesheets from other directories
-    //-     + Use a different or additional preprocessor, like SASS, SCSS or Stylus
+      angular.module("jumplink.cms").constant('ADMIN', true);
 
     //- STYLES
     
     //- STYLES END
     link#style(rel="stylesheet", ng-href="/styles/style.css")
 
-    include templates/templateCache
+    include templateCache
   body
     block body 
 

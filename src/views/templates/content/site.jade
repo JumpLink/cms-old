@@ -1,6 +1,6 @@
-div.site-header
-  div(ng-switch , on="site.header.type")
-    div(ng-switch-when="carousel", carousel="site.header.carousel")
+.navbar(js-navbar, data="config.navbar", sites="{{navigation}}", active="{{active}}", container="{{config.navbar.container}}", inverse="{{config.navbar.inverse}}", type="{{config.navbar.type}}", role="navigation")
+.site-header
+  .header-row(row="site.header", index="0")
 .container
   ol.breadcrumb
     li: a(href='#') Home

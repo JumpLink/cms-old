@@ -362,9 +362,16 @@ module.exports = {
       , height: 500
     }
 
+    columns = [];
+    columns.push({
+      carousel: carousel
+    });
+
     site_header = {
-      type: 'carousel'
-      , carousel: carousel
+      type: "carousel"
+      , columns: columns
+      , style: style
+      , divider: false
     }
 
     /* ========== extra template with carousel ========== */
@@ -397,15 +404,36 @@ module.exports = {
       type: type
       , columns: columns
       , style: style
-      , divider: true
+      , divider: false
     });
 
+    /* ========== alternative header ========== */
+    header = {
+      content: "Getting started",
+      size: 1
+    }
+
+    paragraphs = [];
+    paragraphs.push({content: "An overview of Bootstrap, how to download and use, basic templates and examples, and more."});
+        
+    columns = [];
+    columns.push({
+      header: header
+      , paragraphs: paragraphs
+    });
+
+    var alternative_site_header = {
+      type: "jumbotron"
+      , columns: columns
+      , container: true // need container insite the row? Just for site headers!
+    };
+
     /* ========== template result ========== */
-    sites.push({name: "Examples", rows:rows, header:site_header, type:"default"});
+    sites.push({href: "example1", name: "Example 1", rows:rows, header:site_header, type:"default"});
 
-    result = {sites:sites};
+    sites.push({href: "example2", name: "Example 2", rows:rows, header:alternative_site_header, type:"default"});
 
-    res.json(result);
+    res.json(sites);
   },
 
   /**

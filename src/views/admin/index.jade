@@ -1,0 +1,16 @@
+extends layout
+
+block body
+  .content(ng-view)
+  .navbar.navbar-inverse.navbar-fixed-bottom(role="admin")
+    .container
+      .navbar-header
+        button(type="button", data-toggle="collapse", data-target=".navbar-ex1-collapse").navbar-toggle
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a(href="#" ).navbar-brand Admin
+      .collapse.navbar-collapse.navbar-ex1-collapse
+        ul.nav.navbar-nav 
+          li(data-match-route="/"): a(href="#/") Live

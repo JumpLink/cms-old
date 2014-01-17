@@ -1,10 +1,10 @@
-.carousel.slide(ng-controller="CarouselController")
+.carousel.slide
   .carousel-inner
-    ul(rn-carousel, rn-carousel-indicator, rn-carousel-index="index")
-      li.item(ng-repeat="(index, slide) in carousel.slides", ng-style="{'height':{{carousel.height}}, 'background-image':'url(images/{{slide.image.src}})'}")
-        .carousel-caption
-          //- img(src="images/{{slide.image.src}}")
-          span(row="slide.row", index="index")
+  //- the content of the following commentary has now takes place in the directive to avoid the "$rootScope:inprog" error
+    //- ul(rn-carousel, rn-carousel-indicator, rn-carousel-index="index")
+    //-   li.item(ng-repeat="(index, slide) in carousel.slides", ng-style="{'height':{{carousel.height}}, 'background-image':'url(/images/{{slide.image.src}})'}")
+    //-     .carousel-caption
+    //-       span(row="slide.row", index="index")
   a.left.carousel-control( ng-click="prev()")
     span.icon-prev
   a.right.carousel-control(ng-click="next()")

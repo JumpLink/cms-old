@@ -1,3 +1,4 @@
 .row(class="{{row.type}}", ng-style="row.style")
-  .column(ng-repeat="(column_index, column) in row.columns", ng-class="{'col-lg-12': {{row.columns.length==1}}, 'col-lg-6': {{row.columns.length==2}}, 'col-lg-4': {{row.columns.length==3}}}" , column="column", index="column_index", rowindex="index")
+  div(ng-class="{container: row.container}")
+    .column(ng-repeat="(column_index, column) in row.columns", ng-class="{'col-lg-12': {{row.columns.length==1}}, 'col-lg-6': {{row.columns.length==2}}, 'col-lg-4': {{row.columns.length==3}}}" , column="column", index="column_index", rowindex="index")
 hr(ng-if="row.divider", ng-class="{'featurette-divider': {{ row.type=='featurette' || row.type=='marketing'}} }")

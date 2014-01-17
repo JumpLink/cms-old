@@ -36,6 +36,10 @@ module.exports.routes = {
     view: 'index'
   }
 
+  , '/admin': {
+    view: 'admin/index'
+  }
+
   /*
   // But what if you want your home page to display
   // a signup form located at `views/user/signup.ejs`?

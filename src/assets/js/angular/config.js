@@ -16,6 +16,7 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'lrNotifier'
   , 'snap'
   , 'angular-carousel'
+  , 'contenteditable'
 ]);
 
 // languages
