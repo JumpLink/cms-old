@@ -94,26 +94,24 @@ jumplink.cms.directive("jsNavbar", function ($compile, $window, $location, $navb
 
 jumplink.cms.directive("row", function ($compile) {
   return {
-    restrict: "A",
-    scope: {
+    restrict: "A"
+    , scope: {
       row: "="
       , index: "="
       , slideindex: "="
-    },
-    templateUrl: 'partials/row.jade',
-    controller: 'RowController',
-    link: function(scope, iElement, iAttributes) {
     }
+    , templateUrl: 'partials/row.jade'
+    , controller: 'RowController'
   }
 });
 
 jumplink.cms.directive("carousel", function ($compile, PolicyService) {
   return {
-    restrict: "A",
-    scope: {
+    restrict: "A"
+    , scope: {
       carousel: "="
-    },
-    link: function(scope, iElement, iAttributes) {
+    }
+    , link: function(scope, iElement, iAttributes) {
       // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
       var rnCarousel = ''
         +'<ul class="rn-carousel-slides" rn-carousel="true" rn-carousel-swipe="'+!PolicyService.changeContentAllowed()+'" rn-carousel-indicator="true" rn-carousel-index="index">';
@@ -131,9 +129,9 @@ jumplink.cms.directive("carousel", function ($compile, PolicyService) {
       $compile(rnCarousel)(scope, function(cloned, scope) {
         iElement.find('.carousel-inner').html(cloned);
       });
-    },
-    templateUrl: 'partials/carousel.jade',
-    controller: 'CarouselController'
+    }
+    , templateUrl: 'partials/carousel.jade'
+    , controller: 'CarouselController'
   }
 });
 
@@ -154,18 +152,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
 
       return function(scope, iElement, iAttributes) {
 
-        // scope.index = scope.$parent.column_index;
-        // scope.rowindex = scope.$parent.index;
-        // scope.column = scope.$parent.row.columns[scope.index];
-
         scope.changeContentAllowed = PolicyService.changeContentAllowed;
-
-        if(!angular.isDefined($rootScope.columnID))
-          $rootScope.columnID = 0;
-        else
-          $rootScope.columnID++;
-
-        scope.id = $rootScope.columnID;
 
         scope.getImagePosition = function (image) {
           if(typeof image == 'undefined' || typeof image.position == 'undefined' )
@@ -221,9 +208,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
             if(typeof($rootScope.selected.slideIndex) !== 'undefined')
               latestSelect.slideIndex = $rootScope.selected.slideIndex;
 
-            if(typeof($rootScope.selected.id) !== 'undefined')
-              latestSelect.id = $rootScope.selected.id;
-
           }
 
           // normal column or content of carousel-slide
@@ -235,7 +219,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , slideIndex: slideIndex
-              , id: scope.id
             }
           }
 
@@ -252,7 +235,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
               , rowIndex: latestSelect.slideIndex
               , columnIndex:  latestSelect.columnIndex
               , slideIndex: latestSelect.slideIndex
-              , id: latestSelect.id
             }
 
             carousel.row = column.carousel.slides[carousel.slideIndex].row;
@@ -265,7 +247,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , carousel: carousel
-              , id: carousel.id
             }
           }
 
@@ -281,7 +262,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , slideIndex: slideIndex
-              , id: scope.id
             }
           }
         };
@@ -327,9 +307,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
         }
 
         scope.$watchCollection('column.paragraphs', function(newValue, oldValue) {
-          console.log('scope.column.paragraphs.length changed');
-          console.log(newValue);
-          console.log(oldValue);
 
           if(angular.isDefined(newValue) && angular.isDefined(oldValue)) {
             if(newValue.length > oldValue.length) {
