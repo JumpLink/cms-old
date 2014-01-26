@@ -71,8 +71,9 @@ module.exports = function (grunt) {
     'bower_components/angular-socket-io/angular-socket-io.js',
     'bower_components/angular-toggle-switch/angular-toggle-switch.js',
     'bower_components/angular-gettext/dist/angular-gettext.js', // dependencies to jQuery :(
-    'bower_components/revolunet-angular-carousel/dist/angular-mobile.js', // necessary? 
-    'bower_components/revolunet-angular-carousel/dist/angular-carousel.js',
+    //'bower_components/revolunet-angular-carousel/dist/angular-mobile.js', // necessary? 
+    //'bower_components/revolunet-angular-carousel/dist/angular-carousel.js',
+    'bower_components/revolunet-angular-carousel/src/**/*.js',
     'bower_components/lr-notifier/src/notifier.js',
     //'bower_components/angular-ui-bootstrap3/ui-bootstrap.js',
     'bower_components/angular-strap/dist/angular-strap.js',
@@ -87,6 +88,8 @@ module.exports = function (grunt) {
     'js/**/*.js'
   ];
 
+  var jsAdminFilesToInject = jsFilesToInject.slice();
+  jsAdminFilesToInject.push('admin/js/**/*.js');
 
   /**
    * Client-side HTML templates are injected using the sources below
@@ -137,6 +140,10 @@ module.exports = function (grunt) {
 
   // Modify js file injection paths to use 
   jsFilesToInject = jsFilesToInject.map(function (path) {
+    return '.tmp/public/' + path;
+  });
+
+  jsAdminFilesToInject = jsAdminFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
   
@@ -279,6 +286,10 @@ module.exports = function (grunt) {
         src: jsFilesToInject,
         dest: '.tmp/public/concat/production.js'
       },
+      jsAdmin: {
+        src: jsAdminFilesToInject,
+        dest: '.tmp/public/concat/admin.js'
+      },
       css: {
         src: cssFilesToInject,
         dest: '.tmp/public/concat/production.css'
@@ -289,9 +300,13 @@ module.exports = function (grunt) {
       options: {
         mangle: false // damit angular.js module nicht kaputt geaglifyt wird
       },
-      dist: {
+      user: {
         src: ['.tmp/public/concat/production.js'],
         dest: '.tmp/public/min/production.js'
+      },
+      admin: {
+        src: ['.tmp/public/concat/admin.js'],
+        dest: '.tmp/public/min/admin.js'
       }
     },
 
@@ -303,79 +318,6 @@ module.exports = function (grunt) {
     },
 
     'sails-linker': {
-
-      devJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/**/*.html': jsFilesToInject,
-          'views/**/*.html': jsFilesToInject,
-          'views/**/*.ejs': jsFilesToInject
-        }
-      },
-
-      prodJs: {
-        options: {
-          startTag: '<!--SCRIPTS-->',
-          endTag: '<!--SCRIPTS END-->',
-          fileTmpl: '<script src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.ejs': ['.tmp/public/min/production.js']
-        }
-      },
-
-      devStyles: {
-        options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
-        },
-
-        // cssFilesToInject defined up top
-        files: {
-          '.tmp/public/**/*.html': cssFilesToInject,
-          'views/**/*.html': cssFilesToInject,
-          'views/**/*.ejs': cssFilesToInject
-        }
-      },
-
-      prodStyles: {
-        options: {
-          startTag: '<!--STYLES-->',
-          endTag: '<!--STYLES END-->',
-          fileTmpl: '<link rel="stylesheet" href="%s">',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
-          'views/**/*.html': ['.tmp/public/min/production.css'],
-          'views/**/*.ejs': ['.tmp/public/min/production.css']
-        }
-      },
-
-      // Bring in JST template object
-      devTpl: {
-        options: {
-          startTag: '<!--TEMPLATES-->',
-          endTag: '<!--TEMPLATES END-->',
-          fileTmpl: '<script type="text/javascript" src="%s"></script>',
-          appRoot: '.tmp/public'
-        },
-        files: {
-          '.tmp/public/index.html': ['.tmp/public/jst.js'],
-          'views/**/*.html': ['.tmp/public/jst.js'],
-          'views/**/*.ejs': ['.tmp/public/jst.js']
-        }
-      },
 
 
       /*******************************************
@@ -394,6 +336,18 @@ module.exports = function (grunt) {
         }
       },
 
+      devJsAdminJADE: {
+        options: {
+          startTag: '//- SCRIPTS ADMIN',
+          endTag: '//- SCRIPTS ADMIN END',
+          fileTmpl: 'script(type="text/javascript", src="%s")',
+          appRoot: '.tmp/public'
+        },
+        files: {
+          'views/**/*.jade': jsAdminFilesToInject
+        }
+      },
+
       prodJsJADE: {
         options: {
           startTag: '//- SCRIPTS',
@@ -403,6 +357,18 @@ module.exports = function (grunt) {
         },
         files: {
           'views/**/*.jade': ['.tmp/public/min/production.js']
+        }
+      },
+
+      prodJsAdminJADE: {
+        options: {
+          startTag: '//- SCRIPTS ADMIN',
+          endTag: '//- SCRIPTS ADMIN END',
+          fileTmpl: 'script(type="text/javascript", src="%s")',
+          appRoot: '.tmp/public'
+        },
+        files: {
+          'views/**/*.jade': ['.tmp/public/min/admin.js']
         }
       },
 
@@ -482,10 +448,8 @@ module.exports = function (grunt) {
   grunt.registerTask('linkAssets', [
 
     // Update link/script/template references in `assets` index.html
-    'sails-linker:devJs',
-    'sails-linker:devStyles',
-    'sails-linker:devTpl',
     'sails-linker:devJsJADE',
+    'sails-linker:devJsAdminJADE',
     'sails-linker:devStylesJADE',
     'sails-linker:devTplJADE'
   ]);
@@ -508,12 +472,12 @@ module.exports = function (grunt) {
     'copy:dev',
     'coffee:dev',
     'concat:js',
-    'uglify',
+    'concat:jsAdmin',
+    'uglify:user',
+    'uglify:admin',
     'cssmin',
-    'sails-linker:prodJs',
-    'sails-linker:prodStyles',
-    'sails-linker:devTpl',
     'sails-linker:prodJsJADE',
+    'sails-linker:prodJsAdminJADE',
     'sails-linker:prodStylesJADE',
     'sails-linker:devTplJADE'
   ]);

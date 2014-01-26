@@ -9,7 +9,8 @@
     "sails-disk": "~0.9.0",
     "ejs": "0.8.4",
     "optimist": "0.3.4",
-    "then-jade": "~1.1.0"
+    "then-jade": "~1.1.0",
+    "lorem-ipsum": "~1.0.1"
   },
   "devDependencies": {
     "grunt-angular-gettext": "~0.1.*",

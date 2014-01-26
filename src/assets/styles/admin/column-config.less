@@ -1,0 +1,25 @@
+column-config-button {
+  position: absolute;
+  left: 0;
+  top: -40px;
+  width: 100%;
+  opacity: 0;
+  .transition(opacity 0.5s);
+
+  // remove this, if button should't centered
+  .center-block() !important;
+  vertical-align: middle !important;
+  text-align: center !important;
+
+  .popover {
+    z-index: 11;
+  }
+}
+
+.column {
+  &:hover {
+    column-config-button {
+      opacity: 1;
+    }
+  }
+}

@@ -1,0 +1,5 @@
+ul.select.dropdown-menu(tabindex='-1', ng-show='$isVisible()', role='select')
+  li(role='presentation', ng-repeat='match in $matches', ng-class='{active: $isActive($index)}')
+      a(role='menuitem', tabindex='-1', ng-click='$select($index, $event)')
+        div(ng-bind='match.label')
+        i.fa.fa-check.pull-right(ng-if='$isMultiple && $isActive($index)')

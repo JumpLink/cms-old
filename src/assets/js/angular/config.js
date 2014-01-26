@@ -17,6 +17,7 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'snap'
   , 'angular-carousel'
   , 'contenteditable'
+  , 'Decorators' // WORKAROUND see workaround.js
 ]);
 
 // languages

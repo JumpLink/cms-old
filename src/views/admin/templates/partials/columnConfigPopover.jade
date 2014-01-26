@@ -1,0 +1,45 @@
+.popover
+  .arrow
+  //- h3.popover-title Row {{rowindex+1}} Column {{index+1}} Config
+  .popover-content
+    form
+      .form-group
+        label Header
+        br
+        toggle-switch(model='selected.column.header.active')
+      .form-group
+        label Size
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!selected.column.header.active", type="button", ng-click="selected.column.header.size = selected.column.header.size-1")
+              .fa.fa-minus-circle
+          input.form-control(ng-disabled="!selected.column.header.active", type="text", ng-model="selected.column.header.size")
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!selected.column.header.active", type="button", ng-click="selected.column.header.size  = selected.column.header.size+1")
+              .fa.fa-plus-circle
+      hr
+      .form-group
+        label(for="subtextActive") Subtext
+        br
+        toggle-switch(model='selected.column.subtext.active')
+      .form-group
+        label Type
+        br
+        //- FIXME
+        //- button.btn.btn-default(type='button', ng-disabled="!selected.column.subtext.active", ng-model='selected.column.subtext.type', data-html='1', ng-options='type.value as type.label for type in $root.config.subtext.types', bs-select, template='partials/columnConfigSelect.jade')
+        //- problems with hover select.form-control(ng-disabled="!selected.column.subtext.active", ng-Model="selected.column.subtext.type", name="string", required, ng-Required="string", ng-Options='type.value as type.label for type in $root.config.subtext.types') 
+        .radio(ng-repeat="type in $root.config.subtext.types")
+          label
+            input(ng-disabled="!selected.column.subtext.active", type="radio", ng-model='selected.column.subtext.type', value="{{type.value}}")
+            | {{type.label}}
+      hr
+      .form-group
+        label Paragraphs
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="removeParagraph(index)")
+              .fa.fa-minus-circle
+          input.form-control(type="text", ng-model="selected.column.paragraphs.length")
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="addParagraph(index)")
+              .fa.fa-plus-circle

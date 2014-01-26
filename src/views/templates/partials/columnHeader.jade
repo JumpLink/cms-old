@@ -1,0 +1,4 @@
+div(ng-if="column.header.active", class="h{{column.header.size}} {{column.type}}-heading")
+  span(contenteditable="{{changeContentAllowed()}}", no-line-breaks="true", strip-br="true", select-non-editable="false", ng-model="column.header.content")
+  | &nbsp;
+  column-subtext

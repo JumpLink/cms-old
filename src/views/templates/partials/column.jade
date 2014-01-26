@@ -1,15 +1,13 @@
-//- image for top position
-img(ng-if=" getImagePosition(column.image) == 'top' ", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
-//- image for left position
-img(ng-if=" getImagePosition(column.image) == 'left' ", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
-//- span with col-md-5 for left images and col-md-7 for right images
-span(ng-class="{'col-md-5': {{getImagePosition(column.image) == 'left' }}, 'col-md-7': {{getImagePosition(column.image) == 'right' }} }", style="padding-top: {{column.image.height/4}}px")
-  div(ng-if="column.header", class="h{{column.header.size}} {{column.type}}-heading") {{column.header.content}}
-    span(ng-if="column.subtext", ng-class="{ 'text-muted': {{column.subtext.type == 'muted'}} }")  {{column.subtext.content}}
-  //- TODO directive for contenteditable in admin-mode
-  p(contenteditable="true", ng-model="paragraph.content", no-line-breaks="true", strip-br="true", select-non-editable="true", ng-if="column.paragraphs.length", ng-repeat="(index, paragraph) in column.paragraphs", class="{{paragraph.type}}")
-  //- The carousel is compiled and included in the compiler-function of the column directive
-  .carousel-placeholder
-  a.btn(ng-if="column.button", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content}}
-//- image for right position
-img(ng-if=" getImagePosition(column.image) == 'right' ", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+column-wrapper(ng-click="selectColumn(rowindex, index, column, $parent.row, $parent.slideindex)")
+  //- image for top position
+  img(ng-if=" getImagePosition(column.image) == 'top' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
+  //- image for left position
+  img(ng-if=" getImagePosition(column.image) == 'left' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+  //- div with col-md-7 for left and right images
+  div(ng-class="{'col-md-7': {{getImagePosition(column.image) == 'left' || getImagePosition(column.image) == 'right' }} }", style="padding-top: {{getImageContainerPaddingTop(column.image)}}")
+    column-header
+    .paragraph-placeholder
+    .carousel-placeholder
+    a.btn(ng-if="column.button", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content}}
+  //- image for right position
+  img(ng-if=" getImagePosition(column.image) == 'right' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")

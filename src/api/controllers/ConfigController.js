@@ -24,8 +24,21 @@ module.exports = {
     navbar.type = "fixed-top"; // fixed-top | fixed-bottom | static-top | default (default has no own class)
     navbar.container = true;
 
+    var subtext = {};
+    subtext.types = [
+      {
+        label: 'muted text'
+        , value: 'text-muted'
+      }
+      , {
+        label: 'small text'
+        , value: 'small'
+      }
+    ];
+
     res.json({
       navbar:navbar
+      , subtext:subtext
     });
   }
 

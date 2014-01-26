@@ -1,18 +1,33 @@
-jumplink.cms.directive("jsNavbar", function ($compile, $window, $location, $navbar) {
+jumplink.cms.directive("jsNavbar", function ($compile, $window, $location, $navbar, PolicyService) {
   return {
     restrict: "A"
-    // , scope: {
-    //   container: "@"
-    //   , inverse: "@"
-    //   , type: "@"
-    //   , sites: "@"
-    // }
+    , scope: {
+      inverse: "="
+      , type: "="
+      , container: "="
+      , sites: "="
+      , active: "="
+    }
     , compile: function(tElement, tAttributes) {
 
-      return function(scope, iElement, iAttributes, controller) {
+      return function(scope, iElement) {
+
+        var appendEditButtons = function () {
+          var addSiteButton = '<li ng-click="addSite()"><a href=""><i class="fa fa-plus-circle"></i> add Site</a></li>';
+          //var removeSiteButton = '<li ng-click="removeSite()"><a href=""><i class="fa fa-minus-circle"></i> remove Site</a></li>';
+          
+          // compile for ng-click
+          $compile(addSiteButton)(scope, function(cloned, scope) {
+            iElement.find('#jl-navbar-nav').append(cloned);
+          });
+        }
+
+        scope.addSite = function () {
+          console.log("TODO add site");
+        }
 
         // observe for "inverse" attribute, if it is true, inverse the navbar
-        iAttributes.$observe('inverse', function(inverse) {
+        scope.$watch('inverse', function(inverse) {
           if(inverse === true || inverse === "true")
             iElement.addClass("navbar-inverse");
           else
@@ -20,56 +35,52 @@ jumplink.cms.directive("jsNavbar", function ($compile, $window, $location, $navb
         });
 
         // observe for "type" attribute, if it changed, add navbar class type of position
-        iAttributes.$observe('type', function(type) {
+        scope.$watch('type', function(type) {
           if(type !== null && type != "" && typeof type !== "undefined" && type !== "default")
             iElement.addClass("navbar-"+type);
         });
 
-        // observe for "site" attribute, if it changed, rebuild the navigation
-        iAttributes.$observe('container', function(container) {
+        /*
+         * observe for "container" attribute, if it changed, add or remove container class
+         */
+        scope.$watch('container', function(container) {
           if(container == true || container == "true")
             iElement.find('.container-placeholder').addClass('container');
+          else
+            iElement.find('.container-placeholder').removeClass('container');
         }); 
 
-        // observe for "site" attribute, if it changed, rebuild the navigation
-        iAttributes.$observe('sites', function(sites) {
-          if(typeof sites !== 'undefined' && typeof sites.length !== 'undefined' && sites.length > 0) {
-            var sitesObject = angular.fromJson(sites);
-            if(typeof sitesObject !== 'undefined' && typeof sitesObject[0] !== 'undefined' && typeof sitesObject[0].href !== 'undefined' && typeof sitesObject[0].name !== 'undefined' ) {
-              var navigation = '';
-              for (var i = 0; i < sitesObject.length && i < 20; i++) {
-                navigation += '<li data-match-route='+sitesObject[i].href+'>  <a href="/#/'+sitesObject[i].href+'"> '+sitesObject[i].name+' </a> </li>';
-              };
-
-              // TODO compile not required?
-              $compile(navigation)(scope, function(cloned, scope) {           
-                iElement.find('#jl-navbar-nav').append(cloned);
-              });
-            } else {
-              // console.log('error on js-navbar directive: "sites" attribute has no valid json');
+        /*
+         * observe for "site" attribute, if it changed, rebuild the navigation
+         * Render Navigation
+         */
+        scope.$watch('sites', function(sites) {
+          if(typeof sites !== 'undefined' && typeof sites[0] !== 'undefined' && typeof sites[0].href !== 'undefined' && typeof sites[0].name !== 'undefined' ) {
+            var navigation = '';
+            for (var i = 0; i < sites.length && i < 20; i++) {
+              navigation += '<li data-match-route='+sites[i].href+'>  <a href="#/'+sites[i].href+'"> '+sites[i].name+' </a> </li>';
+            };
+            iElement.find('#jl-navbar-nav').append(navigation);
+            if (PolicyService.changeContentAllowed()) {
+              appendEditButtons();
             }
           } else {
             // console.log('error on js-navbar directive: You need to set the "sites" attribute');
           }
         });
 
-        // observe for currently "active" site given as attribute, if it changed, reset the active class in the navigation 
-        iAttributes.$observe('active', function(active) {
-          if(typeof active !== 'undefined' && typeof active.length !== 'undefined' && active.length > 0) {
-            var activeObject = angular.fromJson(active);
-            if(typeof activeObject !== 'undefined' && typeof activeObject.href !== 'undefined' ) {
-              var liElements = iElement[0].querySelectorAll('li[data-match-route]');
-              angular.forEach(liElements, function(li) {
-                var liElement = angular.element(li);
-                var pattern = liElement.attr('data-match-route');
-                if(activeObject.href == pattern)
-                  liElement.addClass('active');
-                else
-                  liElement.removeClass('active');
-              });
-            } else {
-              // console.log('error on js-navbar directive: "active" attribute has no valid json');
-            }
+        // $watch for currently "active" site, if it changed, reset the active class in the navigation 
+        scope.$watch('active', function(active) {
+          if(typeof active !== 'undefined' && typeof active.href !== 'undefined') {
+            var liElements = iElement[0].querySelectorAll('li[data-match-route]');
+            angular.forEach(liElements, function(li) {
+              var liElement = angular.element(li);
+              var pattern = liElement.attr('data-match-route');
+              if(active.href == pattern)
+                liElement.addClass('active');
+              else
+                liElement.removeClass('active');
+            });
           } else {
             // console.log('error on js-navbar directive: You need to set the "active" attribute');
           }
@@ -87,6 +98,7 @@ jumplink.cms.directive("row", function ($compile) {
     scope: {
       row: "="
       , index: "="
+      , slideindex: "="
     },
     templateUrl: 'partials/row.jade',
     controller: 'RowController',
@@ -95,7 +107,7 @@ jumplink.cms.directive("row", function ($compile) {
   }
 });
 
-jumplink.cms.directive("carousel", function ($compile) {
+jumplink.cms.directive("carousel", function ($compile, PolicyService) {
   return {
     restrict: "A",
     scope: {
@@ -104,12 +116,12 @@ jumplink.cms.directive("carousel", function ($compile) {
     link: function(scope, iElement, iAttributes) {
       // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
       var rnCarousel = ''
-        +'<ul rn-carousel rn-carousel-indicator rn-carousel-index="index">';
+        +'<ul class="rn-carousel-slides" rn-carousel="true" rn-carousel-swipe="'+!PolicyService.changeContentAllowed()+'" rn-carousel-indicator="true" rn-carousel-index="index">';
           for (var i = 0; i < scope.carousel.slides.length; i++) {
             rnCarousel += ''
-            +'<li class="item" style="height:'+scope.carousel.height+'px;background-image:url(/images/'+scope.carousel.slides[i].image.src+')">'
+            +'<li class="item rn-carousel-slide" style="height:'+scope.carousel.height+'px;background-image:url(/images/'+scope.carousel.slides[i].image.src+')" >'
               +'<div class="carousel-caption">'
-                +'<span row="carousel.slides['+i+'].row", index="'+i+'")"></span>'
+                +'<span row="carousel.slides['+i+'].row" index="'+i+'" slideindex="'+i+'")"></span>'
               +'</div>'
             +'</li>';
           };
@@ -125,30 +137,261 @@ jumplink.cms.directive("carousel", function ($compile) {
   }
 });
 
-jumplink.cms.directive("column", function ($compile) {
+jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, LoremService, PolicyService) {
   return {
-    restrict: "A",
-    scope: {
+    restrict: "A"
+    , scope: {
       column: "="
       , index: "="
       , rowindex: "="
-    },
+    }
     /*
      * To understand this, see:
      * * http://sporto.github.io/blog/2013/06/24/nested-recursive-directives-in-angular/#comment-991048825
      * * http://stackoverflow.com/questions/19125551/angularjs-understanding-a-recursive-directive
      */
-    compile: function(tElement, tAttributes) {
-      return function(scope, iElement, iAttributes, containerCtrl) {
+    , compile: function(tElement, tAttributes) {
+
+      return function(scope, iElement, iAttributes) {
+
+        // scope.index = scope.$parent.column_index;
+        // scope.rowindex = scope.$parent.index;
+        // scope.column = scope.$parent.row.columns[scope.index];
+
+        scope.changeContentAllowed = PolicyService.changeContentAllowed;
+
+        if(!angular.isDefined($rootScope.columnID))
+          $rootScope.columnID = 0;
+        else
+          $rootScope.columnID++;
+
+        scope.id = $rootScope.columnID;
+
+        scope.getImagePosition = function (image) {
+          if(typeof image == 'undefined' || typeof image.position == 'undefined' )
+            return null;
+          else
+            switch(image.position) {
+              case "top":
+              case "bottum":
+              case "left":
+              case "right":
+                return image.position;
+              break;
+              case "flip":
+                if(scope.rowindex%2 == 0) // index gerade
+                  return "left";
+                else
+                  return "right";
+              break;
+              default:
+                return null;
+              break;
+            }
+        };
+
+        scope.getImageContainerPaddingTop = function (image) {
+          switch(scope.getImagePosition(image)) {
+            case "left":
+            case "right":
+              return (image.height/4)+"px";
+            break;
+            case "top":
+            case "bottum":
+            default:
+              return "0px";
+            break;
+          }
+        };
+
+        scope.selectColumn = function (rowIndex, columnIndex, column, row, slideIndex) {
+
+          // Set latestSelect if possible
+          if(typeof($rootScope.selected) !== 'undefined') {
+            latestSelect = {};
+            if(typeof($rootScope.selected.type) !== 'undefined')
+              latestSelect.type = $rootScope.selected.type;
+
+            if(typeof($rootScope.selected.rowIndex) !== 'undefined')
+              latestSelect.rowIndex = $rootScope.selected.rowIndex;
+
+            if(typeof($rootScope.selected.columnIndex) !== 'undefined')
+              latestSelect.columnIndex = $rootScope.selected.columnIndex;
+
+            if(typeof($rootScope.selected.slideIndex) !== 'undefined')
+              latestSelect.slideIndex = $rootScope.selected.slideIndex;
+
+            if(typeof($rootScope.selected.id) !== 'undefined')
+              latestSelect.id = $rootScope.selected.id;
+
+          }
+
+          // normal column or content of carousel-slide
+          if(typeof(column.carousel) === 'undefined') {
+            $rootScope.selected = {
+              type: 'column'
+              , row: row
+              , column: column
+              , rowIndex: rowIndex
+              , columnIndex: columnIndex
+              , slideIndex: slideIndex
+              , id: scope.id
+            }
+          }
+
+          /* 
+           * Normal column but with carousel insite, but we want to choose the slide of the carousel,
+           * because it was fired this function short time before (we see this on latestSelect.slideIndex ), so the user has clicked on a slide
+           */
+          if (typeof(column.carousel) !== 'undefined' && typeof(slideIndex) === 'undefined' && typeof(latestSelect.slideIndex) !== 'undefined' ) { 
+
+            // NOTE on carousel rowidex === slideindex
+            // the latest select was the select of the slide in the carousel
+            var carousel = {
+              type: 'carousel'
+              , rowIndex: latestSelect.slideIndex
+              , columnIndex:  latestSelect.columnIndex
+              , slideIndex: latestSelect.slideIndex
+              , id: latestSelect.id
+            }
+
+            carousel.row = column.carousel.slides[carousel.slideIndex].row;
+            carousel.column = carousel.row.columns[carousel.columnIndex];
+
+            $rootScope.selected = {
+              type: 'column'
+              , row: carousel.row
+              , column: carousel.column
+              , rowIndex: rowIndex
+              , columnIndex: columnIndex
+              , carousel: carousel
+              , id: carousel.id
+            }
+          }
+
+          /* 
+           * Normal column but with carousel insite, we want not the slide, we want this column
+           * because the slide was not choosen before, so the user has just click on the column, not in the slide.
+           */
+          if (typeof(column.carousel) !== 'undefined' && typeof(slideIndex) === 'undefined' && typeof(latestSelect.slideIndex) === 'undefined') { 
+            $rootScope.selected = {
+              type: 'column'
+              , row: row
+              , column: column
+              , rowIndex: rowIndex
+              , columnIndex: columnIndex
+              , slideIndex: slideIndex
+              , id: scope.id
+            }
+          }
+        };
+
+        /*
+         * carousel
+         */
         if( typeof scope.column.carousel !== 'undefined' ) {
           var new_carousel = '<div carousel="column.carousel"></div>';
           $compile(new_carousel)(scope, function(cloned, scope) {           
             iElement.find( ".carousel-placeholder" ).replaceWith(cloned);
           });
         }
+
+        /*
+         * paragraphs
+         */
+        var removeParagraphHtml = function () {
+          var index = scope.column.paragraphs.length+1;
+          var oldParagraph = iElement.find( ".paragraph-placeholder p:nth-child("+index+")" );
+          oldParagraph.remove();
+          // TODO paragraphs with own scope to make it possible to $destroy them or find other solution
+
+        }
+
+        var addParagraphHtml = function () {
+          var index = scope.column.paragraphs.length-1;
+          var new_paragraph = '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content" class="'+scope.column.paragraphs[index].type+'"></p>';
+          $compile(new_paragraph)(scope, function(cloned, scope) {           
+            iElement.find( ".paragraph-placeholder" ).append(cloned);
+          });
+        }
+
+        // first time to create the paragraphs, after that, use removeParagraph and addParagraph
+        if( typeof scope.column.paragraphs !== 'undefined' && scope.column.paragraphs.length > 0 ) {
+          var new_paragraphs = "";
+          for (var i = 0; i < scope.column.paragraphs.length; i++) {
+            new_paragraphs += '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+i+'].content" class="'+scope.column.paragraphs[i].type+'"></p>';
+          };
+          $compile(new_paragraphs)(scope, function(cloned, scope) {           
+            iElement.find( ".paragraph-placeholder" ).html(cloned);
+          });
+        }
+
+        scope.$watchCollection('column.paragraphs', function(newValue, oldValue) {
+          console.log('scope.column.paragraphs.length changed');
+          console.log(newValue);
+          console.log(oldValue);
+
+          if(angular.isDefined(newValue) && angular.isDefined(oldValue)) {
+            if(newValue.length > oldValue.length) {
+              addParagraphHtml();
+            }
+
+            if(newValue.length < oldValue.length) {
+              removeParagraphHtml();
+            }
+          }
+
+        });
+
+        /*
+         * header
+         */
+        scope.$watch('column.header.active', function(active, old) {
+          if(active === true) {
+            if(typeof scope.column.header.content === 'undefined' || scope.column.header.content === '') {
+              scope.column.header.content = LoremService.generator({units: 'words', count: 2});
+            }
+          }
+        });
+
+        /*
+         * subtext
+         */
+
+        if(typeof scope.column.subtext === 'undefined')
+          scope.column.subtext = {};
+        if(typeof scope.column.subtext.type === 'undefined')
+          scope.column.subtext.type = 'small';
+        if(typeof scope.column.subtext.content === 'undefined')
+          scope.column.subtext.content = LoremService.generator({units: 'words', count: 2});
+        if(typeof scope.column.subtext.content === 'undefined')
+          scope.column.subtext.active = false;
+
+        scope.$watch('column.subtext.active', function(active, old, scope) {
+          if(active === true) {
+            if(typeof scope.column.subtext.content === 'undefined' || scope.column.subtext.content === '') {
+              scope.column.subtext.content = LoremService.generator({units: 'words', count: 2});
+            }
+          }
+        });
+
       }
-    },
-    templateUrl: 'partials/column.jade',
-    controller: 'ColumnController'
+    }
+    , templateUrl: 'partials/column.jade'
+    , controller: 'ColumnController'
+  }
+});
+
+jumplink.cms.directive("columnHeader", function () {
+  return {
+    restrict: "E"
+    , templateUrl: 'partials/columnHeader.jade'
+  }
+});
+
+jumplink.cms.directive("columnSubtext", function () {
+  return {
+    restrict: "E"
+    , templateUrl: 'partials/columnSubtext.jade'
   }
 });

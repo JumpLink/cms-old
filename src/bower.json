@@ -33,6 +33,6 @@
     "async": "~0.2.*",
     "lr-notifier": "https://github.com/lorenzofox3/lr-notifier.git",
     "revolunet-angular-carousel": "~0.1.*",
-    "angular-contenteditable": "~0.3.6"
+    "angular-contenteditable": "~0.3.*"
   }
 }

@@ -4,51 +4,56 @@ jumplink.cms.controller('HeadController', function($scope, $sails, $routeParams)
 
 jumplink.cms.controller('NavbarController', function($scope, $sails, $routeParams) {
 
-  // //  // TODO get all sites
-  // $sails.get("/site/example", function (response) {
-  //   if(response != null && typeof(response) !== "undefined") {
-  //     $scope.sites = response;
-  //     //console.log ($scope.site);
-  //   } else {
-  //     console.log ("Can't load example");
-  //   }
-  // });
 });
 
 jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams) {
 
-  // If site is passed in the url
-  if(typeof($routeParams.site) !== "undefined") {
-    $scope.routeSite = $routeParams.site;
+  var getSites = function () {
+    $sails.get("/site", function (response) {
+      if(response != null && typeof(response) !== "undefined") {
+        $rootScope.sites = response;
+        // console.log($rootScope.sites);
+        $rootScope.navigation = getNavigation($rootScope.sites);
+        // console.log($rootScope.navigation);
+        $rootScope.site = getActiveSite($rootScope.sites, $routeParams.site); 
+        // console.log($rootScope.site);
+        $rootScope.active = getActiveNavigation($rootScope.site);    
+        // console.log($rootScope.active);  
+      } else {
+        // TODO redirect
+        console.log ("Can't load Sites");
+      }
+    });
   }
 
-   // TODO get site by name
-  $sails.get("/site/example", function (response) {
-    if(response != null && typeof(response) !== "undefined") {
-      $rootScope.site = response[0];
-      $rootScope.sites = response;
-      $rootScope.navigation = getNavigation($rootScope.sites);
-      $rootScope.active = getActiveNavigation($rootScope.site);
-      //console.log ($scope.site);
-    } else {
-      console.log ("Can't load example");
-    }
-  });
+  var getConfig = function () {
+    $sails.get("/config/example", function (response) {
+      if(response != null && typeof(response) !== "undefined") {
+        $rootScope.config = response;
+        console.log($rootScope.config);
+      } else {
+        console.log ("Can't load Config");
+      }
+    });
+  }
 
-  $sails.get("/config/example", function (response) {
-    if(response != null && typeof(response) !== "undefined") {
-      $scope.config = response;
-      //console.log ($scope.config);
-    } else {
-      console.log ("Can't load example");
+  // TODO redirect if active site not found
+  var getActiveSite = function (sites, route) {
+    if(typeof sites !== 'undefined' && sites.length > 0) {
+      for (var i = 0; i < sites.length; i++) {
+        if(sites[i] !== null && sites[i].href == route)
+          return sites[i];
+      };
     }
-  });
+    return null;
+  }
 
   var getNavigation = function (sites) {
     if(typeof sites !== 'undefined') {
       var result = [];
       for (var i = 0; i < sites.length; i++) {
-        result.push({name: sites[i].name, href: sites[i].href});
+        if(sites[i] !== null)
+          result.push({name: sites[i].name, href: sites[i].href});
       };
       return result;
     }
@@ -59,6 +64,25 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     return getNavigation([site])[0];
   }
 
+  // only run this function when $rootScope.site is set
+  var routeChanged = function () {
+    $rootScope.site = getActiveSite($rootScope.sites, $routeParams.site); 
+    $rootScope.active = getActiveNavigation($rootScope.site);    
+  }
+
+  // get sites only if they are currently not defined
+  if($rootScope.sites === null || typeof($rootScope.sites) === "undefined" || typeof($rootScope.sites.length) === "undefined" || $rootScope.sites.length <= 0) {
+    getSites();
+  } else {
+    // otherwise just update the active site
+    routeChanged();
+  }
+
+  // get sites only if they are currently not defined
+  if($rootScope.config === null || typeof($rootScope.config) === "undefined") {
+    getConfig();
+  }
+
 });
 
 jumplink.cms.controller('RowController', function($scope, $element, $compile, $sails, $routeParams) {
@@ -66,29 +90,9 @@ jumplink.cms.controller('RowController', function($scope, $element, $compile, $s
 
 });
 
-jumplink.cms.controller('ColumnController', function($scope, $element, $compile, $sails, $routeParams) {
-  $scope.getImagePosition = function (image) {
-    if(typeof image == 'undefined' || typeof image.position == 'undefined' )
-      return null;
-    else
-      switch(image.position) {
-        case "top":
-        case "bottum":
-        case "left":
-        case "right":
-          return image.position;
-        break;
-        case "flip":
-          if($scope.rowindex%2 == 0) // index gerade
-            return "left";
-          else
-            return "right";
-        break;
-        default:
-          return null;
-        break;
-      }
-  }
+jumplink.cms.controller('ColumnController', function($rootScope, $scope) {
+
+
 });
 
 jumplink.cms.controller('CarouselController', function($scope, $sails, $routeParams) {
@@ -102,8 +106,6 @@ jumplink.cms.controller('CarouselController', function($scope, $sails, $routePar
   }
 
   $scope.prev = function () {
-    console.log($scope.index);
-
     if($scope.index-1 < 0)
       $scope.index = $scope.carousel.slides.length-1;
     else

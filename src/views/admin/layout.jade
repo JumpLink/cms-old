@@ -6,7 +6,7 @@ html(ng-app="jumplink.cms")
     //- Viewport mobile tag for sensible mobile support
     meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
 
-    //- SCRIPTS
+    //- SCRIPTS ADMIN
     script(type="text/javascript", src="/js/socket.io.js")
     script(type="text/javascript", src="/js/sails.io.js")
     script(type="text/javascript", src="/js/app.js")
@@ -23,8 +23,11 @@ html(ng-app="jumplink.cms")
     script(type="text/javascript", src="/bower_components/angular-underscore/angular-underscore.js")
     script(type="text/javascript", src="/bower_components/angular-toggle-switch/angular-toggle-switch.js")
     script(type="text/javascript", src="/bower_components/angular-gettext/dist/angular-gettext.js")
-    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/dist/angular-mobile.js")
-    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/dist/angular-carousel.js")
+    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/src/angular-carousel.js")
+    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/src/directives/rn-carousel-controls.js")
+    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/src/directives/rn-carousel-indicators.js")
+    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/src/directives/rn-carousel.js")
+    script(type="text/javascript", src="/bower_components/revolunet-angular-carousel/src/directives/sliceFilter.js")
     script(type="text/javascript", src="/bower_components/lr-notifier/src/notifier.js")
     script(type="text/javascript", src="/bower_components/angular-strap/dist/angular-strap.js")
     script(type="text/javascript", src="/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js")
@@ -38,7 +41,10 @@ html(ng-app="jumplink.cms")
     script(type="text/javascript", src="/js/angular/routes.js")
     script(type="text/javascript", src="/js/angular/services.js")
     script(type="text/javascript", src="/js/angular/translations.js")
-    //- SCRIPTS END
+    script(type="text/javascript", src="/js/angular/workaround.js")
+    script(type="text/javascript", src="/admin/js/controllers.js")
+    script(type="text/javascript", src="/admin/js/directives.js")
+    //- SCRIPTS ADMIN END
 
     //- TODO CSRF_TOKEN
     script.
@@ -50,7 +56,7 @@ html(ng-app="jumplink.cms")
     //- STYLES END
     link#style(rel="stylesheet", ng-href="/styles/style.css")
 
-    include templateCache
+    include templates/templateCache
   body
     block body 
 
