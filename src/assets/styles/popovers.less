@@ -1,5 +1,18 @@
 @import "@{bootstrap-less-path}/popovers.less";
 
-.popover {
+.popover.popover-form {
   outline: none;
+  min-width: 260px;
+  .popover-content {
+    .form-group {
+      width: 100%;
+      select {
+        width: 100%;
+      }
+    }
+
+    .form-control {
+      width: 100%;
+    }
+  }
 }

@@ -27,7 +27,7 @@ jumplink.cms.directive("jsNavbar", function ($compile, $window, $location, $navb
         }
 
         // observe for "inverse" attribute, if it is true, inverse the navbar
-        scope.$watch('inverse', function(inverse) {
+        scope.$watch('inverse', function(inverse) { 
           if(inverse === true || inverse === "true")
             iElement.addClass("navbar-inverse");
           else
@@ -112,30 +112,37 @@ jumplink.cms.directive("carousel", function ($compile, PolicyService) {
       carousel: "="
     }
     , link: function(scope, iElement, iAttributes) {
-      // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
-      var rnCarousel = ''
-        +'<ul class="rn-carousel-slides" rn-carousel="true" rn-carousel-swipe="'+!PolicyService.changeContentAllowed()+'" rn-carousel-indicator="true" rn-carousel-index="index">';
-          for (var i = 0; i < scope.carousel.slides.length; i++) {
-            rnCarousel += ''
-            +'<li class="item rn-carousel-slide" style="height:'+scope.carousel.height+'px;background-image:url(/images/'+scope.carousel.slides[i].image.src+')" >'
-              +'<div class="carousel-caption">'
-                +'<span row="carousel.slides['+i+'].row" index="'+i+'" slideindex="'+i+'")"></span>'
-              +'</div>'
-            +'</li>';
-          };
-          rnCarousel += ''
-        +'</ul>';
 
-      $compile(rnCarousel)(scope, function(cloned, scope) {
-        iElement.find('.carousel-inner').html(cloned);
+      scope.$watch('carousel.active', function(active, old, scope) {
+        // console.log(active);
+        if(active) {
+          // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
+          var rnCarousel = ''
+            +'<ul class="rn-carousel-slides" rn-carousel="true" rn-carousel-swipe="'+!PolicyService.changeContentAllowed()+'" rn-carousel-indicator="true" rn-carousel-index="index">';
+              for (var i = 0; i < scope.carousel.slides.length; i++) {
+                rnCarousel += ''
+                +'<li class="item rn-carousel-slide" style="height:'+scope.carousel.height+'px;background-image:url(/images/'+scope.carousel.slides[i].image.src+')" >'
+                  +'<div class="carousel-caption">'
+                    +'<span row="carousel.slides['+i+'].row" index="'+i+'" slideindex="'+i+'")"></span>'
+                  +'</div>'
+                +'</li>';
+              };
+              rnCarousel += ''
+            +'</ul>';
+
+          $compile(rnCarousel)(scope, function(cloned, scope) {
+            iElement.find('.carousel-inner').html(cloned);
+          });
+        }
       });
+
     }
     , templateUrl: 'partials/carousel.jade'
     , controller: 'CarouselController'
   }
 });
 
-jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, LoremService, PolicyService) {
+jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, LoremService, PolicyService, ParagraphService) {
   return {
     restrict: "A"
     , scope: {
@@ -153,6 +160,9 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
       return function(scope, iElement, iAttributes) {
 
         scope.changeContentAllowed = PolicyService.changeContentAllowed;
+
+        // set column defaults if unset
+        scope.column = ColumnService.getDefaults(scope.$parent.row.type, scope.column);
 
         scope.getImagePosition = function (image) {
           if(typeof image == 'undefined' || typeof image.position == 'undefined' )
@@ -177,6 +187,10 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
             }
         };
 
+        scope.imagePositionIs = function (position, image) {
+          return scope.getImagePosition (image) === position && image.active;
+        }
+
         scope.getImageContainerPaddingTop = function (image) {
           switch(scope.getImagePosition(image)) {
             case "left":
@@ -193,11 +207,32 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
 
         scope.selectColumn = function (rowIndex, columnIndex, column, row, slideIndex) {
 
+          // console.log("Column select");
+          // console.log("rowIndex: "+rowIndex);
+          // console.log("columnIndex: "+columnIndex);
+          // console.log("slideIndex: "+slideIndex);
+          // console.log("column");
+          // console.log(column);
+          // console.log("row");
+          // console.log(row);
+
           // Set latestSelect if possible
           if(typeof($rootScope.selected) !== 'undefined') {
             latestSelect = {};
             if(typeof($rootScope.selected.type) !== 'undefined')
               latestSelect.type = $rootScope.selected.type;
+
+            if(typeof($rootScope.selected.site) !== 'undefined')
+              latestSelect.site = $rootScope.selected.site;
+
+            if(typeof($rootScope.selected.row) !== 'undefined')
+              latestSelect.row = $rootScope.selected.row;
+
+            if(typeof($rootScope.selected.column) !== 'undefined')
+              latestSelect.column = $rootScope.selected.column;
+
+            if(typeof($rootScope.selected.siteIndex) !== 'undefined')
+              latestSelect.siteIndex = $rootScope.selected.siteIndex;
 
             if(typeof($rootScope.selected.rowIndex) !== 'undefined')
               latestSelect.rowIndex = $rootScope.selected.rowIndex;
@@ -211,11 +246,16 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
           }
 
           // normal column or content of carousel-slide
-          if(typeof(column.carousel) === 'undefined') {
+          if(column.carousel.active === false) {
+
+            // console.log("without carousel");
+
             $rootScope.selected = {
               type: 'column'
+              , site: $rootScope.site
               , row: row
               , column: column
+              , siteIndex: $rootScope.siteIndex
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , slideIndex: slideIndex
@@ -226,7 +266,9 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
            * Normal column but with carousel insite, but we want to choose the slide of the carousel,
            * because it was fired this function short time before (we see this on latestSelect.slideIndex ), so the user has clicked on a slide
            */
-          if (typeof(column.carousel) !== 'undefined' && typeof(slideIndex) === 'undefined' && typeof(latestSelect.slideIndex) !== 'undefined' ) { 
+          if (column.carousel.active === true && typeof(slideIndex) === 'undefined' && typeof(latestSelect) !== 'undefined' && angular.isDefined(latestSelect.slideIndex) ) { 
+
+            // console.log("with carousel");
 
             // NOTE on carousel rowidex === slideindex
             // the latest select was the select of the slide in the carousel
@@ -242,8 +284,10 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
 
             $rootScope.selected = {
               type: 'column'
+              , site: $rootScope.site
               , row: carousel.row
-              , column: carousel.column
+              , column: column
+              , siteIndex: $rootScope.siteIndex
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , carousel: carousel
@@ -254,11 +298,13 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
            * Normal column but with carousel insite, we want not the slide, we want this column
            * because the slide was not choosen before, so the user has just click on the column, not in the slide.
            */
-          if (typeof(column.carousel) !== 'undefined' && typeof(slideIndex) === 'undefined' && typeof(latestSelect.slideIndex) === 'undefined') { 
+          if (column.carousel.active === true && typeof(slideIndex) === 'undefined' && (typeof(latestSelect) === 'undefined' || typeof(latestSelect.slideIndex) === 'undefined') ) { 
             $rootScope.selected = {
               type: 'column'
+              , site: $rootScope.site
               , row: row
               , column: column
+              , siteIndex: $rootScope.siteIndex
               , rowIndex: rowIndex
               , columnIndex: columnIndex
               , slideIndex: slideIndex
@@ -267,43 +313,62 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
         };
 
         /*
-         * carousel
-         */
-        if( typeof scope.column.carousel !== 'undefined' ) {
-          var new_carousel = '<div carousel="column.carousel"></div>';
-          $compile(new_carousel)(scope, function(cloned, scope) {           
-            iElement.find( ".carousel-placeholder" ).replaceWith(cloned);
-          });
-        }
-
-        /*
          * paragraphs
          */
         var removeParagraphHtml = function () {
           var index = scope.column.paragraphs.length+1;
           var oldParagraph = iElement.find( ".paragraph-placeholder p:nth-child("+index+")" );
           oldParagraph.remove();
-          // TODO paragraphs with own scope to make it possible to $destroy them or find other solution
+        }
 
+        scope.getParagrapClass = function (index) {
+          if(scope.column.paragraphs.length >= index+1) {
+            return {
+              'lead': scope.column.paragraphs[index].lead
+              , 'text-left': scope.column.paragraphs[index].aligned == "left"
+              , 'text-center': scope.column.paragraphs[index].aligned == "center"
+              , 'text-right': scope.column.paragraphs[index].aligned == "right"
+              , 'text-muted': scope.column.paragraphs[index].color == "muted"
+              , 'text-info': scope.column.paragraphs[index].color == "info"
+              , 'text-warning': scope.column.paragraphs[index].color == "warning"
+              , 'text-danger': scope.column.paragraphs[index].color == "danger"
+            }
+          } else {
+            return '';
+          }
+        }
+
+        var getParagraphHtml = function (index) {
+          return '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content" ng-class="getParagrapClass('+index+')"></p>';
         }
 
         var addParagraphHtml = function () {
           var index = scope.column.paragraphs.length-1;
-          var new_paragraph = '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content" class="'+scope.column.paragraphs[index].type+'"></p>';
-          $compile(new_paragraph)(scope, function(cloned, scope) {           
-            iElement.find( ".paragraph-placeholder" ).append(cloned);
-          });
+          //Set defaults
+          scope.column.paragraphs[index] = ParagraphService.getDefaults(scope.column.type, scope.column.paragraphs[index]);
+          if(scope.column.paragraphs[index].active) {
+            //var new_paragraph = '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content" class="'+scope.column.paragraphs[index].type+'"></p>';
+            var new_paragraph = getParagraphHtml(index);
+            $compile(new_paragraph)(scope, function(cloned, scope) {           
+              iElement.find( ".paragraph-placeholder" ).append(cloned);
+            });
+          }
         }
 
         // first time to create the paragraphs, after that, use removeParagraph and addParagraph
         if( typeof scope.column.paragraphs !== 'undefined' && scope.column.paragraphs.length > 0 ) {
           var new_paragraphs = "";
           for (var i = 0; i < scope.column.paragraphs.length; i++) {
-            new_paragraphs += '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+i+'].content" class="'+scope.column.paragraphs[i].type+'"></p>';
+            if(scope.column.paragraphs[i].active) {
+              //new_paragraphs += '<p contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+i+'].content" class="'+scope.column.paragraphs[i].type+'"></p>';
+              new_paragraphs += getParagraphHtml(i);
+            }
+              
           };
-          $compile(new_paragraphs)(scope, function(cloned, scope) {           
-            iElement.find( ".paragraph-placeholder" ).html(cloned);
-          });
+          if(new_paragraphs !== "")
+            $compile(new_paragraphs)(scope, function(cloned, scope) {           
+              iElement.find( ".paragraph-placeholder" ).html(cloned);
+            });
         }
 
         scope.$watchCollection('column.paragraphs', function(newValue, oldValue) {
@@ -319,39 +384,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, ColumnService, 
           }
 
         });
-
-        /*
-         * header
-         */
-        scope.$watch('column.header.active', function(active, old) {
-          if(active === true) {
-            if(typeof scope.column.header.content === 'undefined' || scope.column.header.content === '') {
-              scope.column.header.content = LoremService.generator({units: 'words', count: 2});
-            }
-          }
-        });
-
-        /*
-         * subtext
-         */
-
-        if(typeof scope.column.subtext === 'undefined')
-          scope.column.subtext = {};
-        if(typeof scope.column.subtext.type === 'undefined')
-          scope.column.subtext.type = 'small';
-        if(typeof scope.column.subtext.content === 'undefined')
-          scope.column.subtext.content = LoremService.generator({units: 'words', count: 2});
-        if(typeof scope.column.subtext.content === 'undefined')
-          scope.column.subtext.active = false;
-
-        scope.$watch('column.subtext.active', function(active, old, scope) {
-          if(active === true) {
-            if(typeof scope.column.subtext.content === 'undefined' || scope.column.subtext.content === '') {
-              scope.column.subtext.content = LoremService.generator({units: 'words', count: 2});
-            }
-          }
-        });
-
       }
     }
     , templateUrl: 'partials/column.jade'

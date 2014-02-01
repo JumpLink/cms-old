@@ -1,13 +1,13 @@
 column-wrapper(ng-click="selectColumn(rowindex, index, column, $parent.row, $parent.slideindex)")
   //- image for top position
-  img(ng-if=" getImagePosition(column.image) == 'top' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
+  img(ng-if="imagePositionIs('top', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
   //- image for left position
-  img(ng-if=" getImagePosition(column.image) == 'left' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+  img(ng-if="imagePositionIs('left', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
   //- div with col-md-7 for left and right images
-  div(ng-class="{'col-md-7': {{getImagePosition(column.image) == 'left' || getImagePosition(column.image) == 'right' }} }", style="padding-top: {{getImageContainerPaddingTop(column.image)}}")
+  div(ng-class="{'col-md-7': imagePositionIs('left', column.image) || imagePositionIs('right', column.image) }", style="padding-top: {{getImageContainerPaddingTop(column.image)}}")
     column-header
     .paragraph-placeholder
-    .carousel-placeholder
-    a.btn(ng-if="column.button", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content}}
+    carousel(ng-if="column.carousel.active", carousel="column.carousel")
+    a.btn(ng-if="column.button.active", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content}}
   //- image for right position
-  img(ng-if=" getImagePosition(column.image) == 'right' && column.image.active", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+  img(ng-if="imagePositionIs('right', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")

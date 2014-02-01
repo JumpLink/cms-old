@@ -1,0 +1,24 @@
+.popover.popover-form
+  .arrow
+  h3.popover-title Row {{selected.rowIndex}}
+  .popover-content
+    form(role="form")
+      .form-group
+        .text-center: label General
+        label Type
+        br
+        input.form-control(type="text", ng-model="selected.row.type")
+      .form-group
+        label Columns
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="selected.row.columns.length = selected.row.columns.length-1")
+              .fa.fa-minus-circle
+          input.form-control(type="text", ng-model="selected.row.columns.length")
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="selected.row.columns.length  = selected.row.columns.length+1")
+              .fa.fa-plus-circle
+      .form-group
+        label Divider
+        br
+        toggle-switch(model='selected.row.divider')

@@ -1,0 +1,40 @@
+.popover.popover-form
+  .arrow
+  h3.popover-title Carousel Slide {{selected.carousel.slideIndex}} Column: {{selected.carousel.columnIndex}}
+  .popover-content
+    form(role="form")
+      .form-group
+        label Header
+        br
+        toggle-switch(model='selected.carousel.column.header.active')
+      .form-group
+        label Size
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!selected.carousel.column.header.active", type="button", ng-click="selected.carousel.column.header.size = selected.carousel.column.header.size-1")
+              .fa.fa-minus-circle
+          input.form-control(ng-disabled="!selected.carousel.column.header.active", type="text", ng-model="selected.carousel.column.header.size")
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!selected.carousel.column.header.active", type="button", ng-click="selected.carousel.column.header.size  = selected.carousel.column.header.size+1")
+              .fa.fa-plus-circle
+      hr
+      .form-group
+        label(for="subtextActive") Subtext
+        br
+        toggle-switch(model='selected.carousel.column.subtext.active')
+      br
+      .form-group
+        label Type
+        br
+        select.form-control(ng-disabled="!selected.carousel.column.subtext.active", ng-Model="selected.carousel.column.subtext.type", name="string", required, ng-Required="string", ng-Options='type.value as type.label for type in $root.config.subtext.types') 
+      hr
+      .form-group
+        label Paragraphs
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="removeParagraph(selected.carousel.column.paragraphs)")
+              .fa.fa-minus-circle
+          input.form-control(type="text", ng-model="selected.carousel.column.paragraphs.length")
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="addParagraph(selected.carousel.column.paragraphs)")
+              .fa.fa-plus-circle

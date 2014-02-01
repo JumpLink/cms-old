@@ -1,19 +1,21 @@
 .navbar.navbar-admin.navbar-inverse.navbar-fixed-bottom(role="admin")
   .container
     .navbar-header
-      button.navbar-toggle(type="button", bs-aside)
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
+      button.navbar-toggle(type="button", data-template="partials/asideNavigation.jade", bs-aside="aside")
+        i.fa.fa-ellipsis-v
       a(href="#" ).navbar-brand Admin
     .collapse.navbar-collapse.navbar-ex1-collapse
       ul.nav.navbar-nav 
         li(data-match-route="/"): a(href="#/") Live
       form.navbar-form.navbar-left
         .btn-group
-          button.btn.btn-default(type="button", data-placement="top", data-animation="animation-fade", data-template='partials/columnConfigPopover.jade', data-trigger="click", bs-popover)
+          button.btn.btn-default(type="button", data-placement="top", data-animation="animation-fade", data-template='admin/partials/configPopover.jade', data-trigger="click", bs-popover)
             i.fa.fa-cog
           button.btn.btn-default(ng-click="save()")
             i.fa.fa-floppy-o
-      p.navbar-text.navbar-right Select: Row {{selected.rowIndex}} Column {{selected.columnIndex}} Carousel Slide: {{selected.carousel.slideIndex}} Carousel Column: {{selected.carousel.columnIndex}}
+      p.navbar-text.navbar-right
+        span(ng-if="selected.siteIndex >= 0") Site {{selected.siteIndex}}&nbsp;
+        span(ng-if="selected.rowIndex >= 0") Row {{selected.rowIndex}}&nbsp;
+        span(ng-if="selected.columnIndex >= 0") Column {{selected.columnIndex}}&nbsp;
+        span(ng-if="selected.carousel.slideIndex >= 0") Carousel Slide {{selected.carousel.slideIndex}}&nbsp;
+        span(ng-if="selected.carousel.columnIndex >= 0") Column: {{selected.carousel.columnIndex}}&nbsp;

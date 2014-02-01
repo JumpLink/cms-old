@@ -1,8 +1,9 @@
 .navbar(js-navbar, data="config.navbar", sites="navigation", active="active", container="config.navbar.container", inverse="config.navbar.inverse", type="config.navbar.type", role="navigation")
-.site-header
-  .header-row(row="site.header", index="0")
-.container
-  //- ol.breadcrumb.container
-  //-   li: a(href='#') Home
-  //-   li.active {{site.name}}
-  span(ng-repeat="(index, row) in site.rows", row="row", index="index", class="{{site.type}}")
+div(ng-class="{'for-fixed-navbar-top': config.navbar.type == 'fixed-top' }")
+  .site-header(ng-if="site.header.active")
+    .header-row(row="site.header", index="0")
+  .container
+    //- ol.breadcrumb.container
+    //-   li: a(href='#') Home
+    //-   li.active {{site.name}}
+    span(ng-repeat="(index, row) in site.rows", row="row", index="index", class="{{site.type}}")

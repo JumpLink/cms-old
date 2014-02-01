@@ -1,0 +1,33 @@
+.popover.popover-form
+  .arrow
+  h3.popover-title Site {{selected.site.name}}
+  .popover-content
+    form(role="form")
+      .form-group
+        .text-center: label General
+        .form-group
+          label Name
+          br
+          input.form-control(ng-disabled="!selected.site.name", type="text", ng-model="selected.site.name")
+        .form-group
+          label Adress
+          br
+          input.form-control(ng-disabled="!selected.site.href", type="text", ng-model="selected.site.href")
+        .form-group
+          label Header
+          br
+          toggle-switch(model='selected.site.header.active')
+        .form-group
+          label Type
+          br
+          input.form-control(type="text", ng-model="selected.site.type")
+        .form-group
+          label Rows
+          .input-group
+            span.input-group-btn
+              button.btn.btn-default(type="button", ng-click="selected.site.rows.length = selected.site.rows.length-1")
+                .fa.fa-minus-circle
+            input.form-control(type="text", ng-model="selected.site.rows.length")
+            span.input-group-btn
+              button.btn.btn-default(type="button", ng-click="selected.site.rows.length  = selected.site.rows.length+1")
+                .fa.fa-plus-circle

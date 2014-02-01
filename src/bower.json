@@ -27,7 +27,7 @@
     "angular-sanitize": "1.2.*",
     "angular-underscore": "*",
     "angular-snap": "~1.2.*",
-    "bootstrap": "~3.*",
+    "bootstrap": "3.1.*",
     "components-font-awesome": "~4.0.*",
     "underscore": "~1.5.*",
     "async": "~0.2.*",

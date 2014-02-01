@@ -8,17 +8,21 @@ jumplink.cms.controller('NavbarController', function($scope, $sails, $routeParam
 
 jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams) {
 
+  // only run this function when $rootScope.site is set
+  var routeChanged = function () {
+    var active = getActiveSite($rootScope.sites, $routeParams.site);
+    $rootScope.site = active.site;
+    $rootScope.siteIndex = active.index;
+    $rootScope.active = getActiveNavigation($rootScope.site);
+  }
+
   var getSites = function () {
     $sails.get("/site", function (response) {
       if(response != null && typeof(response) !== "undefined") {
         $rootScope.sites = response;
-        // console.log($rootScope.sites);
         $rootScope.navigation = getNavigation($rootScope.sites);
-        // console.log($rootScope.navigation);
-        $rootScope.site = getActiveSite($rootScope.sites, $routeParams.site); 
-        // console.log($rootScope.site);
+        routeChanged();
         $rootScope.active = getActiveNavigation($rootScope.site);    
-        // console.log($rootScope.active);  
       } else {
         // TODO redirect
         console.log ("Can't load Sites");
@@ -42,7 +46,7 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     if(typeof sites !== 'undefined' && sites.length > 0) {
       for (var i = 0; i < sites.length; i++) {
         if(sites[i] !== null && sites[i].href == route)
-          return sites[i];
+          return {site: sites[i], index: i};
       };
     }
     return null;
@@ -62,12 +66,6 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
 
   var getActiveNavigation = function (site) {
     return getNavigation([site])[0];
-  }
-
-  // only run this function when $rootScope.site is set
-  var routeChanged = function () {
-    $rootScope.site = getActiveSite($rootScope.sites, $routeParams.site); 
-    $rootScope.active = getActiveNavigation($rootScope.site);    
   }
 
   // get sites only if they are currently not defined

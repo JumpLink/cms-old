@@ -1,22 +1,48 @@
 @import "@{bootstrap-less-path}/navbar.less";
 
-.navbar-default {
+.for-fixed-navbar-top {
+  padding-top: @navbar-height;
+}
+
+.for-fixed-navbar-bottom {
+  padding-bottom: @navbar-height;
+}
+
+.navbar {
   .navbar-toggle {
-
-    border-color: @navbar-default-link-color;
-
-    &:hover, &:focus {
-
-    }
-
     .fa {
       display: block;
-      color: @navbar-default-link-color;
       margin-top: -4px;
       margin-bottom: -4px;
+      font-size: 21px;
     }
   }
 }
+
+.navbar-default {
+  .navbar-toggle {
+    border-color: @navbar-default-link-color;
+    &:hover, &:focus {
+
+    }
+    .fa {
+      color: @navbar-default-link-color;
+    }
+  }
+}
+
+.navbar-inverse {
+  .navbar-toggle {
+    border-color: @navbar-inverse-link-color;
+    &:hover, &:focus {
+
+    }
+    .fa {
+      color: @navbar-inverse-link-color;
+    }
+  }
+}
+
 
 .navbar-brand-center {
   padding: 0;
@@ -31,7 +57,5 @@
 
 .navbar-admin {
 
-  .popover {
-    width: 260px;
-  }
+
 }

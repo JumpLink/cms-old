@@ -1,0 +1,17 @@
+[contenteditable="true"] {
+  &:active, &:focus {
+    border:none;
+    outline:none;
+    &:after {
+      position:absolute;
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      line-height: 1;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: @fa-var-pencil;
+      opacity: 0.5;
+    }
+  }
+}

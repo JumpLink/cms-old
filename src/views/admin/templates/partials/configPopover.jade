@@ -1,0 +1,16 @@
+.popover(style="width:226px")
+  .arrow
+  //- h3.popover-title Row {{rowindex+1}} Column {{index+1}} Config
+  .popover-content.clearfix  
+    .center-block
+      .btn-group
+        button.btn.btn-default(ng-disabled="!selected.site", type='button', title="Site", data-placement="top", data-animation="animation-fade", data-template='admin/partials/siteConfigPopover.jade', data-trigger="click", bs-popover)
+          i.fa.fa-file-o
+        button.btn.btn-default(ng-disabled="!selected.row", type='button', title="Row", data-placement="top", data-animation="animation-fade", data-template='admin/partials/rowConfigPopover.jade', data-trigger="click", bs-popover)
+          i.fa.fa-columns.fa-rotate-270
+        button.btn.btn-default(ng-disabled="!selected.column", type="button", title="Column", data-placement="top", data-animation="animation-fade", data-template='admin/partials/columnConfigPopover.jade', data-trigger="click", bs-popover)
+          i.fa.fa-columns
+        button.btn.btn-default(ng-disabled="!selected.paragraph", type='button', title="Paragraph", data-placement="top", data-animation="animation-fade", data-template='admin/partials/paragraphConfigPopover.jade', data-trigger="click", bs-popover)
+          i.fa.fa-align-center
+        button.btn.btn-default(ng-disabled="!selected.carousel", type='button', title="Carousel", data-placement="top", data-animation="animation-fade", data-template='admin/partials/carouselConfigPopover.jade', data-trigger="click", bs-popover)
+          i.fa.fa-arrows-h
