@@ -34,6 +34,7 @@ module.exports = function (grunt) {
 
 
   /**
+   * General JS files that uses the User-Frontend and the Admin-Backend
    * Javascript files to inject in order
    * (uses Grunt-style wildcard/glob/splat expressions)
    *
@@ -41,34 +42,34 @@ module.exports = function (grunt) {
    * `sails-linker:devJs` task below for more options.
    */
 
-  var jsFilesToInject = [
+  var jsGeneralFilesToInject = [
 
     // Below, as a demonstration, you'll see the built-in dependencies 
     // linked in the proper order order
 
     // Bring in the socket.io client
-    'js/socket.io.js',
+    'general/js/socket.io.js',
 
     // then beef it up with some convenience logic for talking to Sails.js
-    'js/sails.io.js',
+    'general/js/sails.io.js',
 
     // A simpler boilerplate library for getting you up and running w/ an
     // automatic listener for incoming messages from Socket.io.
-    'js/app.js',
+    'general/js/app.js',
 
     // *->    put other dependencies here   <-*
-    'bower_components/jquery/jquery.min.js', // TODO remove
+    'bower_components/jquery/jquery.js', // TODO remove
     //'bower_components/bootstrap/js/transition.js', // necessary? 
     // 'bower_components/async/lib/async.js',
-    'bower_components/angular/angular.min.js',
-    'bower_components/angular-animate/angular-animate.min.js',
-    'bower_components/angular-route/angular-route.min.js',
-    'bower_components/angular-sanitize/angular-sanitize.min.js',
-    'bower_components/angular-touch/angular-touch.min.js',
+    'bower_components/angular/angular.js',
+    'bower_components/angular-animate/angular-animate.js',
+    'bower_components/angular-route/angular-route.js',
+    'bower_components/angular-sanitize/angular-sanitize.js',
+    'bower_components/angular-touch/angular-touch.js',
     'bower_components/angular-sails/angular-sails.js',
     'bower_components/underscore/underscore.js',
     'bower_components/angular-underscore/angular-underscore.js',
-    'bower_components/angular-socket-io/angular-socket-io.js',
+    //'bower_components/angular-socket-io/socket.js',
     'bower_components/angular-toggle-switch/angular-toggle-switch.js',
     'bower_components/angular-translate/angular-translate.js',
     //'bower_components/angular-gettext/dist/angular-gettext.js', // dependencies to jQuery :(
@@ -87,10 +88,11 @@ module.exports = function (grunt) {
     //'bower_components/ng-iScroll/src/ng-iscroll.js',
 
     // All of the rest of your app scripts imported here
-    'js/**/*.js'
+    'general/js/angular/config.js',
+    'general/js/**/*.js',
   ];
 
-  var jsAdminFilesToInject = jsFilesToInject.slice();
+  var jsAdminFilesToInject = jsGeneralFilesToInject.slice();
   jsAdminFilesToInject.push('admin/js/**/*.js');
 
   /**
@@ -141,7 +143,7 @@ module.exports = function (grunt) {
   });
 
   // Modify js file injection paths to use 
-  jsFilesToInject = jsFilesToInject.map(function (path) {
+  jsGeneralFilesToInject = jsGeneralFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
 
@@ -225,15 +227,15 @@ module.exports = function (grunt) {
         files: [
           {
           expand: true,
-          cwd: 'assets/styles/',
-          src: ['style.less'],
+          cwd: 'assets/user/styles/',
+          src: ['user.less'],
           dest: '.tmp/public/styles/',
           ext: '.css'
         }, {
           expand: true,
-          cwd: 'assets/linker/styles/',
-          src: ['style.less'],
-          dest: '.tmp/public/linker/styles/',
+          cwd: 'assets/admin/styles/',
+          src: ['admin.less'],
+          dest: '.tmp/public/styles/',
           ext: '.css'
         }
         ]
@@ -245,15 +247,15 @@ module.exports = function (grunt) {
         files: [
           {
           expand: true,
-          cwd: 'assets/styles/',
-          src: ['style.less'],
+          cwd: 'assets/user/styles/',
+          src: ['user.less'],
           dest: '.tmp/public/styles/',
           ext: '.css'
         }, {
           expand: true,
-          cwd: 'assets/linker/styles/',
-          src: ['style.less'],
-          dest: '.tmp/public/linker/styles/',
+          cwd: 'assets/admin/styles/',
+          src: ['admin.less'],
+          dest: '.tmp/public/styles/',
           ext: '.css'
         }
         ]
@@ -285,7 +287,7 @@ module.exports = function (grunt) {
 
     concat: {
       js: {
-        src: jsFilesToInject,
+        src: jsGeneralFilesToInject,
         dest: '.tmp/public/concat/production.js'
       },
       jsAdmin: {
@@ -334,7 +336,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': jsFilesToInject
+          'views/**/*.jade': jsGeneralFilesToInject
         }
       },
 

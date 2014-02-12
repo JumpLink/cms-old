@@ -1,7 +1,7 @@
 jumplink.cms.controller('AdminNavbarController', function($scope, $rootScope, $sails, ParagraphService, RowService, ColumnService, SiteService) {
   $scope.save = function () {
     console.log($rootScope.site);
-    $sails.put("/site/"+$rootScope.site.id, $rootScope.site, function (response) {
+    $sails.put("/site/"+$rootScope.sites[$rootScope.active.index].id, $rootScope.sites[$rootScope.active.index], function (response) {
       if(response != null && typeof(response) !== "undefined") {
         console.log (response);
       } else {

@@ -20,7 +20,7 @@
     "angular-animate": "1.2.*",
     "angular-touch": "1.2.*",
     "angular-strap": "2.0.*",
-    "angular-socket-io": "0.2.*",
+    "angular-socket-io": "0.3.*",
     "angular-toggle-switch": "*",
     "angular-bootstrap-colorpicker": "3.0.*",
     "angular-sanitize": "1.2.*",

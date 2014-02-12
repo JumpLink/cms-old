@@ -1,3 +1,4 @@
+
 if (typeof jumplink === 'undefined') {
   var jumplink = {};
 }
@@ -18,13 +19,11 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'contenteditable'
   , 'pascalprecht.translate'
   , 'Decorators' // WORKAROUND see workaround.js
-]);
-
-var mapding = angular.module('mapding', [
-  
+  //, 'btford.socket-io'
+ // , 'jumplink.cms.SocketController' 
 ]);
 
 jumplink.cms.config(function ($translateProvider) {
   $translateProvider.useUrlLoader('/translation');
-  $translateProvider.preferredLanguage('de');
+  $translateProvider.preferredLanguage('en');
 });

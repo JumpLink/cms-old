@@ -238,7 +238,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
             $rootScope.selected.site = $rootScope.site;
             $rootScope.selected.row = row;
             $rootScope.selected.column = column;
-            $rootScope.selected.siteIndex = $rootScope.siteIndex;
+            $rootScope.selected.siteIndex = $rootScope.active.index;
             $rootScope.selected.rowIndex = rowIndex;
             $rootScope.selected.columnIndex = columnIndex;
             $rootScope.selected.slideIndex = slideIndex;

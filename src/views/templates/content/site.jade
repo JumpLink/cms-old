@@ -3,5 +3,5 @@ div(ng-class="{'for-fixed-navbar-top': config.navbar.type == 'fixed-top' }")
   //.container
     //- ol.breadcrumb.container
     //-   li: a(href='#') Home
-    //-   li.active {{site.name}}
-  span(ng-repeat="(index, row) in site.rows", row="row", index="index", class="{{site.type}}")
+    //-   li.active {{$root.sites[$root.active.index].name}}
+  span(ng-repeat="(index, row) in $root.sites[$root.active.index].rows", row="row", index="index", class="{{$root.sites[$root.active.index].type}}")

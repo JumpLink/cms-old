@@ -1,3 +1,4 @@
+
 jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $translate) {
   var rewriteLanugageList = function (newValues) {
     $scope.languages = [];
@@ -30,9 +31,9 @@ jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $tra
         if(angular.isDefined($rootScope.config)) {
           rewriteLanugageList($rootScope.config.languages.active);
         }
-        console.log("Sprache zu " + key + " gewechselt.");
+        //console.log("Sprache zu " + key + " gewechselt.");
       }, function (key) {
-        console.log("Irgendwas lief schief.");
+        console.log("Can't switch language");
       });
     }
   });
@@ -48,24 +49,39 @@ jumplink.cms.controller('NavbarController', function($scope) {
 
 });
 
-jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, SiteService, config) {
+jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, SiteService, config, $socket) {
 
   // only run this function when $rootScope.site is set
   var routeChanged = function () {
-    var active = getActiveSite($rootScope.sites, $routeParams.site);
-    // WORKAROUND angular.copy ?
-    $rootScope.site = angular.copy(SiteService.getDefaults('default', active.site, $rootScope.sites.length), $rootScope.site);
-    $rootScope.siteIndex = active.index;
-    $rootScope.active = getActiveNavigation($rootScope.site);
+    // found active site
+    foundSiteByRoute($rootScope.sites, $routeParams.site, function (error, active) {
+      
+      if(error !== null) {
+        console.log(error);
+        // TODO redirect if active site not found
+      }
+  
+      //$rootScope.siteIndex = active.index;
+      $rootScope.active = {
+        index: active.index,
+        name: active.site.name,
+        href: active.site.href
+      };
+    });
   }
 
   var getSites = function () {
-    $sails.get("/site", function (response) {
-      if(response != null && typeof(response) !== "undefined") {
-        $rootScope.sites = response;
+    $sails.get("/site", function (newSites) {
+      if(newSites != null && typeof(newSites) !== "undefined") {
+        angular.forEach(newSites, function(site, index){
+          // TODO CHECK
+          // newSites[index] = angular.copy(SiteService.getDefaults(site.type, site, newSites.length));
+          // newSites[index] = angular.extend(SiteService.getDefaults(site.type, site, newSites.length));
+          newSites[index] = SiteService.getDefaults(site.type, site, newSites.length);
+        });
+        $rootScope.sites = newSites;
         $rootScope.navigation = getNavigation($rootScope.sites);
-        routeChanged();
-        $rootScope.active = getActiveNavigation($rootScope.site);    
+        routeChanged();  
       } else {
         // TODO redirect
         console.log ("Can't load Sites");
@@ -73,15 +89,33 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     });
   }
 
-  // TODO redirect if active site not found
-  var getActiveSite = function (sites, route) {
-    if(typeof sites !== 'undefined' && sites.length > 0) {
-      for (var i = 0; i < sites.length; i++) {
-        if(sites[i] !== null && sites[i].href == route)
-          return {site: sites[i], index: i};
-      };
+  var foundSiteByRoute = function (sites, route, cb) {
+    var siteNotFound = true;
+    angular.forEach(sites, function(site, index){
+      if(siteNotFound) {
+        if(site.href == route) {
+          siteNotFound = false;
+          cb(null, {site:site, index:index});
+        }
+      }
+    });
+    // 
+    if(siteNotFound ) {
+      cb("not found", {site:null, index:sites.length});
     }
-    return null;
+  }
+
+  var updateSite = function (newSite) {
+    foundSiteByRoute($rootScope.sites, newSite.href, function (error, foundSite) {
+      angular.extend(foundSite.site, newSite);
+
+      // update current site, if this is the updated site
+      if($rootScope.sites[$rootScope.active.index].href === foundSite.site.href) {
+        angular.extend($rootScope.sites[$rootScope.active.index], newSite);
+      }
+      // $rootScope.sites[foundSite.index] = newSite
+      //angular.extend($rootScope.sites[foundSite.index], newSite);
+    });
   }
 
   var getNavigation = function (sites) {
@@ -89,15 +123,11 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
       var result = [];
       for (var i = 0; i < sites.length; i++) {
         if(sites[i] !== null)
-          result.push({name: sites[i].name, href: sites[i].href});
+          result.push({name: sites[i].name, href: sites[i].href, index: i});
       };
       return result;
     }
     return [];
-  }
-
-  var getActiveNavigation = function (site) {
-    return getNavigation([site])[0];
   }
 
   // get sites only if they are currently not defined
@@ -107,6 +137,21 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     // otherwise just update the active site
     routeChanged();
   }
+
+  // Listen for Comet messages from Sails
+  $socket.on('message', function messageReceived(message) {
+
+    if(message.model === "site") {
+      if(message.verb === "update") {
+        console.log("update for site: "+message);
+        $rootScope.$apply(function(){
+          updateSite(message.data);
+        }); 
+        
+      }
+    }
+
+  });
 
 });
 

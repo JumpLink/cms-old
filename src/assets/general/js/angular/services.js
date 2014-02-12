@@ -40,8 +40,6 @@ jumplink.cms.service("ContentService", function(LoremService, $rootScope) {
 
       if(angular.isDefined(replace.langs)) {
         angular.forEach(replace.langs, function(text, langCode) {
-          console.log("langCode");
-          console.log(langCode);
           defaults.langs[langCode] = text;
         });
       }
