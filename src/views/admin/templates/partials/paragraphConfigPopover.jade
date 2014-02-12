@@ -1,1 +1,15 @@
-| test
+.popover.popover-form
+  .arrow
+  h3.popover-title Paragraph {{selected.paragraphIndex}}
+  .popover-content
+    .row
+      .col-md-12
+        form(role="form")
+          .form-group
+            .text-center: label General
+            toggle-switch(model='selected.paragraph.active')
+            label Size
+            input.form-control(ng-disabled="!selected.column.button.active", type="text", ng-model="selected.column.button.size")
+            label Type
+            input.form-control(ng-disabled="!selected.column.button.active", type="text", ng-model="selected.column.button.type")
+          hr

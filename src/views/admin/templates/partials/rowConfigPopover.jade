@@ -7,16 +7,16 @@
         .text-center: label General
         label Type
         br
-        input.form-control(type="text", ng-model="selected.row.type")
+        input.form-control(type="text", ng-model="$root.selected.row.type")
       .form-group
         label Columns
         .input-group
           span.input-group-btn
-            button.btn.btn-default(type="button", ng-click="selected.row.columns.length = selected.row.columns.length-1")
+            button.btn.btn-default(type="button", ng-disabled="$root.selected.row.columns.length <= 1", ng-click="removeColumn();")
               .fa.fa-minus-circle
-          input.form-control(type="text", ng-model="selected.row.columns.length")
+          input.form-control(type="text", disabled="disabled", ng-model="$root.selected.row.columns.length")
           span.input-group-btn
-            button.btn.btn-default(type="button", ng-click="selected.row.columns.length  = selected.row.columns.length+1")
+            button.btn.btn-default(type="button", ng-disabled="$root.selected.row.columns.length >= 3", ng-click="addColumn();")
               .fa.fa-plus-circle
       .form-group
         label Divider

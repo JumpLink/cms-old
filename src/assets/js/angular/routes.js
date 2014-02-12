@@ -3,9 +3,11 @@ jumplink.cms.config(['$routeProvider',
     $routeProvider.
       when('/:site', {
         templateUrl: 'content/site.jade',
-        controller: 'SiteController'
-      })
-      // , otherwise({
-      //   redirectTo: '/'
-      // });
+        controller: 'SiteController',
+        resolve:  {
+          config: function(ConfigService) {
+            return ConfigService.getConfig();
+          }
+        }
+      });
   }]);

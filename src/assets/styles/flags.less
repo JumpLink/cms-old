@@ -1,0 +1,518 @@
+/*
+ * Fork of http://country-list&.umpirsky&.com/
+ */
+
+@_African_Union: 1;
+@_Arab_League: 2;
+@_ASEAN: 3;
+@_CARICOM: 4;
+@_CIS: 5;
+@_Commonwealth: 6;
+@_England: 7;
+@_European_Union: 8;
+@_Islamic_Conference: 9;
+@_Kosovo: 10;
+@_NATO: 11;
+@_Northern_Cyprus: 12;
+@_Northern_Ireland: 13;
+@_Olimpic_Movement: 14;
+@_OPEC: 15;
+@_Red_Cross: 16;
+@_Scotland: 17;
+@_Somaliland: 18;
+@_Tibet: 19;
+@_United_Nations: 20;
+@_Wales: 21;
+@ad: 22;
+@ae: 23;
+@af: 24;
+@ag: 25;
+@ai: 26;
+@al: 27;
+@am: 28;
+@an: 29;
+@ao: 30;
+@aq: 31;
+@ar: 32;
+@as: 33;
+@at: 34;
+@au: 35;
+@aw: 36;
+@az: 37;
+@ba: 38;
+@bb: 39;
+@bd: 40;
+@be: 41;
+@bf: 42;
+@bg: 43;
+@bh: 44;
+@bi: 45;
+@bj: 46;
+@bm: 47;
+@bn: 48;
+@bo: 49;
+@br: 50;
+@bs: 51;
+@bt: 52;
+@bw: 53;
+@by: 54;
+@bz: 55;
+@ca: 56;
+@cd: 57;
+@cf: 58;
+@cg: 59;
+@ch: 60;
+@ci: 61;
+@ck: 62;
+@cl: 63;
+@cm: 64;
+@cn: 65;
+@co: 66;
+@cr: 67;
+@cu: 68;
+@cv: 69;
+@cy: 70;
+@cz: 71;
+@de: 72;
+@dj: 73;
+@dk: 74;
+@dm: 75;
+@do: 76;
+@dz: 77;
+@ec: 78;
+@ee: 79;
+@eg: 80;
+@eh: 81;
+@er: 82;
+@es: 83;
+@et: 84;
+@fi: 85;
+@fj: 86;
+@fm: 87;
+@fo: 88;
+@fr: 89;
+@ga: 90;
+@gb: 91;
+@gd: 92;
+@ge: 93;
+@gg: 94;
+@gh: 95;
+@gi: 96;
+@gl: 97;
+@gm: 98;
+@gn: 99;
+@gp: 100;
+@gq: 101;
+@gr: 102;
+@gt: 103;
+@gu: 104;
+@gw: 105;
+@gy: 106;
+@hk: 107;
+@hn: 108;
+@hr: 109;
+@ht: 110;
+@hu: 111;
+@id: 112;
+@mc: 113;
+@ie: 114;
+@il: 115;
+@im: 116;
+@in: 117;
+@iq: 118;
+@ir: 119;
+@is: 120;
+@it: 121;
+@je: 122;
+@jm: 123;
+@jo: 124;
+@jp: 125;
+@ke: 126;
+@kg: 127;
+@kh: 128;
+@ki: 129;
+@km: 130;
+@kn: 131;
+@kp: 132;
+@kr: 133;
+@kw: 134;
+@ky: 135;
+@kz: 136;
+@la: 137;
+@lb: 138;
+@lc: 139;
+@li: 140;
+@lk: 141;
+@lr: 142;
+@ls: 143;
+@lt: 144;
+@lu: 145;
+@lv: 146;
+@ly: 147;
+@ma: 148;
+@md: 149;
+@me: 150;
+@mg: 151;
+@mh: 152;
+@mk: 153;
+@ml: 154;
+@mm: 155;
+@mn: 156;
+@mo: 157;
+@mq: 158;
+@mr: 159;
+@ms: 160;
+@mt: 161;
+@mu: 162;
+@mv: 163;
+@mw: 164;
+@mx: 165;
+@my: 166;
+@mz: 167;
+@na: 168;
+@nc: 169;
+@ne: 170;
+@ng: 171;
+@ni: 172;
+@nl: 173;
+@no: 174;
+@np: 175;
+@nr: 176;
+@nz: 177;
+@om: 178;
+@pa: 179;
+@pe: 180;
+@pf: 181;
+@pg: 182;
+@ph: 183;
+@pk: 184;
+@pl: 185;
+@pr: 186;
+@ps: 187;
+@pt: 188;
+@pw: 189;
+@py: 190;
+@qa: 191;
+@re: 192;
+@ro: 193;
+@rs: 194;
+@ru: 195;
+@rw: 196;
+@sa: 197;
+@sb: 198;
+@sc: 199;
+@sd: 200;
+@se: 201;
+@sg: 202;
+@si: 203;
+@sk: 204;
+@sl: 205;
+@sm: 206;
+@sn: 207;
+@so: 208;
+@sr: 209;
+@st: 210;
+@sv: 211;
+@sy: 212;
+@sz: 213;
+@tc: 214;
+@td: 215;
+@tg: 216;
+@th: 217;
+@tj: 218;
+@tl: 219;
+@tm: 220;
+@tn: 221;
+@to: 222;
+@tr: 223;
+@tt: 224;
+@tv: 225;
+@tw: 226;
+@tz: 227;
+@ua: 228;
+@ug: 229;
+@us: 230;
+@uy: 231;
+@uz: 232;
+@va: 233;
+@vc: 234;
+@ve: 235;
+@vg: 236;
+@vi: 237;
+@vn: 238;
+@vu: 239;
+@ws: 240;
+@ye: 241;
+@za: 242;
+@zm: 243;
+@zw: 244;
+
+.flag-size(@flag-size) {
+  &._African_Union(OAS){background-position:    0 @flag-size * @_African_Union * -1px;}
+  &._Arab_League{background-position:           0 @flag-size * @_Arab_League * -1px;}
+  &._ASEAN{background-position:                 0 @flag-size * @_ASEAN * -1px;}
+  &._CARICOM{background-position:               0 @flag-size * @_CARICOM * -1px;}
+  &._CIS{background-position:                   0 @flag-size * @_CIS * -1px;}
+  &._Commonwealth{background-position:          0 @flag-size * @_Commonwealth * -1px;}
+  &._England{background-position:               0 @flag-size * @_England * -1px;}
+  &._European_Union{background-position:        0 @flag-size * @_European_Union * -1px;}
+  &._Islamic_Conference{background-position:    0 @flag-size * @_Islamic_Conference * -1px;}
+  &._Kosovo{background-position:                0 @flag-size * @_Kosovo * -1px;}
+  &._NATO{background-position:                  0 @flag-size * @_NATO * -1px;}
+  &._Northern_Cyprus{background-position:       0 @flag-size * @_Northern_Cyprus * -1px;}
+  &._Northern_Ireland{background-position:      0 @flag-size * @_Northern_Ireland * -1px;}
+  &._Olimpic_Movement{background-position:      0 @flag-size * @_Olimpic_Movement * -1px;}
+  &._OPEC{background-position:                  0 @flag-size * @_OPEC * -1px;}
+  &._Red_Cross{background-position:             0 @flag-size * @_Red_Cross * -1px;}
+  &._Scotland{background-position:              0 @flag-size * @_Scotland * -1px;}
+  &._Somaliland{background-position:            0 @flag-size * @_Somaliland * -1px;}
+  &._Tibet{background-position:                 0 @flag-size * @_Tibet * -1px;}
+  &._United_Nations{background-position:        0 @flag-size * @_United_Nations * -1px;}
+  &._Wales{background-position:                 0 @flag-size * @_Wales * -1px;}
+  &.ad{background-position:0 @flag-size * @ad * -1px;}
+  &.ae{background-position:0 @flag-size * @ae * -1px;}
+  &.af{background-position:0 @flag-size * @af * -1px;}
+  &.ag{background-position:0 @flag-size * @ag * -1px;}
+  &.ai{background-position:0 @flag-size * @ai * -1px;}
+  &.al{background-position:0 @flag-size * @al * -1px;}
+  &.am{background-position:0 @flag-size * @am * -1px;}
+  &.an{background-position:0 @flag-size * @an * -1px;}
+  &.ao{background-position:0 @flag-size * @ao * -1px;}
+  &.aq{background-position:0 @flag-size * @aq * -1px;}
+  &.ar{background-position:0 @flag-size * @ar * -1px;}
+  &.as{background-position:0 @flag-size * @as * -1px;}
+  &.at{background-position:0 @flag-size * @at * -1px;}
+  &.au{background-position:0 @flag-size * @au * -1px;}
+  &.aw{background-position:0 @flag-size * @aw * -1px;}
+  &.az{background-position:0 @flag-size * @az * -1px;}
+  &.ba{background-position:0 @flag-size * @ba * -1px;}
+  &.bb{background-position:0 @flag-size * @bb * -1px;}
+  &.bd{background-position:0 @flag-size * @bd * -1px;}
+  &.be{background-position:0 @flag-size * @be * -1px;}
+  &.bf{background-position:0 @flag-size * @bf * -1px;}
+  &.bg{background-position:0 @flag-size * @bg * -1px;}
+  &.bh{background-position:0 @flag-size * @bh * -1px;}
+  &.bi{background-position:0 @flag-size * @bi * -1px;}
+  &.bj{background-position:0 @flag-size * @bj * -1px;}
+  &.bm{background-position:0 @flag-size * @bm * -1px;}
+  &.bn{background-position:0 @flag-size * @bn * -1px;}
+  &.bo{background-position:0 @flag-size * @bo * -1px;}
+  &.br{background-position:0 @flag-size * @br * -1px;}
+  &.bs{background-position:0 @flag-size * @bs * -1px;}
+  &.bt{background-position:0 @flag-size * @bt * -1px;}
+  &.bw{background-position:0 @flag-size * @bw * -1px;}
+  &.by{background-position:0 @flag-size * @by * -1px;}
+  &.bz{background-position:0 @flag-size * @bz * -1px;}
+  &.ca{background-position:0 @flag-size * @ca * -1px;}
+  &.cd{background-position:0 @flag-size * @cd * -1px;}
+  &.cf{background-position:0 @flag-size * @cf * -1px;}
+  &.cg{background-position:0 @flag-size * @cg * -1px;}
+  &.ch{background-position:0 @flag-size * @ch * -1px;}
+  &.ci{background-position:0 @flag-size * @ci * -1px;}
+  &.ck{background-position:0 @flag-size * @ck * -1px;}
+  &.cl{background-position:0 @flag-size * @cl * -1px;}
+  &.cm{background-position:0 @flag-size * @cm * -1px;}
+  &.cn{background-position:0 @flag-size * @cn * -1px;}
+  &.co{background-position:0 @flag-size * @co * -1px;}
+  &.cr{background-position:0 @flag-size * @cr * -1px;}
+  &.cu{background-position:0 @flag-size * @cu * -1px;}
+  &.cv{background-position:0 @flag-size * @cv * -1px;}
+  &.cy{background-position:0 @flag-size * @cy * -1px;}
+  &.cz{background-position:0 @flag-size * @cz * -1px;}
+  &.de{background-position:0 @flag-size * @de * -1px;}
+  &.dj{background-position:0 @flag-size * @dj * -1px;}
+  &.dk{background-position:0 @flag-size * @dk * -1px;}
+  &.dm{background-position:0 @flag-size * @dm * -1px;}
+  &.do{background-position:0 @flag-size * @do * -1px;}
+  &.dz{background-position:0 @flag-size * @dz * -1px;}
+  &.ec{background-position:0 @flag-size * @ec * -1px;}
+  &.ee{background-position:0 @flag-size * @ee * -1px;}
+  &.eg{background-position:0 @flag-size * @eg * -1px;}
+  &.eh{background-position:0 @flag-size * @eh * -1px;}
+  &.er{background-position:0 @flag-size * @er * -1px;}
+  &.es{background-position:0 @flag-size * @es * -1px;}
+  &.et{background-position:0 @flag-size * @et * -1px;}
+  &.fi{background-position:0 @flag-size * @fi * -1px;}
+  &.fj{background-position:0 @flag-size * @fj * -1px;}
+  &.fm{background-position:0 @flag-size * @fm * -1px;}
+  &.fo{background-position:0 @flag-size * @fo * -1px;}
+  &.fr{background-position:0 @flag-size * @fr * -1px;}
+  &.ga{background-position:0 @flag-size * @ga * -1px;}
+  &.gb{background-position:0 @flag-size * @gb * -1px;}
+  &.gd{background-position:0 @flag-size * @gd * -1px;}
+  &.ge{background-position:0 @flag-size * @ge * -1px;}
+  &.gg{background-position:0 @flag-size * @gg * -1px;}
+  &.gh{background-position:0 @flag-size * @gh * -1px;}
+  &.gi{background-position:0 @flag-size * @gi * -1px;}
+  &.gl{background-position:0 @flag-size * @gl * -1px;}
+  &.gm{background-position:0 @flag-size * @gm * -1px;}
+  &.gn{background-position:0 @flag-size * @gn * -1px;}
+  &.gp{background-position:0 @flag-size * @gp * -1px;}
+  &.gq{background-position:0 @flag-size * @gq * -1px;}
+  &.gr{background-position:0 @flag-size * @gr * -1px;}
+  &.gt{background-position:0 @flag-size * @gt * -1px;}
+  &.gu{background-position:0 @flag-size * @gu * -1px;}
+  &.gw{background-position:0 @flag-size * @gw * -1px;}
+  &.gy{background-position:0 @flag-size * @gy * -1px;}
+  &.hk{background-position:0 @flag-size * @hk * -1px;}
+  &.hn{background-position:0 @flag-size * @hn * -1px;}
+  &.hr{background-position:0 @flag-size * @hr * -1px;}
+  &.ht{background-position:0 @flag-size * @ht * -1px;}
+  &.hu{background-position:0 @flag-size * @hu * -1px;}
+  &.id{background-position:0 @flag-size * @id * -1px;}
+  &.mc{background-position:0 @flag-size * @mc * -1px;}
+  &.ie{background-position:0 @flag-size * @ie * -1px;}
+  &.il{background-position:0 @flag-size * @il * -1px;}
+  &.im{background-position:0 @flag-size * @im * -1px;}
+  &.in{background-position:0 @flag-size * @in * -1px;}
+  &.iq{background-position:0 @flag-size * @iq * -1px;}
+  &.ir{background-position:0 @flag-size * @ir * -1px;}
+  &.is{background-position:0 @flag-size * @is * -1px;}
+  &.it{background-position:0 @flag-size * @it * -1px;}
+  &.je{background-position:0 @flag-size * @je * -1px;}
+  &.jm{background-position:0 @flag-size * @jm * -1px;}
+  &.jo{background-position:0 @flag-size * @jo * -1px;}
+  &.jp{background-position:0 @flag-size * @jp * -1px;}
+  &.ke{background-position:0 @flag-size * @ke * -1px;}
+  &.kg{background-position:0 @flag-size * @kg * -1px;}
+  &.kh{background-position:0 @flag-size * @kh * -1px;}
+  &.ki{background-position:0 @flag-size * @ki * -1px;}
+  &.km{background-position:0 @flag-size * @km * -1px;}
+  &.kn{background-position:0 @flag-size * @kn * -1px;}
+  &.kp{background-position:0 @flag-size * @kp * -1px;}
+  &.kr{background-position:0 @flag-size * @kr * -1px;}
+  &.kw{background-position:0 @flag-size * @kw * -1px;}
+  &.ky{background-position:0 @flag-size * @ky * -1px;}
+  &.kz{background-position:0 @flag-size * @kz * -1px;}
+  &.la{background-position:0 @flag-size * @la * -1px;}
+  &.lb{background-position:0 @flag-size * @lb * -1px;}
+  &.lc{background-position:0 @flag-size * @lc * -1px;}
+  &.li{background-position:0 @flag-size * @li * -1px;}
+  &.lk{background-position:0 @flag-size * @lk * -1px;}
+  &.lr{background-position:0 @flag-size * @lr * -1px;}
+  &.ls{background-position:0 @flag-size * @ls * -1px;}
+  &.lt{background-position:0 @flag-size * @lt * -1px;}
+  &.lu{background-position:0 @flag-size * @lu * -1px;}
+  &.lv{background-position:0 @flag-size * @lv * -1px;}
+  &.ly{background-position:0 @flag-size * @ly * -1px;}
+  &.ma{background-position:0 @flag-size * @ma * -1px;}
+  &.md{background-position:0 @flag-size * @md * -1px;}
+  &.me{background-position:0 @flag-size * @me * -1px;}
+  &.mg{background-position:0 @flag-size * @mg * -1px;}
+  &.mh{background-position:0 @flag-size * @mh * -1px;}
+  &.mk{background-position:0 @flag-size * @mk * -1px;}
+  &.ml{background-position:0 @flag-size * @ml * -1px;}
+  &.mm{background-position:0 @flag-size * @mm * -1px;}
+  &.mn{background-position:0 @flag-size * @mn * -1px;}
+  &.mo{background-position:0 @flag-size * @mo * -1px;}
+  &.mq{background-position:0 @flag-size * @mq * -1px;}
+  &.mr{background-position:0 @flag-size * @mr * -1px;}
+  &.ms{background-position:0 @flag-size * @ms * -1px;}
+  &.mt{background-position:0 @flag-size * @mt * -1px;}
+  &.mu{background-position:0 @flag-size * @mu * -1px;}
+  &.mv{background-position:0 @flag-size * @mv * -1px;}
+  &.mw{background-position:0 @flag-size * @mw * -1px;}
+  &.mx{background-position:0 @flag-size * @mx * -1px;}
+  &.my{background-position:0 @flag-size * @my * -1px;}
+  &.mz{background-position:0 @flag-size * @mz * -1px;}
+  &.na{background-position:0 @flag-size * @na * -1px;}
+  &.nc{background-position:0 @flag-size * @nc * -1px;}
+  &.ne{background-position:0 @flag-size * @ne * -1px;}
+  &.ng{background-position:0 @flag-size * @ng * -1px;}
+  &.ni{background-position:0 @flag-size * @ni * -1px;}
+  &.nl{background-position:0 @flag-size * @nl * -1px;}
+  &.no{background-position:0 @flag-size * @no * -1px;}
+  &.np{background-position:0 @flag-size * @np * -1px;}
+  &.nr{background-position:0 @flag-size * @nr * -1px;}
+  &.nz{background-position:0 @flag-size * @nz * -1px;}
+  &.om{background-position:0 @flag-size * @om * -1px;}
+  &.pa{background-position:0 @flag-size * @pa * -1px;}
+  &.pe{background-position:0 @flag-size * @pe * -1px;}
+  &.pf{background-position:0 @flag-size * @pf * -1px;}
+  &.pg{background-position:0 @flag-size * @pg * -1px;}
+  &.ph{background-position:0 @flag-size * @ph * -1px;}
+  &.pk{background-position:0 @flag-size * @pk * -1px;}
+  &.pl{background-position:0 @flag-size * @pl * -1px;}
+  &.pr{background-position:0 @flag-size * @pr * -1px;}
+  &.ps{background-position:0 @flag-size * @ps * -1px;}
+  &.pt{background-position:0 @flag-size * @pt * -1px;}
+  &.pw{background-position:0 @flag-size * @pw * -1px;}
+  &.py{background-position:0 @flag-size * @py * -1px;}
+  &.qa{background-position:0 @flag-size * @qa * -1px;}
+  &.re{background-position:0 @flag-size * @re * -1px;}
+  &.ro{background-position:0 @flag-size * @ro * -1px;}
+  &.rs{background-position:0 @flag-size * @rs * -1px;}
+  &.ru{background-position:0 @flag-size * @ru * -1px;}
+  &.rw{background-position:0 @flag-size * @rw * -1px;}
+  &.sa{background-position:0 @flag-size * @sa * -1px;}
+  &.sb{background-position:0 @flag-size * @sb * -1px;}
+  &.sc{background-position:0 @flag-size * @sc * -1px;}
+  &.sd{background-position:0 @flag-size * @sd * -1px;}
+  &.se{background-position:0 @flag-size * @se * -1px;}
+  &.sg{background-position:0 @flag-size * @sg * -1px;}
+  &.si{background-position:0 @flag-size * @si * -1px;}
+  &.sk{background-position:0 @flag-size * @sk * -1px;}
+  &.sl{background-position:0 @flag-size * @sl * -1px;}
+  &.sm{background-position:0 @flag-size * @sm * -1px;}
+  &.sn{background-position:0 @flag-size * @sn * -1px;}
+  &.so{background-position:0 @flag-size * @so * -1px;}
+  &.sr{background-position:0 @flag-size * @sr * -1px;}
+  &.st{background-position:0 @flag-size * @st * -1px;}
+  &.sv{background-position:0 @flag-size * @sv * -1px;}
+  &.sy{background-position:0 @flag-size * @sy * -1px;}
+  &.sz{background-position:0 @flag-size * @sz * -1px;}
+  &.tc{background-position:0 @flag-size * @tc * -1px;}
+  &.td{background-position:0 @flag-size * @td * -1px;}
+  &.tg{background-position:0 @flag-size * @tg * -1px;}
+  &.th{background-position:0 @flag-size * @th * -1px;}
+  &.tj{background-position:0 @flag-size * @tj * -1px;}
+  &.tl{background-position:0 @flag-size * @tl * -1px;}
+  &.tm{background-position:0 @flag-size * @tm * -1px;}
+  &.tn{background-position:0 @flag-size * @tn * -1px;}
+  &.to{background-position:0 @flag-size * @to * -1px;}
+  &.tr{background-position:0 @flag-size * @tr * -1px;}
+  &.tt{background-position:0 @flag-size * @tt * -1px;}
+  &.tv{background-position:0 @flag-size * @tv * -1px;}
+  &.tw{background-position:0 @flag-size * @tw * -1px;}
+  &.tz{background-position:0 @flag-size * @tz * -1px;}
+  &.ua{background-position:0 @flag-size * @ua * -1px;}
+  &.ug{background-position:0 @flag-size * @ug * -1px;}
+  &.us{background-position:0 @flag-size * @us * -1px;}
+  &.uy{background-position:0 @flag-size * @uy * -1px;}
+  &.uz{background-position:0 @flag-size * @uz * -1px;}
+  &.va{background-position:0 @flag-size * @va * -1px;}
+  &.vc{background-position:0 @flag-size * @vc * -1px;}
+  &.ve{background-position:0 @flag-size * @ve * -1px;}
+  &.vg{background-position:0 @flag-size * @vg * -1px;}
+  &.vi{background-position:0 @flag-size * @vi * -1px;}
+  &.vn{background-position:0 @flag-size * @vn * -1px;}
+  &.vu{background-position:0 @flag-size * @vu * -1px;}
+  &.ws{background-position:0 @flag-size * @ws * -1px;}
+  &.ye{background-position:0 @flag-size * @ye * -1px;}
+  &.za{background-position:0 @flag-size * @za * -1px;}
+  &.zm{background-position:0 @flag-size * @zm * -1px;}
+  &.zw{background-position:0 @flag-size * @zw * -1px;}
+  // Custom flags
+  &.en{background-position:0 @flag-size * @gb * -1px;}
+}
+
+i.flag{
+  background:url(/images/flags32.png) no-repeat top left;
+  display: inline-block;
+  background-size: cover;
+  &.f32{
+    margin-top: -7px;
+    margin-bottom: -11px;
+    width: 32px;
+    height: 32px;
+    .flag-size(32);
+  }
+
+  &.f16{
+    margin-top: 0;
+    margin-bottom: -3px;
+    width: 16px;
+    height: 16px;
+    .flag-size(16);
+  }
+}

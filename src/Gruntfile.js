@@ -57,9 +57,9 @@ module.exports = function (grunt) {
     'js/app.js',
 
     // *->    put other dependencies here   <-*
-    'bower_components/jquery/jquery.min.js',
-    'bower_components/bootstrap/js/transition.js', // necessary? 
-    'bower_components/async/lib/async.js',
+    'bower_components/jquery/jquery.min.js', // TODO remove
+    //'bower_components/bootstrap/js/transition.js', // necessary? 
+    // 'bower_components/async/lib/async.js',
     'bower_components/angular/angular.min.js',
     'bower_components/angular-animate/angular-animate.min.js',
     'bower_components/angular-route/angular-route.min.js',
@@ -70,17 +70,19 @@ module.exports = function (grunt) {
     'bower_components/angular-underscore/angular-underscore.js',
     'bower_components/angular-socket-io/angular-socket-io.js',
     'bower_components/angular-toggle-switch/angular-toggle-switch.js',
-    'bower_components/angular-gettext/dist/angular-gettext.js', // dependencies to jQuery :(
+    'bower_components/angular-translate/angular-translate.js',
+    //'bower_components/angular-gettext/dist/angular-gettext.js', // dependencies to jQuery :(
     //'bower_components/revolunet-angular-carousel/dist/angular-mobile.js', // necessary? 
     //'bower_components/revolunet-angular-carousel/dist/angular-carousel.js',
     'bower_components/revolunet-angular-carousel/src/**/*.js',
     'bower_components/lr-notifier/src/notifier.js',
     //'bower_components/angular-ui-bootstrap3/ui-bootstrap.js',
     'bower_components/angular-strap/dist/angular-strap.js',
-    'bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
-    'bower_components/snapjs/snap.js',
-    'bower_components/angular-snap/angular-snap.js',
+    // 'bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.js',
+    // 'bower_components/snapjs/snap.js',
+    // 'bower_components/angular-snap/angular-snap.js',
     'bower_components/angular-contenteditable/angular-contenteditable.js',
+    'bower_components/angular-translate-loader-url/angular-translate-loader-url.js',
     //'bower_components/iscroll/build/iscroll.js',
     //'bower_components/ng-iScroll/src/ng-iscroll.js',
 
@@ -166,7 +168,7 @@ module.exports = function (grunt) {
   //grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
 
-  grunt.loadNpmTasks('grunt-angular-gettext');
+  //grunt.loadNpmTasks('grunt-angular-gettext');
   grunt.loadNpmTasks('grunt-contrib-jade');
   grunt.loadNpmTasks('grunt-contrib-less');
 

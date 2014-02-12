@@ -1,0 +1,6 @@
+[submodule "tools/git/country-list"]
+	path = tools/git/country-list
+	url = https://github.com/staser/country-list.git
+[submodule "tools/country-list"]
+	path = tools/country-list
+	url = git@github.com:JumpLink/country-list.git

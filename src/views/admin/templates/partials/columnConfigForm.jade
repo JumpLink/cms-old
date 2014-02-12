@@ -1,0 +1,59 @@
+.row
+  .col-md-4
+    form(role="form")
+      .form-group
+        .text-center: label Paragraphs
+        toggle-switch(model='formColumn.paragraphs_active')
+        label Count
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-disabled="formColumn.paragraphs.length <= 1", ng-click="removeParagraph(formColumn.paragraphs)")
+              .fa.fa-minus-circle
+          input.form-control(type="text", disabled="disabled", ng-model="formColumn.paragraphs.length")
+          span.input-group-btn
+            button.btn.btn-default(type="button", ng-click="addParagraph(formColumn.paragraphs)")
+              .fa.fa-plus-circle
+      hr
+      .form-group
+        .text-center: label Button
+        toggle-switch(model='formColumn.button.active')
+      .form-group
+        label Size
+        input.form-control(ng-disabled="!formColumn.button.active", type="text", ng-model="formColumn.button.size")
+        label Type
+        input.form-control(ng-disabled="!formColumn.button.active", type="text", ng-model="formColumn.button.type")
+  .col-md-4
+    form(role="form")
+      .form-group
+        .text-center: label Header
+        toggle-switch(model='formColumn.header.active')
+      .form-group
+        label Size
+        .input-group
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!formColumn.header.active", type="button", ng-click="formColumn.header.size = formColumn.header.size-1")
+              .fa.fa-minus-circle
+          input.form-control(ng-disabled="!formColumn.header.active", type="text", ng-model="formColumn.header.size")
+          span.input-group-btn
+            button.btn.btn-default(ng-disabled="!formColumn.header.active", type="button", ng-click="formColumn.header.size  = formColumn.header.size+1")
+              .fa.fa-plus-circle
+      hr
+      .form-group
+        .text-center: label Subtext
+        toggle-switch(model='formColumn.subtext.active')
+      br
+      .form-group
+        label Type
+        br
+        select.form-control(ng-disabled="!formColumn.subtext.active", ng-Model="formColumn.subtext.type", name="string", required, ng-Required="string", ng-Options='type.value as type.label for type in $root.config.subtext.types') 
+  .col-md-4
+    form(role="form")    
+      .form-group
+        .text-center: label Carousel
+        toggle-switch(model='formColumn.carousel.active')
+      .form-group
+        label Height
+        input.form-control(ng-disabled="!formColumn.carousel.active", type="text", ng-model="formColumn.carousel.height")
+        label Type
+        input.form-control(ng-disabled="!formColumn.carousel.active", type="text", ng-model="formColumn.carousel.type")
+      hr

@@ -8,20 +8,23 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'ngSanitize'
   , 'ngTouch'
   , 'mgcrea.ngStrap'
-  , 'gettext'
   , 'ngSails'
-  , 'colorpicker.module'
+  // , 'colorpicker.module'
   , 'angular-underscore'
   , 'toggle-switch'
   , 'lrNotifier'
-  , 'snap'
+  // , 'snap'
   , 'angular-carousel'
   , 'contenteditable'
+  , 'pascalprecht.translate'
   , 'Decorators' // WORKAROUND see workaround.js
 ]);
 
-// languages
-jumplink.cms.run(function (gettextCatalog) {
-    gettextCatalog.currentLanguage = 'de'; // default language
-    gettextCatalog.debug = true; // Highlighting untranslated strings
+var mapding = angular.module('mapding', [
+  
+]);
+
+jumplink.cms.config(function ($translateProvider) {
+  $translateProvider.useUrlLoader('/translation');
+  $translateProvider.preferredLanguage('de');
 });

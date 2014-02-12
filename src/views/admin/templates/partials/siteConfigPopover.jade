@@ -25,9 +25,9 @@
           label Rows
           .input-group
             span.input-group-btn
-              button.btn.btn-default(type="button", ng-click="selected.site.rows.length = selected.site.rows.length-1")
+              button.btn.btn-default(type="button", ng-click="removeRow()")
                 .fa.fa-minus-circle
             input.form-control(type="text", ng-model="selected.site.rows.length")
             span.input-group-btn
-              button.btn.btn-default(type="button", ng-click="selected.site.rows.length  = selected.site.rows.length+1")
+              button.btn.btn-default(type="button", ng-click="addRow()")
                 .fa.fa-plus-circle

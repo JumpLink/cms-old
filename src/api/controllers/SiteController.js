@@ -29,6 +29,58 @@ module.exports = {
     });
   }
 
+  , replace: function (req, res, next) {
+
+    // Locate and validate id parameter
+    var id = req.param('id');
+    var data = req.params.all();
+    if (!id) {
+      return res.badRequest('No id provided.');
+    }
+
+    // Otherwise, find and destroy the Site in question
+    Site.findOne(id).exec(function found(err, result) {
+
+      // TODO: differentiate between waterline-originated validation errors
+      //      and serious underlying issues
+      // TODO: Respond with badRequest if an error is encountered, w/ validation info
+      if (err) return res.serverError(err);
+
+      if (!result) return res.notFound();
+
+      Site.destroy(id).exec(function destroyed(err) {
+        // TODO: differentiate between waterline-originated validation errors
+        //      and serious underlying issues
+        // TODO: Respond with badRequest if an error is encountered, w/ validation info
+        if (err) return res.serverError(err);
+
+        // Create new instance of Site using data from params
+        Site.create(data).exec(function created (err, data) {
+          
+          // TODO: differentiate between waterline-originated validation errors
+          //      and serious underlying issues
+          // TODO: Respond with badRequest if an error is encountered, w/ validation info
+          if (err) return res.serverError(err);
+
+          // If we have the pubsub hook, use the Site class's publish method
+          // to notify all subscribers about the created item
+          if (sails.hooks.pubsub) {
+            Site.publishUpdate(id, data.toJSON());
+          }
+
+          // Set status code (HTTP 201: Created)
+          res.status(201);
+          
+          // Send JSONP-friendly response if it's supported
+          return res.jsonp(data.toJSON());
+
+          // Otherwise, strictly JSON.
+          // return res.json(data.toJSON());
+        });
+      });
+    });
+  }
+
   /**
    * Overrides for the settings in `config/controllers.js`
    * (specific to SiteController)

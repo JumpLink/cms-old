@@ -5,24 +5,23 @@
   "description": "a Sails application",
   "dependencies": {
     "sails": "0.9.8",
-    "grunt": "0.4.1",
-    "sails-disk": "~0.9.0",
-    "ejs": "0.8.4",
-    "optimist": "0.3.4",
-    "then-jade": "~1.1.0",
-    "lorem-ipsum": "~1.0.1"
+    "grunt": "0.4.*",
+    "sails-disk": "0.9.*",
+    "ejs": "0.8.*",
+    "optimist": "0.3.*",
+    "then-jade": "1.1.*"
   },
   "devDependencies": {
-    "grunt-angular-gettext": "~0.1.*",
-    "grunt-contrib-jade": "~0.8.*",
-    "grunt-contrib-less": "~0.8.*"
+    "grunt-angular-gettext": "0.1.*",
+    "grunt-contrib-jade": "0.8.*",
+    "grunt-contrib-less": "0.8.*"
   },
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js"
   },
   "main": "app.js",
-  "repository": "",
-  "author": "",
-  "license": ""
+  "repository": "git@github.com:JumpLink/cms.git",
+  "author": "Pascal Garber <pascal@jumplink.eu>",
+  "license": "MIT"
 }

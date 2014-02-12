@@ -1,11 +1,77 @@
-jumplink.cms.service("ParagraphService", function(LoremService) {
+jumplink.cms.service("ConfigService", function($rootScope, $sails, $translate) {
+
+  var getConfig = function() {
+    if(typeof($rootScope.config) === "undefined" || $rootScope.config === null ) {
+      $sails.get("/config", function (response) {
+        if(response != null && typeof(response) !== "undefined") {
+          $rootScope.config = response[0];
+          return $rootScope.config
+        } else {
+          console.log ("Can't load Config");
+        }
+      });
+    } else {
+      $rootScope.config;
+    }
+  }
+
+  return {
+    getConfig: getConfig
+  }
+
+});
+
+jumplink.cms.service("ContentService", function(LoremService, $rootScope) {
+  
+  var getContent = function (content) {
+    return content.langs[$translate.uses()];
+  }
+
+  var getDefaults = function (type, replace, placeholder) {
+    var defaults = {
+      type: type
+      , langs: {}
+    };
+
+    // replace defaults if set
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.type))
+        defaults.type = replace.type;
+
+      if(angular.isDefined(replace.langs)) {
+        angular.forEach(replace.langs, function(text, langCode) {
+          console.log("langCode");
+          console.log(langCode);
+          defaults.langs[langCode] = text;
+        });
+      }
+    }
+
+    if(angular.isUndefined(placeholder))
+      placeholder = LoremService.generator({count: 3});
+
+    angular.forEach($rootScope.config.languages.active, function(langCode, index) {
+      if(angular.isUndefined(defaults.langs[langCode]))
+        defaults.langs[langCode] = placeholder;
+    });
+
+    return defaults;
+  };
+
+  return {
+    getDefaults: getDefaults
+    , getContent: getContent
+  }
+});
+
+jumplink.cms.service("ParagraphService", function(ContentService, ContentService) {
   var getDefaults = function (type, replace) {
     // global defaults
     var defaults = {
       lead: false                                     // true | false
       , aligned: 'default'                            // (Alignment classes) default | left | center | right
       , color: 'default'                              // (Emphasis classes) text-default | text-muted | text-primary | text-success | text-info | text-warning | text-danger
-      , content : LoremService.generator({count: 3})
+      , content : null
       , active: true
     }
 
@@ -29,19 +95,24 @@ jumplink.cms.service("ParagraphService", function(LoremService) {
     }
 
     // replace defaults if set
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.aligned !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.aligned))
         defaults.aligned = replace.aligned;
 
-      if(typeof replace.color !== 'undefined')
+      if(angular.isDefined(replace.color))
         defaults.color = replace.color;
 
-      if(typeof replace.content !== 'undefined')
-        defaults.content = replace.content;
+      if(angular.isDefined(replace.content)) {
+        defaults.content = ContentService.getDefaults(type, replace.content);
+      }
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
+
+    if(defaults.content === null)
+      defaults.active = ContentService.getDefaults(type, null);
+
 
     return defaults;
   }
@@ -51,15 +122,17 @@ jumplink.cms.service("ParagraphService", function(LoremService) {
   }
 });
 
-jumplink.cms.service("ButtonService", function(LoremService) {
+jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
   var getDefaults = function (type, replace) {
     var defaults = {
       type: "default"                                                 // 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link'
-      , content: LoremService.generator({units: 'words', count: 2})
+      , content: null
       , size: 'default'                                               // 'default' | 'large' | 'small' | 'extra small'
       , href: "#"
       , active: false
     }
+
+    var placeholder = LoremService.generator({units: 'words', count: 2});
 
     switch (type) {
       case 'featurette':
@@ -76,23 +149,26 @@ jumplink.cms.service("ButtonService", function(LoremService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
+    if(replace !== null && angular.isDefined(replace)) {
 
-      if(typeof replace.type !== 'undefined')
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.content !== 'undefined')
-        defaults.content = replace.content;
+      if(angular.isDefined(replace.content))
+        defaults.content = ContentService.getDefaults(type, replace.content, placeholder);
 
-      if(typeof replace.size !== 'undefined')
+      if(angular.isDefined(replace.size))
         defaults.size = replace.size;
 
-      if(typeof replace.href !== 'undefined')
+      if(angular.isDefined(replace.href))
         defaults.href = replace.href;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
+
+    if(defaults.content === null)
+      defaults.active = ContentService.getDefaults(type, null, placeholder);
 
     return defaults;
   }
@@ -136,23 +212,23 @@ jumplink.cms.service("ImageService", function(LoremService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.position !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.position))
         defaults.position = replace.position;
 
-      if(typeof replace.type !== 'undefined')
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.src !== 'undefined')
+      if(angular.isDefined(replace.src))
         defaults.src = replace.src;
 
-      if(typeof replace.width !== 'undefined')
+      if(angular.isDefined(replace.width))
         defaults.width = replace.width;
 
-      if(typeof replace.height !== 'undefined')
+      if(angular.isDefined(replace.height))
         defaults.height = replace.height;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
 
@@ -165,14 +241,16 @@ jumplink.cms.service("ImageService", function(LoremService) {
 });
 
 
-jumplink.cms.service("HeaderService", function(LoremService) {
+jumplink.cms.service("HeaderService", function(LoremService, ContentService) {
   var getDefaults = function (type, replace) {
     var defaults = {
-      content: LoremService.generator({units: 'words', count: 2})
+      content: null
       , size: 2
       , active: true
     }
 
+    var placeholder = LoremService.generator({units: 'words', count: 2})
+
     switch (type) {
       case 'featurette':
         defaults.size = 1;
@@ -192,16 +270,19 @@ jumplink.cms.service("HeaderService", function(LoremService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.content !== 'undefined')
-        defaults.content = replace.content;
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.content))
+         defaults.content = ContentService.getDefaults(type, replace.content, placeholder);
 
-      if(typeof replace.size !== 'undefined')
+      if(angular.isDefined(replace.size))
         defaults.size = replace.size;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
+
+    if(defaults.content === null)
+      defaults.content = ContentService.getDefaults(type, null, placeholder);
 
     return defaults;
   }
@@ -211,13 +292,15 @@ jumplink.cms.service("HeaderService", function(LoremService) {
   }
 });
 
-jumplink.cms.service("SubtextService", function(LoremService) {
+jumplink.cms.service("SubtextService", function(LoremService, ContentService) {
   var getDefaults = function (type, replace) {
     var defaults = {
-      content: LoremService.generator({units: 'words', count: 2})
+      content: null
       , type: 'small'                                                 // 'small' | 'muted'
       , active: false
     }
+
+    var placeholder = LoremService.generator({units: 'words', count: 2});
 
     switch (type) {
       case 'featurette':
@@ -238,16 +321,19 @@ jumplink.cms.service("SubtextService", function(LoremService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.type !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
 
-      if(typeof replace.content !== 'undefined')
-        defaults.content = replace.content;
+      if(angular.isDefined(replace.content))
+        defaults.content = ContentService.getDefaults(type, replace.content, placeholder);
     }
+
+    if(defaults.content === null)
+      defaults.content = ContentService.getDefaults(type, null, placeholder);
 
     return defaults;
   }
@@ -272,7 +358,7 @@ jumplink.cms.service("CarouselService", function(SlideService) {
   var getDefaults = function (type, replace) {
 
     var defaults = {
-      type: "default"
+      type: type
       , slides: []
       , height: 500
       , active: false
@@ -297,41 +383,49 @@ jumplink.cms.service("CarouselService", function(SlideService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.type !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.height !== 'undefined')
+      if(angular.isDefined(replace.height))
         defaults.height = replace.height;
 
-      if(typeof replace.slides !== 'undefined')
-        defaults.slides = replace.slides;
+      if(angular.isDefined(replace.slides)) {
+        for (var i = 0; i < replace.slides.length; i++) {
+          defaults.slides[i] = { row: SlideService.getDefaults(type, replace.slides[i].row) };
+          if(angular.isDefined(replace.slides[i].image))
+            defaults.slides[i].image = replace.slides[i].image;
+          else
+            defaults.slides[i].image = { src: 'first_slide.png' };
+        };
+      }
+        //defaults.slides = replace.slides;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
 
     // If slides are not replaced
-    if(defaults.slides.length === 0) {
+    if(defaults.slides.length <= 0) {
       defaults.slides.push({
         image: {
-          src: 'third_slide.png'
+          src: 'first_slide.png'
         }
-        , row: SlideService.getDefaults(type, null, false)
+        , row: SlideService.getDefaults(type, null)
       });
 
       defaults.slides.push({
         image: {
           src: 'second_slide.png'
         }
-        , row: SlideService.getDefaults(type, null, false)
+        , row: SlideService.getDefaults(type, null)
       });
 
       defaults.slides.push({
         image: {
           src: 'third_slide.png'
         }
-        , row: SlideService.getDefaults(type, null, false)
+        , row: SlideService.getDefaults(type, null)
       });
     }
 
@@ -353,6 +447,8 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
       , image: {}
       , carousel: {}
       , button: {}
+      , paragraphs_active: true
+      , type: type
     }
 
     switch (type) {
@@ -374,24 +470,49 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
     }
 
 
-    // Set defaults if unset for each paragraph
-    if(typeof replace.paragraphs !== 'undefined' && replace.paragraphs !== null && typeof replace.paragraphs.length !== 'undefined' && replace.paragraphs.length > 0) {
-      for (var i = 0; i < replace.paragraphs.length; i++) {
-        defaults.paragraphs[i] = ParagraphService.getDefaults(type, replace.paragraphs[i]);
-      };
+    // Set defaults if unset
+    if(replace !== null && angular.isDefined(replace)) {
+
+      if(angular.isDefined(replace.paragraphs_active))
+        defaults.paragraphs_active = replace.paragraphs_active;
+
+      if(angular.isDefined(replace.type))
+        defaults.type = replace.type;
+
+      // Set defaults if unset for each paragraph
+      if(angular.isDefined(replace.paragraphs) && replace.paragraphs !== null && typeof replace.paragraphs.length !== 'undefined' && replace.paragraphs.length > 0) {
+        for (var i = 0; i < replace.paragraphs.length; i++) {
+          defaults.paragraphs[i] = ParagraphService.getDefaults(type, replace.paragraphs[i]);
+        };
+      }
+
+      defaults.header = HeaderService.getDefaults(type, replace.header);
+
+      defaults.subtext = SubtextService.getDefaults(type, replace.subtext);
+
+      defaults.image = ImageService.getDefaults(type, replace.image);
+
+      defaults.carousel = CarouselService.getDefaults(type, replace.carousel);
+
+      defaults.button = ButtonService.getDefaults(type, replace.button);
     } else {
-      defaults.paragraphs.push(ParagraphService.getDefaults(type, null) );
+
+      defaults.header = HeaderService.getDefaults(type, null);
+
+      defaults.subtext = SubtextService.getDefaults(type, null);
+
+      defaults.image = ImageService.getDefaults(type, null);
+
+      defaults.carousel = CarouselService.getDefaults(type, null);
+
+      defaults.button = ButtonService.getDefaults(type, null);
+
     }
 
-    defaults.header = HeaderService.getDefaults(type, replace.header);
+    if(defaults.paragraphs.length === 0)
+      defaults.paragraphs.push(ParagraphService.getDefaults(type, null) );
 
-    defaults.subtext = SubtextService.getDefaults(type, replace.subtext);
 
-    defaults.image = ImageService.getDefaults(type, replace.image);
-
-    defaults.carousel = CarouselService.getDefaults(type, replace.carousel);
-
-    defaults.button = ButtonService.getDefaults(type, replace.button);
 
     return defaults;
   }
@@ -402,7 +523,7 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
 });
 
 // extra service for Row in Carousel to avoid the "Circular Dependency" error
-jumplink.cms.service("SlideService", function() {
+jumplink.cms.service("SlideService", function(HeaderService, SubtextService, ImageService, ButtonService, ParagraphService) {
   var getDefaults = function (type, replace) {
 
     var defaults = {
@@ -428,45 +549,51 @@ jumplink.cms.service("SlideService", function() {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.type !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.divider !== 'undefined')
+      if(angular.isDefined(replace.divider))
         defaults.divider = replace.divider;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
 
-      for (var i = 0; i < replace.columns; i++) {
-        defaults.columns[i] = ColumnService.getDefaults(type, replace.columns[i], false);
-      };
+      if(angular.isDefined(replace.columns)) {
+        for (var i = 0; i < replace.columns.length; i++) {
+          //defaults.columns[i] = ColumnService.getDefaults(type, replace.columns[i]);
+          defaults.columns[i] = {
+            header: HeaderService.getDefaults(type, replace.columns[i].header),
+            subtext: SubtextService.getDefaults("small", replace.columns[i].subtext),
+            image: ImageService.getDefaults(type, replace.columns[i].image),
+            button: ButtonService.getDefaults("primary", replace.columns[i].button),
+            paragraphs_active: true,
+            paragraphs: [],
+            carousel: {active: false}
+          };
+
+          // Set defaults if unset for each paragraph
+          if(angular.isDefined(replace.columns[i].paragraphs) && replace.columns[i].paragraphs !== null && typeof replace.columns[i].paragraphs.length !== 'undefined' && replace.columns[i].paragraphs.length > 0) {
+            for (var k = 0; k < replace.columns[i].paragraphs.length; k++) {
+              defaults.columns[i].paragraphs[k] = ParagraphService.getDefaults(type, replace.columns[i].paragraphs[k]);
+            };
+          }
+
+        };
+      }
     }
 
     // If columns are not replaced, insert an example column
     if(defaults.columns.length === 0) {
+      // defaults.columns.push(ColumnService.getDefaults(type, null));
       defaults.columns.push({
-        "header": {
-          "active": true,
-          "content": "Example headline.",
-          "size": 1
-        },
-        "paragraphs": [
-          {
-            "content": "Note: If you're viewing this page via a <code>file://</code> URL, the \"next\" and \"previous\" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.",
-          }
-        ],
-        "button": {
-          "active": true,
-          "type": "primary",
-          "content": "Sign up today",
-          "href": "#",
-          "size": "large"
-        },
-        "subtext": {
-          "type": "small",
-          "content": "nostrud id"
-        }
+        header: HeaderService.getDefaults(type, {site: 1}),
+        subtext: SubtextService.getDefaults("small", null),
+        image: ImageService.getDefaults(type, null),
+        button: ButtonService.getDefaults("primary", {active: true, size:'large'}),
+        paragraphs_active: true,
+        paragraphs: [ParagraphService.getDefaults(type, null)],
+        carousel: {active: false}
       });
     }
 
@@ -486,6 +613,11 @@ jumplink.cms.service("RowService", function(ColumnService) {
       divider: true 
       , type: type
       , columns: []
+      , container: {
+        inner: false
+        , outer: true
+      }
+      , style: {}
     }
 
     var columnLength = 1;
@@ -505,25 +637,94 @@ jumplink.cms.service("RowService", function(ColumnService) {
     }
 
     // Set defaults if unset
-    if(replace !== null && typeof replace !== 'undefined') {
-      if(typeof replace.type !== 'undefined')
+    if(replace !== null && angular.isDefined(replace)) {
+      if(angular.isDefined(replace.type))
         defaults.type = replace.type;
 
-      if(typeof replace.divider !== 'undefined')
+      if(angular.isDefined(replace.divider))
         defaults.divider = replace.divider;
 
-      if(typeof replace.active !== 'undefined')
+      if(angular.isDefined(replace.active))
         defaults.active = replace.active;
-    }
 
-    for (var i = 0; i < replace.columns; i++) {
-      defaults.columns[i] = ColumnService.getDefaults(type, replace.columns[i]);
-    };
+      if(angular.isDefined(replace.container))
+        defaults.container = replace.container;
+
+      if(angular.isDefined(replace.style))
+        defaults.style = replace.style;
+
+      for (var i = 0; i < replace.columns.length; i++) {
+        defaults.columns[i] = ColumnService.getDefaults(type, replace.columns[i]);
+      };
+    }
 
     // If columns are not replaced, insert an example column
     if(defaults.columns.length === 0) {
       for (var i = 0; i < columnLength; i++) {
         defaults.columns.push(ColumnService.getDefaults(type, null));
+      };
+    }
+
+    return defaults;
+  }
+
+  return {
+    getDefaults: getDefaults
+  }
+
+});
+
+jumplink.cms.service("SiteService", function(RowService) {
+  var getDefaults = function (type, replace, count) {
+
+    var defaults = {
+      name: "new site ("+(count+1)+")" 
+      , href: "new"+(count+1)
+      , type: type
+      , rows: new Array()
+      , id : count+1
+    }
+
+    var rowLength = 3;
+
+    switch (type) {
+      case 'featurette':
+      break;
+      case 'jumbotron':
+      break;
+      case 'marketing':
+      break;
+      case 'marketing-featurette':
+      break;
+      case 'default':
+      break;
+    }
+
+    // Set defaults if unset
+    if(angular.isDefined(replace) && replace !== null) {
+      if(angular.isDefined(replace.type) && replace.type !== null)
+        defaults.type = replace.type;
+
+      if(angular.isDefined(replace.name) && replace.name !== null)
+        defaults.name = replace.name;
+
+      if(angular.isDefined(replace.href) && replace.href !== null)
+        defaults.href = replace.href;
+
+      if(angular.isDefined(replace.id) && replace.id !== null)
+        defaults.id = replace.id;
+
+      for (var i = 0; i < replace.rows.length; i++) {
+        // angular.copy only as WORKAROUND?
+        // defaults.rows[i] = angular.copy(RowService.getDefaults(type, replace.rows[i]), defaults.rows[i]);
+        defaults.rows[i] = RowService.getDefaults(type, replace.rows[i]);
+      };
+    }
+
+    // If rows are not replaced, insert 3 example rows
+    if(defaults.rows.length <= 0) {
+      for (var i = 0; i < rowLength; i++) {
+        defaults.rows.push(RowService.getDefaults(type, null));
       };
     }
 

@@ -1,17 +1,60 @@
-jumplink.cms.controller('HeadController', function($scope, $sails, $routeParams) {
+jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $translate) {
+  var rewriteLanugageList = function (newValues) {
+    $scope.languages = [];
+    angular.forEach(newValues, function(lang, index){
+      $scope.languages.push({value: lang, label: $translate('LANGCODE_'+lang.toUpperCase())});
+      //- WORKAROUND, please uncommit when bug is fixed: WORKAROUND, see https://github.com/mgcrea/angular-strap/issues/378
+      // $scope.languages.push({value: lang, label: '<i class="flag f16 '+lang+'"></i> '+$translate('LANGCODE_'+lang.toUpperCase())});
+    });
+  }
+
+  // TODO watch for translation changes?
+  $rootScope.$watchCollection('config.languages.active', function(newValues, oldValues) {
+    if(angular.isDefined(newValues)) {
+      rewriteLanugageList(newValues);
+    }
+  });
+
+  $rootScope.selectedLanguage = "en"; // fallback
+
+  // set default language if possible
+  $rootScope.$watch('config.languages.default', function (newValues, oldValues) {
+    if(typeof newValues !== 'undefined' && newValues.length >= 2) {
+      $rootScope.selectedLanguage = newValues;
+    }
+  });
+
+  $rootScope.$watch('selectedLanguage', function (newValues, oldValues) {
+    if(typeof newValues !== 'undefined' && newValues.length >= 2) {
+      $translate.uses(newValues).then(function (key) {
+        if(angular.isDefined($rootScope.config)) {
+          rewriteLanugageList($rootScope.config.languages.active);
+        }
+        console.log("Sprache zu " + key + " gewechselt.");
+      }, function (key) {
+        console.log("Irgendwas lief schief.");
+      });
+    }
+  });
 
 });
 
-jumplink.cms.controller('NavbarController', function($scope, $sails, $routeParams) {
+jumplink.cms.controller('HeadController', function($scope) {
 
 });
 
-jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams) {
+jumplink.cms.controller('NavbarController', function($scope) {
+
+
+});
+
+jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, SiteService, config) {
 
   // only run this function when $rootScope.site is set
   var routeChanged = function () {
     var active = getActiveSite($rootScope.sites, $routeParams.site);
-    $rootScope.site = active.site;
+    // WORKAROUND angular.copy ?
+    $rootScope.site = angular.copy(SiteService.getDefaults('default', active.site, $rootScope.sites.length), $rootScope.site);
     $rootScope.siteIndex = active.index;
     $rootScope.active = getActiveNavigation($rootScope.site);
   }
@@ -26,17 +69,6 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
       } else {
         // TODO redirect
         console.log ("Can't load Sites");
-      }
-    });
-  }
-
-  var getConfig = function () {
-    $sails.get("/config/example", function (response) {
-      if(response != null && typeof(response) !== "undefined") {
-        $rootScope.config = response;
-        console.log($rootScope.config);
-      } else {
-        console.log ("Can't load Config");
       }
     });
   }
@@ -76,24 +108,19 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     routeChanged();
   }
 
-  // get sites only if they are currently not defined
-  if($rootScope.config === null || typeof($rootScope.config) === "undefined") {
-    getConfig();
-  }
-
 });
 
-jumplink.cms.controller('RowController', function($scope, $element, $compile, $sails, $routeParams) {
+jumplink.cms.controller('RowController', function() {
   //console.log($scope.index);
+  
+});
+
+jumplink.cms.controller('ColumnController', function() {
+
 
 });
 
-jumplink.cms.controller('ColumnController', function($rootScope, $scope) {
-
-
-});
-
-jumplink.cms.controller('CarouselController', function($scope, $sails, $routeParams) {
+jumplink.cms.controller('CarouselController', function($scope) {
   $scope.index=0;
 
   $scope.next = function () {
