@@ -33,7 +33,7 @@ jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $tra
         }
         //console.log("Sprache zu " + key + " gewechselt.");
       }, function (key) {
-        console.log("Can't switch language");
+        console.error("Can't switch language");
       });
     }
   });
@@ -55,24 +55,10 @@ jumplink.cms.controller('NavbarController', function() {
 
 jumplink.cms.controller('SidebarController', function($rootScope, $scope, $location, $anchorScroll, $window, ContentService) {
 
-  // TODO do not reload the site complete: https://stackoverflow.com/questions/15472655/how-to-stop-angular-to-reload-when-address-changes
-  $scope.gotoAanchor = function (position, event){
-    // set the location.hash to the id of
-    // the element you wish to scroll to.
-    $location.hash(position);
- 
-    // call $anchorScroll()
-    $anchorScroll();
-    //console.log($window.pageYOffset);
-  };
-
-
   $scope.subcategories = [];
 
   var isSubcategory = function (row) {
-    var result = angular.isDefined(row.columns) && angular.isArray(row.columns) && angular.isDefined(row.columns[0].header) && row.columns[0].header.active === true && row.columns[0].header.subcategory === true;
-    console.log(result);
-    return result;
+    return angular.isDefined(row.columns) && angular.isArray(row.columns) && angular.isDefined(row.columns[0].header) && row.columns[0].header.active === true && row.columns[0].header.subcategory === true;
   }
 
   var setSubcategories = function (activeSiteIndex) {
@@ -89,8 +75,6 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, $locat
         }
       }
     });
-
-    console.log($scope.subcategories);
   }
 
   var resetSubcategories = function (newValues) {
@@ -111,12 +95,15 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
   $rootScope.renderedRows = 0;
 
   // True if all rows are rendered
-  $scope.ready = function () {
-    return angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active) && $rootScope.renderedRows >= $rootScope.sites[$rootScope.active.index].rows.length;
-  }
+  // $scope.ready = function () {
+  //   return angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active) && $rootScope.renderedRows >= $rootScope.sites[$rootScope.active.index].rows.length;
+  // }
+
+  // True if all rows are rendered
+  //$scope.ready = SiteService.ready;
 
   $scope.sidebarActive = function () {
-    return $scope.ready() && $rootScope.sites[$rootScope.active.index].sidebar;
+    return $rootScope.ready && $rootScope.sites[$rootScope.active.index].sidebar;
   }
 
   // only run this function when $rootScope.site is set
@@ -149,7 +136,7 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
         routeChanged();  
       } else {
         // TODO redirect
-        console.log ("Can't load Sites");
+        console.error ("Can't load Sites");
       }
     });
   }

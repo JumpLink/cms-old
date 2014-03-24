@@ -76,7 +76,7 @@ jumplink.cms.directive("row", function ($compile, $timeout, $rootScope) {
   }
 });
 
-jumplink.cms.directive("carousel", function ($compile, PolicyService) {
+jumplink.cms.directive("carousel", function ($compile, $rootScope, PolicyService, SiteService) {
   return {
     restrict: "A"
     , scope: {
@@ -84,9 +84,9 @@ jumplink.cms.directive("carousel", function ($compile, PolicyService) {
     }
     , link: function(scope, iElement, iAttributes) {
 
-      scope.$watch('carousel.active', function(active, old, scope) {
+      var compileCarousel = function () {
         // console.log(active);
-        if(active) {
+        if(scope.carousel.active) {
           // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
           var rnCarousel = ''
             +'<ul class="rn-carousel-slides" rn-carousel="true" rn-carousel-swipe="'+!PolicyService.changeContentAllowed()+'" rn-carousel-indicator="true" rn-carousel-index="index">';
@@ -105,6 +105,10 @@ jumplink.cms.directive("carousel", function ($compile, PolicyService) {
             iElement.find('.carousel-inner').html(cloned);
           });
         }
+      }
+
+      scope.$watch('carousel.active', function(active, old, scope) {
+        compileCarousel();
       });
 
     }

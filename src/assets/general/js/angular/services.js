@@ -718,7 +718,7 @@ jumplink.cms.service("RowService", function(ColumnService) {
 
 });
 
-jumplink.cms.service("SiteService", function(RowService) {
+jumplink.cms.service("SiteService", function(RowService, $rootScope, $window, $timeout) {
   var getDefaults = function (type, replace, count) {
 
     var defaults = {
@@ -787,8 +787,37 @@ jumplink.cms.service("SiteService", function(RowService) {
     return defaults;
   }
 
+  var checkReady = function () {
+    return angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active) && $rootScope.renderedRows >= $rootScope.sites[$rootScope.active.index].rows.length;
+  }
+
+  $rootScope.ready = false;
+
+  angular.element($window).bind('resize', function () {
+    console.log('resize tiggered');
+  });
+
+  var tigger = function (event) {
+    $timeout(function() {
+      // anything you want can go here and will safely be run on the next digest.
+      angular.element($window).triggerHandler(event);
+    })
+  }
+
+  $rootScope.$watch('ready', function(newValue, oldValue, scope) {
+    if(newValue) {
+      tigger('resize');
+    }
+  });
+
+  $rootScope.$watch('renderedRows', function (newValue, oldValue) {
+    $rootScope.ready = checkReady();
+  });
+
   return {
     getDefaults: getDefaults
+    , checkReady: checkReady
+    , tigger: tigger
   }
 
 });
