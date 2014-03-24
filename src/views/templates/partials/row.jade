@@ -1,5 +1,0 @@
-div(ng-class="{'container': row.container.outer}")
-  .row(class="{{row.type}}", ng-style="row.style")
-    div(ng-class="{'container': row.container.inner}")
-      .column(ng-repeat="(column_index, column) in row.columns", ng-class="{'col-md-12': row.columns.length==1, 'col-md-6': row.columns.length==2, 'col-md-4': row.columns.length==3}" , column="column", index="column_index", rowindex="index")
-hr(ng-if="row.divider", ng-class="{'featurette-divider':  row.type=='featurette' || row.type=='marketing', container: row.container }")

@@ -9,7 +9,8 @@
     "sails-disk": "0.9.*",
     "ejs": "0.8.*",
     "optimist": "0.3.*",
-    "then-jade": "1.1.*"
+    "then-jade": "1.1.*",
+    "bcrypt": "^0.7.7"
   },
   "devDependencies": {
     "grunt-angular-gettext": "0.1.*",

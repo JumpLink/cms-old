@@ -4,6 +4,8 @@
       .aside-header(ng-show='title')
         button.close(type='button', ng-click='$hide()') ×
         h4.aside-title(ng-bind='title')
+          | Test
       .aside-body(ng-show='content', ng-bind='content')
+        | content
       .aside-footer
         button.btn.btn-default(type='button', ng-click='$hide()') Close

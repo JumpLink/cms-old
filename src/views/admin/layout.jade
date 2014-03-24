@@ -9,7 +9,6 @@ html(ng-app="jumplink.cms")
     //- SCRIPTS ADMIN
     script(type="text/javascript", src="/general/js/socket.io.js")
     script(type="text/javascript", src="/general/js/sails.io.js")
-    script(type="text/javascript", src="/general/js/app.js")
     script(type="text/javascript", src="/bower_components/jquery/jquery.js")
     script(type="text/javascript", src="/bower_components/angular/angular.js")
     script(type="text/javascript", src="/bower_components/angular-animate/angular-animate.js")
@@ -30,17 +29,16 @@ html(ng-app="jumplink.cms")
     script(type="text/javascript", src="/bower_components/angular-strap/dist/angular-strap.js")
     script(type="text/javascript", src="/bower_components/angular-contenteditable/angular-contenteditable.js")
     script(type="text/javascript", src="/bower_components/angular-translate-loader-url/angular-translate-loader-url.js")
+    script(type="text/javascript", src="/bower_components/angular-smoothscroll/dist/scripts/c8742280.scripts.js")
     script(type="text/javascript", src="/general/js/angular/config.js")
     script(type="text/javascript", src="/general/js/angular/controllers.js")
     script(type="text/javascript", src="/general/js/angular/directives.js")
     script(type="text/javascript", src="/general/js/angular/policies.js")
-    script(type="text/javascript", src="/general/js/angular/routes.js")
     script(type="text/javascript", src="/general/js/angular/services.js")
-    script(type="text/javascript", src="/general/js/angular/socket.js")
-    script(type="text/javascript", src="/general/js/angular/translations.js")
     script(type="text/javascript", src="/general/js/angular/workaround.js")
     script(type="text/javascript", src="/admin/js/controllers.js")
     script(type="text/javascript", src="/admin/js/directives.js")
+    script(type="text/javascript", src="/admin/js/routes.js")
     script(type="text/javascript", src="/admin/js/services.js")
     //- SCRIPTS ADMIN END
 
@@ -55,7 +53,7 @@ html(ng-app="jumplink.cms")
     link#style(rel="stylesheet", ng-href="/styles/admin.css")
 
     include templates/templateCache
-  body
+  body(ng-controller="BodyController", ng-class="{'for-fixed-navbar-top': topNavbarIsFixed(), 'for-fixed-navbar-bottom': bottomNavbarIsFixed() }")
     block body 
 
 

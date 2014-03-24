@@ -6,13 +6,15 @@
       a(href="#" ).navbar-brand Admin
     .collapse.navbar-collapse.navbar-ex1-collapse
       ul.nav.navbar-nav 
-        li(data-match-route="/"): a(href="#/{{sites[0].href}}") {{'NAV_LIVE'|translate}}
-        li(data-match-route="/"): a(href="#/{{sites[0].href}}") {{'NAV_TRANS'|translate}}
+        li(data-match-route="/"): a(href="#/{{$root.sites[0].href}}") {{'NAV_LIVE'|translate}}
+        li(data-match-route="/translations"): a(href="#/translations") {{'NAV_TRANS'|translate}}
+        li(data-match-route="/users"): a(href="#/users") {{'NAV_USERS'|translate}}
+        li(data-match-route="/settings"): a(href="#/settings") {{'NAV_SETTINGS'|translate}}
       form.navbar-form.navbar-left
         .btn-group
           button.btn.btn-default(type="button", title="add new site", ng-click="addSite()")
             i.fa.fa-file-text-o
-          button.btn.btn-default(type="button", title="Site settings", data-placement="top", data-animation="animation-fade", data-template='admin/partials/configPopover.jade', data-trigger="click", bs-popover)
+          button.btn.btn-default(type="button", title="Site settings", data-placement="top", data-animation="am-fade", data-template='admin/partials/configPopover.jade', data-trigger="click", bs-popover)
             i.fa.fa-cog
           button.btn.btn-default(title="Save", ng-click="save()")
             i.fa.fa-floppy-o

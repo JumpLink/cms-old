@@ -1,25 +1,49 @@
-jumplink.cms.service("ConfigService", function($rootScope, $sails, $translate) {
+jumplink.cms.service("NavbarService", function($rootScope, ADMIN) {
+
+  var topNavbarIsFixed = function () {
+    return angular.isDefined($rootScope.config) &&  angular.isDefined($rootScope.config.navbar) && $rootScope.config.navbar.type == 'fixed-top'
+  }
+
+  var bottomNavbarIsFixed = function () {
+    return topNavbarIsFixed() && ADMIN
+  }
+
+  return {
+    topNavbarIsFixed: topNavbarIsFixed
+    , bottomNavbarIsFixed: bottomNavbarIsFixed
+  }
+});
+
+var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $sails, $http) {
 
   var getConfig = function() {
-    if(typeof($rootScope.config) === "undefined" || $rootScope.config === null ) {
-      $sails.get("/config", function (response) {
-        if(response != null && typeof(response) !== "undefined") {
-          $rootScope.config = response[0];
-          return $rootScope.config
-        } else {
-          console.log ("Can't load Config");
-        }
-      });
-    } else {
-      $rootScope.config;
-    }
+    $sails.get("/config", function (response) {
+      if(angular.isDefined(response) && response !== null) {
+        return response[0];
+      } else {
+        console.log ("Can't load Config");
+      }
+    });
+  }
+
+  var setConfigHttp = function() {
+    $http({ method: 'GET', url: '/config' }).success(function(data, status, headers, config) {
+      if(angular.isDefined(data) && data !== null && status === 200) {
+        $rootScope.config = data[0];
+      } else {
+        console.log ("Can't load Config, status: "+status);
+      }
+    });
   }
 
   return {
     getConfig: getConfig
+    , setConfigHttp: setConfigHttp
   }
 
 });
+
+
 
 jumplink.cms.service("ContentService", function(LoremService, $rootScope) {
   
@@ -45,24 +69,50 @@ jumplink.cms.service("ContentService", function(LoremService, $rootScope) {
       }
     }
 
-    if(angular.isUndefined(placeholder))
+    if(placeholder === null || angular.isUndefined(placeholder))
       placeholder = LoremService.generator({count: 3});
 
     angular.forEach($rootScope.config.languages.active, function(langCode, index) {
-      if(angular.isUndefined(defaults.langs[langCode]))
+      if(angular.isUndefined(defaults.langs[langCode])) {
         defaults.langs[langCode] = placeholder;
+      }
     });
 
     return defaults;
   };
 
+  var getEnglish = function (content) {
+    var result = '';
+    if(angular.isDefined(content.langs['en'])) {
+      result = content.langs['en'];
+    } else { // fallback
+      var found = false;
+      angular.forEach(replace.langs, function(text, langCode) {
+        if(!found)
+          result = langCode;
+      });
+    }
+    return result;
+  }
+
+  var cleanString = function (string) {
+    return string.replace(/[^a-zA-Z0-9]/g,'_').toLowerCase();
+  }
+
+  var getID = function (content) {
+    return cleanString(getEnglish(content));
+  }
+
   return {
     getDefaults: getDefaults
     , getContent: getContent
+    , getEnglish: getEnglish
+    , cleanString: cleanString
+    , getID: getID
   }
 });
 
-jumplink.cms.service("ParagraphService", function(ContentService, ContentService) {
+jumplink.cms.service("ParagraphService", function(ContentService) {
   var getDefaults = function (type, replace) {
     // global defaults
     var defaults = {
@@ -100,16 +150,15 @@ jumplink.cms.service("ParagraphService", function(ContentService, ContentService
       if(angular.isDefined(replace.color))
         defaults.color = replace.color;
 
-      if(angular.isDefined(replace.content)) {
+      if(angular.isDefined(replace.content))
         defaults.content = ContentService.getDefaults(type, replace.content);
-      }
 
       if(angular.isDefined(replace.active))
         defaults.active = replace.active;
     }
 
     if(defaults.content === null)
-      defaults.active = ContentService.getDefaults(type, null);
+      defaults.content = ContentService.getDefaults(type, null);
 
 
     return defaults;
@@ -245,6 +294,7 @@ jumplink.cms.service("HeaderService", function(LoremService, ContentService) {
       content: null
       , size: 2
       , active: true
+      , subcategory: false // for angular-strap's scrollspy, size is depth in sidebar
     }
 
     var placeholder = LoremService.generator({units: 'words', count: 2})
@@ -277,6 +327,9 @@ jumplink.cms.service("HeaderService", function(LoremService, ContentService) {
 
       if(angular.isDefined(replace.active))
         defaults.active = replace.active;
+
+      if(angular.isDefined(replace.subcategory))
+        defaults.subcategory = replace.subcategory;
     }
 
     if(defaults.content === null)
@@ -611,10 +664,6 @@ jumplink.cms.service("RowService", function(ColumnService) {
       divider: true 
       , type: type
       , columns: []
-      , container: {
-        inner: false
-        , outer: true
-      }
       , style: {}
     }
 
@@ -644,9 +693,6 @@ jumplink.cms.service("RowService", function(ColumnService) {
 
       if(angular.isDefined(replace.active))
         defaults.active = replace.active;
-
-      if(angular.isDefined(replace.container))
-        defaults.container = replace.container;
 
       if(angular.isDefined(replace.style))
         defaults.style = replace.style;
@@ -680,7 +726,10 @@ jumplink.cms.service("SiteService", function(RowService) {
       , href: "new"+(count+1)
       , type: type
       , rows: new Array()
+      , sidebar: true
+      , container: true
       , id : count+1
+      , header: true
     }
 
     var rowLength = 3;
@@ -709,8 +758,17 @@ jumplink.cms.service("SiteService", function(RowService) {
       if(angular.isDefined(replace.href) && replace.href !== null)
         defaults.href = replace.href;
 
+      if(angular.isDefined(replace.sidebar) && replace.sidebar !== null)
+        defaults.sidebar = replace.sidebar;
+
+      if(angular.isDefined(replace.container) && replace.container !== null)
+        defaults.container = replace.container;
+
       if(angular.isDefined(replace.id) && replace.id !== null)
         defaults.id = replace.id;
+
+      if(angular.isDefined(replace.header) && replace.header !== null)
+        defaults.header = replace.header;
 
       for (var i = 0; i < replace.rows.length; i++) {
         // angular.copy only as WORKAROUND?
@@ -737,7 +795,12 @@ jumplink.cms.service("SiteService", function(RowService) {
 
 jumplink.cms.service("PolicyService", function(ADMIN) {
   return {
+    // TODO
     changeContentAllowed: function() {
+      return ADMIN;
+    }
+    // TODO
+    , translateAllowed: function() {
       return ADMIN;
     }
   }

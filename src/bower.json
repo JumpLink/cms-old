@@ -34,6 +34,8 @@
     "revolunet-angular-carousel": "0.1.*",
     "angular-contenteditable": "0.3.*",
     "angular-translate": "1.1.*",
-    "angular-translate-loader-url": "~0.1.5"
+    "angular-translate-loader-url": "~0.1.5",
+    "angular-motion": "0.3.*",
+    "angular-smoothscroll": "*"
   }
 }

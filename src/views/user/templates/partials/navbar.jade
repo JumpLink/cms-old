@@ -1,0 +1,10 @@
+div(ng-class="{'container': $root.config.navbar.container, 'container-fluid': !$root.config.navbar.container}")
+  .navbar-header
+    button.navbar-toggle(type="button", data-template="partials/asideNavigation.jade", data-animation="am-fade-and-slide-right", data-placement="right", title="Menu", data-container="body", bs-aside="aside")
+      i.fa.fa-ellipsis-v
+    a(href="#" ).navbar-brand Title
+  .collapse.navbar-collapse.navbar-ex1-collapse
+    ul.nav.navbar-nav#jl-navbar-nav
+      li(data-match-route="/"): a(href="#/") Home
+    .navbar-form.navbar-right
+      language-select

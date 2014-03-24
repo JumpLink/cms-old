@@ -1,5 +1,13 @@
 @import "@{bootstrap-less-path}/type.less";
 
+// fix anchor with fixed-navbar-top
+span.anchor-fixed-navbar-top {
+  display: block;
+  position: relative;
+  top: -@navbar-height;
+  visibility: hidden;
+}
+
 .h1,
 .h2,
 .h3 {

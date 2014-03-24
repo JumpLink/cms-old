@@ -1,0 +1,9 @@
+nav.navbar(class="navbar-{{$root.config.navbar.type}}", ng-class="{'navbar-inverse': $root.config.navbar.inverse, 'navbar-default': !$root.config.navbar.inverse}", role="users")
+  .container-fluid
+    .navbar-header
+      a.navbar-brand {{'BRAND_SETTINGS' | translate}}
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      .navbar-right
+        language-select
+.container
+  | Work in progress..

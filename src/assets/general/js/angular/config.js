@@ -19,9 +19,14 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'contenteditable'
   , 'pascalprecht.translate'
   , 'Decorators' // WORKAROUND see workaround.js
+  , 'angularSmoothscroll'
   //, 'btford.socket-io'
  // , 'jumplink.cms.SocketController' 
 ]);
+
+jumplink.cms.run(function ($rootScope, ConfigService) {
+    ConfigService.setConfigHttp();
+});
 
 jumplink.cms.config(function ($translateProvider) {
   $translateProvider.useUrlLoader('/translation');

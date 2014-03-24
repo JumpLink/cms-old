@@ -1,0 +1,22 @@
+nav.navbar(class="navbar-{{$root.config.navbar.type}}", ng-class="{'navbar-inverse': $root.config.navbar.inverse, 'navbar-default': !$root.config.navbar.inverse}", role="translation")
+  .container-fluid
+    .navbar-header
+      a.navbar-brand {{'BRAND_TRANS' | translate}}
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      .navbar-form.navbar-right
+        language-select
+.container
+  label Language: 
+  select.form-control(ng-model="$root.languageToTranslate", ng-options="language.value as language.label for language in select")
+
+  table.table
+    thead
+        tr
+          th {{'TRANS_KEY' | translate}}
+          th {{'TRANS_TRAN' | translate}}
+          th {{'TRANS_CUR' | translate }}
+      tbody(ng-repeat="(key, translation) in $root.translations[$root.languageToTranslate]")
+        tr
+          td {{key}}
+          td(contenteditable="true") {{translation}}
+          td {{key | translate }}

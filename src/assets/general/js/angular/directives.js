@@ -2,38 +2,11 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
   return {
     restrict: "A"
     , scope: {
-      inverse: "="
-      , type: "="
-      , container: "="
-      , active: "="
+      active: "="
     }
     , compile: function(tElement, tAttributes) {
 
       return function(scope, iElement) {
-
-        // observe for "inverse" attribute, if it is true, inverse the navbar
-        scope.$watch('inverse', function(inverse) { 
-          if(inverse === true || inverse === "true")
-            iElement.addClass("navbar-inverse");
-          else
-            iElement.addClass("navbar-default");
-        });
-
-        // observe for "type" attribute, if it changed, add navbar class type of position
-        scope.$watch('type', function(type) {
-          if(type !== null && type != "" && typeof type !== "undefined" && type !== "default")
-            iElement.addClass("navbar-"+type);
-        });
-
-        /*
-         * observe for "container" attribute, if it changed, add or remove container class
-         */
-        scope.$watch('container', function(container) {
-          if(container == true || container == "true")
-            iElement.find('.container-placeholder').addClass('container');
-          else
-            iElement.find('.container-placeholder').removeClass('container');
-        }); 
 
         /*
          * observe for "site" attribute, if it changed, rebuild the navigation
@@ -76,7 +49,15 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
   }
 });
 
-jumplink.cms.directive("row", function ($compile) {
+jumplink.cms.directive("sidebar", function ($compile, $timeout, $rootScope) {
+  return {
+    restrict: "E"
+    , templateUrl: 'partials/sidebar.jade'
+    , controller: 'SidebarController'
+  }
+});
+
+jumplink.cms.directive("row", function ($compile, $timeout, $rootScope) {
   return {
     restrict: "A"
     , scope: {
@@ -85,7 +66,10 @@ jumplink.cms.directive("row", function ($compile) {
       , slideindex: "="
     }
     , link: function(scope, iElement, iAttributes) {
-
+      // WORKAROUND $timeout with 0 delay as callback after directive is finished rendered, source:  https://stackoverflow.com/questions/12240639/angularjs-how-can-i-run-a-directive-after-the-dom-has-finished-rendering
+      $timeout(function() {
+        $rootScope.renderedRows++;
+      },0)
     }
     , templateUrl: 'partials/row.jade'
     , controller: 'RowController'
@@ -235,7 +219,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
 
           // normal column or content of carousel-slide
           if(column.carousel.active === false) {
-            $rootScope.selected.site = $rootScope.site;
+            $rootScope.selected.site = $rootScope.sites[$rootScope.active.index];
             $rootScope.selected.row = row;
             $rootScope.selected.column = column;
             $rootScope.selected.siteIndex = $rootScope.active.index;
@@ -274,7 +258,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
             //   , columnIndex: columnIndex
             //   , carousel: carousel
             // }
-            $rootScope.selected.site = $rootScope.site;
+            $rootScope.selected.site = $rootScope.sites[$rootScope.active.index];
             $rootScope.selected.row = row;
             $rootScope.selected.column = column;
             $rootScope.selected.siteIndex = $rootScope.siteIndex;
@@ -289,7 +273,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
            * because the slide was not choosen before, so the user has just click on the column, not in the slide.
            */
           if (column.carousel.active === true && typeof(slideIndex) === 'undefined' && (typeof(latestSelect) === 'undefined' || typeof(latestSelect.slideIndex) === 'undefined') ) { 
-            $rootScope.selected.site = $rootScope.site;
+            $rootScope.selected.site = $rootScope.sites[$rootScope.active.index];
             $rootScope.selected.row = row;
             $rootScope.selected.column = column;
             $rootScope.selected.siteIndex = $rootScope.siteIndex;
@@ -394,16 +378,6 @@ jumplink.cms.directive("columnSubtext", function () {
   return {
     restrict: "E"
     , templateUrl: 'partials/columnSubtext.jade'
-  }
-});
-
-jumplink.cms.directive("columnConfigForm", function () {
-  return {
-    restrict: "E"
-    , scope: {
-      formColumn: "="
-    }
-    , templateUrl: 'admin/partials/columnConfigForm.jade'
   }
 });
 

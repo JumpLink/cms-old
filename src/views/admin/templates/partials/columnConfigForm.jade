@@ -7,11 +7,11 @@
         label Count
         .input-group
           span.input-group-btn
-            button.btn.btn-default(type="button", ng-disabled="formColumn.paragraphs.length <= 1", ng-click="removeParagraph(formColumn.paragraphs)")
+            button.btn.btn-default(type="button", ng-disabled="formColumn.paragraphs.length <= 1", ng-click="formColumn.paragraphs.length = formColumn.paragraphs.length - 1")
               .fa.fa-minus-circle
           input.form-control(type="text", disabled="disabled", ng-model="formColumn.paragraphs.length")
           span.input-group-btn
-            button.btn.btn-default(type="button", ng-click="addParagraph(formColumn.paragraphs)")
+            button.btn.btn-default(type="button", ng-click="formColumn.paragraphs.length = formColumn.paragraphs.length + 1")
               .fa.fa-plus-circle
       hr
       .form-group
@@ -27,6 +27,9 @@
       .form-group
         .text-center: label Header
         toggle-switch(model='formColumn.header.active')
+      .form-group
+        .text-center: label Subcategory
+        toggle-switch(model='formColumn.header.subcategory')
       .form-group
         label Size
         .input-group

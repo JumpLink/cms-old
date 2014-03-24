@@ -6,3 +6,13 @@ jumplink.cms.directive("jsAdminNavbar", function () {
     , controller: 'AdminNavbarController'
   }
 });
+
+jumplink.cms.directive("columnConfigForm", function () {
+  return {
+    restrict: "E"
+    , scope: {
+      formColumn: "="
+    }
+    , templateUrl: 'admin/partials/columnConfigForm.jade'
+  }
+});

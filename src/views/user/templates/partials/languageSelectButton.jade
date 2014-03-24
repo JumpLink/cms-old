@@ -1,0 +1,3 @@
+select.form-control(ng-model="$root.selectedLanguage", ng-controller="LanguageController", ng-options="language.value as language.label for language in $root.languages")
+//- WORKAROUND, please uncommit when bug is fixed: WORKAROUND, see https://github.com/mgcrea/angular-strap/issues/378
+//- button.btn.btn-default.navbar-btn(type="button", ng-model="$root.selectedLanguage", data-html="1", template="partials/languageSelect.jade", data-animation="am-fade", ng-options="language.value as language.label for language in $root.languages", bs-select)

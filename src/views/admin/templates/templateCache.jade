@@ -1,4 +1,10 @@
-include ../../templates/templateCache
+include ../../user/templates/templateCache
+
+//- ANGULAR ADMIN CONTENT TEMPLATES
+script(type="text/ng-template", id="admin/content/translations.jade"): include content/translations.jade
+script(type="text/ng-template", id="admin/content/users.jade"): include content/users.jade
+script(type="text/ng-template", id="admin/content/settings.jade"): include content/settings.jade
+//- ANGULAR ADMIN CONTENT TEMPLATES END
 
 //- ANGULAR ADMIN PARTIALS TEMPLATES
 script(type="text/ng-template", id="admin/partials/navbar.jade"): include partials/navbar.jade
@@ -11,4 +17,5 @@ script(type="text/ng-template", id="admin/partials/rowConfigPopover.jade"): incl
 script(type="text/ng-template", id="admin/partials/siteConfigPopover.jade"): include partials/siteConfigPopover.jade
 script(type="text/ng-template", id="admin/partials/carouselConfigPopover.jade"): include partials/carouselConfigPopover.jade
 script(type="text/ng-template", id="admin/partials/paragraphConfigPopover.jade"): include partials/paragraphConfigPopover.jade
+script(type="text/ng-template", id="admin/partials/userModal.jade"): include partials/userModal.jade
 //- ANGULAR ADMIN PARTIALS TEMPLATES END

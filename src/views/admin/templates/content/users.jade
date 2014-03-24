@@ -1,0 +1,20 @@
+nav.navbar(class="navbar-{{$root.config.navbar.type}}", ng-class="{'navbar-inverse': $root.config.navbar.inverse, 'navbar-default': !$root.config.navbar.inverse}", role="users")
+  .container-fluid
+    .navbar-header
+      a.navbar-brand {{'BRAND_USERS' | translate}}
+    .collapse.navbar-collapse.navbar-ex1-collapse
+      .navbar-form.navbar-right
+        language-select
+.container
+  h1 {{ 'Users' | translate }}
+  table.table.table-hover(ng-if="users.length")
+    thead
+      tr
+        th {{ 'color' | translate }}
+        th {{ 'email' | translate }}
+        th {{ 'name' | translate }}
+    tbody
+      tr(ng-repeat="user in users", ng-click="showUser(user)")
+        td {{user.color}}
+        td {{user.email}}
+        td {{user.name}}

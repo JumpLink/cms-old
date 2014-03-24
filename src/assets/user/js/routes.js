@@ -1,7 +1,7 @@
 jumplink.cms.config(['$routeProvider',
   function($routeProvider) {
-    $routeProvider.
-      when('/:site', {
+    $routeProvider
+      .when('/:site', {
         templateUrl: 'content/site.jade',
         controller: 'SiteController',
         resolve:  {
@@ -9,5 +9,6 @@ jumplink.cms.config(['$routeProvider',
             return ConfigService.getConfig();
           }
         }
-      });
+      })
+      ;
   }]);

@@ -55,7 +55,7 @@ module.exports = function (grunt) {
 
     // A simpler boilerplate library for getting you up and running w/ an
     // automatic listener for incoming messages from Socket.io.
-    'general/js/app.js',
+    // 'general/js/app.js',
 
     // *->    put other dependencies here   <-*
     'bower_components/jquery/jquery.js', // TODO remove
@@ -86,6 +86,7 @@ module.exports = function (grunt) {
     'bower_components/angular-translate-loader-url/angular-translate-loader-url.js',
     //'bower_components/iscroll/build/iscroll.js',
     //'bower_components/ng-iScroll/src/ng-iscroll.js',
+    'bower_components/angular-smoothscroll/dist/scripts/*.js',
 
     // All of the rest of your app scripts imported here
     'general/js/angular/config.js',
@@ -94,6 +95,9 @@ module.exports = function (grunt) {
 
   var jsAdminFilesToInject = jsGeneralFilesToInject.slice();
   jsAdminFilesToInject.push('admin/js/**/*.js');
+
+  var jsUserFilesToInject = jsGeneralFilesToInject.slice();
+  jsUserFilesToInject.push('user/js/**/*.js');
 
   /**
    * Client-side HTML templates are injected using the sources below
@@ -143,7 +147,7 @@ module.exports = function (grunt) {
   });
 
   // Modify js file injection paths to use 
-  jsGeneralFilesToInject = jsGeneralFilesToInject.map(function (path) {
+  jsUserFilesToInject = jsUserFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
 
@@ -287,8 +291,8 @@ module.exports = function (grunt) {
 
     concat: {
       js: {
-        src: jsGeneralFilesToInject,
-        dest: '.tmp/public/concat/production.js'
+        src: jsUserFilesToInject,
+        dest: '.tmp/public/concat/user.js'
       },
       jsAdmin: {
         src: jsAdminFilesToInject,
@@ -336,7 +340,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': jsGeneralFilesToInject
+          'views/**/*.jade': jsUserFilesToInject
         }
       },
 

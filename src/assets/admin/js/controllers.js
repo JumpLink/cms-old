@@ -1,30 +1,33 @@
-jumplink.cms.controller('AdminNavbarController', function($scope, $rootScope, $sails, ParagraphService, RowService, ColumnService, SiteService) {
+jumplink.cms.controller('AdminNavbarController', function($scope, $rootScope, $sails, $location, ParagraphService, RowService, ColumnService, SiteService) {
+
   $scope.save = function () {
-    console.log($rootScope.site);
-    $sails.put("/site/"+$rootScope.sites[$rootScope.active.index].id, $rootScope.sites[$rootScope.active.index], function (response) {
-      if(response != null && typeof(response) !== "undefined") {
-        console.log (response);
-      } else {
-        console.log ("Can't save site");
-      }
-    });
-    // $sails.put("/site/replace/"+$rootScope.site.id, $rootScope.site, function (response) {
-    //   if(response != null && typeof(response) !== "undefined") {
-    //     console.log (response);
-    //   } else {
-    //     console.log ("Can't save site");
-    //   }
-    // });
-  }
 
-  $scope.removeParagraph = function () {
-    if( angular.isDefined($rootScope.selected.column.paragraphs) )
-      $rootScope.selected.column.paragraphs.pop();
-  }
+    switch($location.url()) {
+      case '/translations':
 
-  $scope.addParagraph = function () {
-    if( angular.isDefined($rootScope.selected.column.paragraphs) )
-      $rootScope.selected.column.paragraphs.push(ParagraphService.getDefaults($rootScope.selected.column.type, null));
+        $sails.put("/translation/", {translations: $scope.translations}, function (response) {
+          if(response != null && typeof(response) !== "undefined") {
+            console.log (response);
+          } else {
+            console.log ("Can't save translation");
+          }
+        });
+
+      break;
+      default:
+
+        $sails.put("/site/"+$rootScope.sites[$rootScope.active.index].id, $rootScope.sites[$rootScope.active.index], function (response) {
+          if(response != null && typeof(response) !== "undefined") {
+            console.log (response);
+          } else {
+            console.log ("Can't save site");
+          }
+        });
+
+      break;
+    }
+
+
   }
 
   $scope.removeRow = function () {
@@ -59,3 +62,94 @@ jumplink.cms.controller('ColumnConfigButtonController', function($scope, $rootSc
   
 });
 
+// TODO make select-language directive usable for this
+jumplink.cms.controller('TranslationController', function($scope, $rootScope, $sails, $translate) {
+
+  $rootScope.languageToTranslate = $translate.uses() || 'en';
+
+  var getTranslation = function (lang) {
+    //console.log(lang);
+    $sails.get('/translation?lang='+lang, function (translations) {
+      if(translations != null && typeof(translations) !== "undefined") {
+        //console.log(translations);
+        if(angular.isUndefined($rootScope.translations))
+          $rootScope.translations = {};
+        $rootScope.translations[lang] = translations;
+      } else {
+        // TODO redirect
+        console.error ("Can't load translation for "+lang);
+      }
+    });
+  }
+
+  var createSelect = function (newValues) {
+    $scope.select = [];
+    angular.forEach(newValues, function(lang, index){
+      console.log();
+      $scope.select.push({value: lang, label: $translate('LANGCODE_'+lang.toUpperCase())});
+    });
+  }
+
+  var getAvailableTranslation = function () {
+      if(angular.isDefined($rootScope.config) && angular.isDefined($rootScope.config.languages.available) && $rootScope.config.languages.available !== null) {
+        // console.log(available);
+        //$scope.available = available;
+        createSelect($rootScope.config.languages.available);
+      } else {
+        // TODO redirect
+        console.log ("Can't load available translations for");
+      }
+  }
+
+  $rootScope.$watch('languageToTranslate', function (newValue, oldValue, $scope) {
+    if(angular.isDefined(newValue)) {
+      getTranslation(newValue);
+    }
+  });
+
+  $rootScope.$watchCollection('config.languages.active', function(newValues, oldValues) {
+    if(angular.isDefined(newValues)) {
+      createSelect(newValues);
+    }
+  });
+
+  getAvailableTranslation();
+  getTranslation($rootScope.languageToTranslate );
+
+
+});
+
+
+jumplink.cms.controller('UsersController', function($scope, $rootScope, $sails, $modal) {
+  var getUsers = function () {
+    //console.log(lang);
+    $sails.get('/user', function (users) {
+      if(users != null && typeof(users) !== "undefined") {
+        //console.log(translations);
+        if(angular.isUndefined($rootScope.users))
+          $rootScope.users = {};
+        $rootScope.users = users;
+      } else {
+        // TODO redirect
+        console.error ("Can't load users");
+      }
+    });
+  }
+
+  
+
+  $scope.showUser = function (user) {
+    $scope.user = user;
+    console.log(user);
+    userModal.show();
+  }
+
+  var userModal = $modal({animation: "am-fade-and-scale", placement: "center", scope: $scope, template: 'admin/partials/userModal.jade', show: false});
+
+  getUsers();
+
+});
+
+jumplink.cms.controller('SettingsController', function($scope, $rootScope, $sails) {
+  
+});
