@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "angular": "1.2.*",
-    "angular-sails": "0.0.*",
+    "angular-sails": "0.*.*",
     "angular-route": "1.2.*",
     "angular-animate": "1.2.*",
     "angular-touch": "1.2.*",
@@ -34,8 +34,9 @@
     "revolunet-angular-carousel": "0.1.*",
     "angular-contenteditable": "0.3.*",
     "angular-translate": "1.1.*",
-    "angular-translate-loader-url": "~0.1.5",
+    "angular-translate-loader-url": "0.1.*",
     "angular-motion": "0.3.*",
-    "angular-smoothscroll": "*"
+    "angular-smoothscroll": "*",
+    "angular-loading-bar": "0.3.*"
   }
 }

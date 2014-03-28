@@ -14,14 +14,14 @@ jumplink.cms.service("NavbarService", function($rootScope, ADMIN) {
   }
 });
 
-var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $sails, $http) {
+var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $sails, $http, $log) {
 
   var getConfig = function() {
     $sails.get("/config", function (response) {
       if(angular.isDefined(response) && response !== null) {
         return response[0];
       } else {
-        console.log ("Can't load Config");
+        $log.error ("Can't load Config");
       }
     });
   }
@@ -31,7 +31,7 @@ var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $
       if(angular.isDefined(data) && data !== null && status === 200) {
         $rootScope.config = data[0];
       } else {
-        console.log ("Can't load Config, status: "+status);
+        $log.error ("Can't load Config, status: "+status);
       }
     });
   }
@@ -718,7 +718,126 @@ jumplink.cms.service("RowService", function(ColumnService) {
 
 });
 
-jumplink.cms.service("SiteService", function(RowService, $rootScope, $window, $timeout) {
+jumplink.cms.service("WindowService", function(RowService, $rootScope, $window, $timeout, $location, $log) {
+
+  var tigger = function (event) {
+    $timeout(function() {
+      // anything you want can go here and will safely be run on the next digest.
+      angular.element($window).triggerHandler(event);
+    })
+  }
+
+  /*
+   * Retrieve the current vertical position
+   * @returns Current vertical position
+   */
+  var currentYPosition = function() {
+    if ($window.pageYOffset) {
+      return $window.pageYOffset;
+    }
+    if ($window.document.documentElement && $window.document.documentElement.scrollTop) {
+      return $window.document.documentElement.scrollTop;
+    }
+    if ($window.document.body.scrollTop) {
+      return $window.document.body.scrollTop;
+    }
+    return 0;
+  };
+
+  /*
+   * Get the vertical position of a DOM element
+   * @param eID The DOM element id
+   * @returns The vertical position of element with id eID
+   */
+  var elmYPosition = function(eID) {
+    var elm, node, y;
+    elm = document.getElementById(eID);
+    if (elm) {
+      y = elm.offsetTop;
+      node = elm;
+      while (node.offsetParent && node.offsetParent !== document.body) {
+        node = node.offsetParent;
+        y += node.offsetTop;
+      }
+      return y;
+    }
+    return 0;
+  };
+
+  // FORK of https://github.com/arnaudbreton/angular-smoothscroll
+  var smoothScrollPosition = function(stopY, animation) {
+    if(!animation) {
+      $window.scrollTo(0,stopY);
+    }
+
+    var distance, i, leapY, speed, startY, step, stopY, timer, _results;
+    startY = currentYPosition();
+    distance = (stopY > startY ? stopY - startY : startY - stopY);
+    if (distance < 100) {
+      scrollTo(0, stopY);
+      return;
+    }
+    speed = Math.round(distance / 100);
+    if (speed >= 20) {
+      speed = 20;
+    }
+    step = Math.round(distance / 25);
+    leapY = (stopY > startY ? startY + step : startY - step);
+    timer = 0;
+    if (stopY > startY) {
+      i = startY;
+      while (i < stopY) {
+        setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
+        leapY += step;
+        if (leapY > stopY) {
+          leapY = stopY;
+        }
+        timer++;
+        i += step;
+      }
+      return;
+    }
+    i = startY;
+    _results = [];
+    while (i > stopY) {
+      setTimeout('window.scrollTo(0, ' + leapY + ')', timer * speed);
+      leapY -= step;
+      if (leapY < stopY) {
+        leapY = stopY;
+      }
+      timer++;
+      _results.push(i -= step);
+    }
+    return _results;
+  };
+
+  var smoothScroll = function(eID, offSet, animation) {
+    var stopY = elmYPosition(eID) - offSet;
+    return smoothScrollPosition (stopY, animation);
+  }
+
+  var autoPosition = function () {
+    var hash = $location.hash();
+    if(angular.isDefined(hash) && hash !== '') {
+      console.log(hash);
+      smoothScroll(hash, 60, true);
+    } else {
+      smoothScrollPosition(0, false);
+    }
+    
+  }
+
+
+  return {
+    tigger: tigger
+    , smoothScrollPosition: smoothScrollPosition
+    , smoothScroll: smoothScroll
+    , autoPosition: autoPosition
+  }
+
+});
+
+jumplink.cms.service("SiteService", function(RowService, $rootScope, $window, $timeout, $log) {
   var getDefaults = function (type, replace, count) {
 
     var defaults = {
@@ -787,37 +906,38 @@ jumplink.cms.service("SiteService", function(RowService, $rootScope, $window, $t
     return defaults;
   }
 
+  var getRowLength = function (site) {
+    var result = 0;
+    angular.forEach(site.rows, function(row, index) {
+      result++;
+      angular.forEach(row.columns, function(column, index) {
+        if(column.carousel.active) {
+          angular.forEach(column.carousel.slides, function(slide, index) {
+            result++;
+          });
+        }
+      });
+    });
+    return result;
+  }
+
   var checkReady = function () {
-    return angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active) && $rootScope.renderedRows >= $rootScope.sites[$rootScope.active.index].rows.length;
-  }
-
-  $rootScope.ready = false;
-
-  angular.element($window).bind('resize', function () {
-    console.log('resize tiggered');
-  });
-
-  var tigger = function (event) {
-    $timeout(function() {
-      // anything you want can go here and will safely be run on the next digest.
-      angular.element($window).triggerHandler(event);
-    })
-  }
-
-  $rootScope.$watch('ready', function(newValue, oldValue, scope) {
-    if(newValue) {
-      tigger('resize');
+    if(angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active)) {
+      return $rootScope.complete >= 1;
+    } else {
+      return false;
     }
-  });
+  }
 
-  $rootScope.$watch('renderedRows', function (newValue, oldValue) {
-    $rootScope.ready = checkReady();
-  });
+  var getCurrentSite = function () {
+    return $rootScope.sites[$rootScope.active.index];
+  }
 
   return {
     getDefaults: getDefaults
     , checkReady: checkReady
-    , tigger: tigger
+    , getRowLength: getRowLength
+    , getCurrentSite: getCurrentSite
   }
 
 });

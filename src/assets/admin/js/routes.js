@@ -1,5 +1,5 @@
 jumplink.cms.config(['$routeProvider',
-  function($routeProvider) {
+  function($routeProvider) { 
     $routeProvider
       .when('/translations', {
         templateUrl: 'admin/content/translations.jade'
@@ -16,6 +16,7 @@ jumplink.cms.config(['$routeProvider',
       .when('/:site', {
         templateUrl: 'content/site.jade'
         , controller: 'SiteController'
+        , reloadOnSearch: false
       })
       ;
   }]);

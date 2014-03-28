@@ -17,7 +17,7 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
           if(typeof $rootScope.sites !== 'undefined' && typeof $rootScope.sites[0] !== 'undefined' && typeof $rootScope.sites[0].href !== 'undefined' && typeof $rootScope.sites[0].name !== 'undefined' ) {
             var navigation = '';
             for (var i = 0; i < $rootScope.sites.length && i < 20; i++) {
-              navigation += '<li data-match-route={{$root.sites['+i+'].href}}>  <a href="#/{{$root.sites['+i+'].href}}"> {{$root.sites['+i+'].name}} </a> </li>';
+              navigation += '<li data-match-route={{$root.sites['+i+'].href}}>  <a href="/#/{{$root.sites['+i+'].href}}"> {{$root.sites['+i+'].name}} </a> </li>';
             };
             $compile(navigation)(scope, function(cloned, scope) {
               iElement.find('#jl-navbar-nav').html(cloned);
@@ -39,7 +39,7 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
                 liElement.removeClass('active');
             });
           } else {
-            // console.log('error on js-navbar directive: You need to set the "active" attribute');
+            // $log.debug('error on js-navbar directive: You need to set the "active" attribute');
           }
         });
       }
@@ -49,13 +49,64 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
   }
 });
 
-jumplink.cms.directive("sidebar", function ($compile, $timeout, $rootScope) {
+jumplink.cms.directive("sidebar", function ($compile, $timeout, $rootScope, SiteService, $scrollspy) {
   return {
     restrict: "E"
     , templateUrl: 'partials/sidebar.jade'
     , controller: 'SidebarController'
   }
 });
+
+// Fork of bsScrollspy
+jumplink.cms.directive('jlScrollspy', function($rootScope, debounce, dimensions, $scrollspy, $location, SiteService) {
+
+  return {
+    restrict: 'EAC',
+    link: function postLink(scope, element, attr) {
+
+      var options = {scope: scope};
+      angular.forEach(['offset', 'target'], function(key) {
+        if(angular.isDefined(attr[key])) options[key] = attr[key];
+      });
+
+      var scrollspy = $scrollspy(options);
+
+      // Overwrite original $activateElement with custom function
+      var _activateElement = scrollspy.$activateElement;
+      scrollspy.$activateElement = function (element) {
+
+        if(scrollspy !== null) {
+          var activeTarget = element.target;
+          var activeElement = scrollspy.$getTrackedElement(activeTarget);
+
+          if(SiteService.checkReady() && activeTarget && activeElement) {
+
+            if(activeTarget === attr.target) {
+              // set hash to current position
+              var hash = activeElement.target.substring(1); // remove first #
+              $location.hash(hash);
+              scope.$apply();
+            }
+
+            return _activateElement (element);
+          }
+        }
+      }
+
+      scrollspy.trackElement(options.target, element);
+
+      scope.$on('$destroy', function() {
+        scrollspy.untrackElement(options.target, element);
+        scrollspy.destroy();
+        options = null;
+        scrollspy = null;
+      });
+
+    }
+  };
+
+});
+
 
 jumplink.cms.directive("row", function ($compile, $timeout, $rootScope) {
   return {
@@ -85,7 +136,7 @@ jumplink.cms.directive("carousel", function ($compile, $rootScope, PolicyService
     , link: function(scope, iElement, iAttributes) {
 
       var compileCarousel = function () {
-        // console.log(active);
+        // $log.debug(active);
         if(scope.carousel.active) {
           // use for loop instead of ng-repeat to avoid the "$rootScope:inprog" error
           var rnCarousel = ''
@@ -185,14 +236,14 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
           if(!angular.isDefined($rootScope.selected))
             $rootScope.selected = {};
 
-          // console.log("Column select");
-          // console.log("rowIndex: "+rowIndex);
-          // console.log("columnIndex: "+columnIndex);
-          // console.log("slideIndex: "+slideIndex);
-          // console.log("column");
-          // console.log(column);
-          // console.log("row");
-          // console.log(row);
+          // $log.debug("Column select");
+          // $log.debug("rowIndex: "+rowIndex);
+          // $log.debug("columnIndex: "+columnIndex);
+          // $log.debug("slideIndex: "+slideIndex);
+          // $log.debug("column");
+          // $log.debug(column);
+          // $log.debug("row");
+          // $log.debug(row);
 
           // Set latestSelect if possible
           if(typeof($rootScope.selected) !== 'undefined') {
@@ -238,7 +289,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
            */
           if (column.carousel.active === true && typeof(slideIndex) === 'undefined' && typeof(latestSelect) !== 'undefined' && angular.isDefined(latestSelect.slideIndex) ) { 
 
-            // console.log("with carousel");
+            // $log.debug("with carousel");
 
             // NOTE on carousel rowidex === slideindex
             // the latest select was the select of the slide in the carousel

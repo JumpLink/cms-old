@@ -1,4 +1,4 @@
-jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $translate) {
+jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $translate, $log) {
 
   var rewriteLanugageList = function (newValues) {
     $rootScope.languages = [];
@@ -31,9 +31,9 @@ jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $tra
         if(angular.isDefined($rootScope.config)) {
           rewriteLanugageList($rootScope.config.languages.active);
         }
-        //console.log("Sprache zu " + key + " gewechselt.");
+        //$log.debug("Sprache zu " + key + " gewechselt.");
       }, function (key) {
-        console.error("Can't switch language");
+        $log.error("Can't switch language");
       });
     }
   });
@@ -53,7 +53,7 @@ jumplink.cms.controller('NavbarController', function() {
 
 });
 
-jumplink.cms.controller('SidebarController', function($rootScope, $scope, $location, $anchorScroll, $window, ContentService) {
+jumplink.cms.controller('SidebarController', function($rootScope, $scope, ContentService, SiteService) {
 
   $scope.subcategories = [];
 
@@ -62,7 +62,7 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, $locat
   }
 
   var setSubcategories = function (activeSiteIndex) {
-    angular.forEach($rootScope.sites[$rootScope.active.index].rows, function(row, index){
+    angular.forEach(SiteService.getCurrentSite().rows, function(row, index){
       if(isSubcategory(row)) {
         // if is top subcategory
         if(row.columns[0].header.size <= 1) {
@@ -90,29 +90,70 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, $locat
 
 });
 
-jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $timeout, SiteService) {
+jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $window, $log, SiteService, WindowService, cfpLoadingBar) {
+
+  // If true all rows are rendered
+  $rootScope.ready = false;
 
   $rootScope.renderedRows = 0;
 
-  // True if all rows are rendered
-  // $scope.ready = function () {
-  //   return angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active) && $rootScope.renderedRows >= $rootScope.sites[$rootScope.active.index].rows.length;
-  // }
-
-  // True if all rows are rendered
-  //$scope.ready = SiteService.ready;
+  angular.element($window).bind('resize', function () {
+    $log.debug('resize tiggered');
+    WindowService.autoPosition();
+  });
 
   $scope.sidebarActive = function () {
-    return $rootScope.ready && $rootScope.sites[$rootScope.active.index].sidebar;
+    return SiteService.checkReady() && SiteService.getCurrentSite().sidebar;
   }
+
+  $rootScope.$watch('renderedRows', function (newValue, oldValue) {
+    var _complete = 0;
+
+    if(angular.isDefined($rootScope.sites) && angular.isDefined($rootScope.active)) {
+      var countOfRows = SiteService.getRowLength(SiteService.getCurrentSite());
+      //_complete = $rootScope.renderedRows / SiteService.getCurrentSite().rows.length;
+      _complete = $rootScope.renderedRows / countOfRows;
+    }
+
+    if(_complete < 1) {
+      $rootScope.complete = _complete;
+    } else {
+      $rootScope.complete = 1;
+    }
+
+    $rootScope.ready = SiteService.checkReady();
+  });
+
+  if(cfpLoadingBar.status() <= 0);
+    cfpLoadingBar.start();
+
+  $rootScope.$watch('complete', function (newValue, oldValue) {
+    if(newValue <= 0) {
+
+    } else if(newValue < 1) {
+      cfpLoadingBar.set(newValue);
+    } else if(newValue >= 1) {
+      cfpLoadingBar.complete();
+    }
+  });
+
+  // WORKAROUND for Carousel redraw
+  $rootScope.$watch('ready', function(newValue, oldValue, scope) {
+    if(newValue) {
+      WindowService.tigger('resize');
+    }
+  });
 
   // only run this function when $rootScope.site is set
   var routeChanged = function () {
+
+    //WindowService.smoothScrollPosition(0, false);
+
     // found active site
     foundSiteByRoute($rootScope.sites, $routeParams.site, function (error, active) {
       
       if(error !== null) {
-        console.log(error);
+        $log.error(error);
         // TODO redirect if active site not found
       }
   
@@ -133,10 +174,10 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
         });
         $rootScope.sites = newSites;
         $rootScope.navigation = getNavigation($rootScope.sites);
-        routeChanged();  
+        routeChanged();
       } else {
         // TODO redirect
-        console.error ("Can't load Sites");
+        $log.error ("Can't load Sites");
       }
     });
   }
@@ -169,8 +210,9 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
       angular.extend(foundSite.site, newSite);
 
       // update current site, if this is the updated site
-      if($rootScope.sites[$rootScope.active.index].href === foundSite.site.href) {
-        angular.extend($rootScope.sites[$rootScope.active.index], newSite);
+      var currentSite = SiteService.getCurrentSite();
+      if(currentSite.href === foundSite.site.href) {
+        angular.extend(currentSite, newSite);
       }
       // $rootScope.sites[foundSite.index] = newSite
       //angular.extend($rootScope.sites[foundSite.index], newSite);
@@ -189,6 +231,10 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     return [];
   }
 
+
+  
+  $scope.smoothScrollPosition = WindowService.smoothScrollPosition
+
   // get sites only if they are currently not defined
   if($rootScope.sites === null || typeof($rootScope.sites) === "undefined" || typeof($rootScope.sites.length) === "undefined" || $rootScope.sites.length <= 0) {
     getSites();
@@ -202,7 +248,7 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
 
     if(message.model === "site") {
       if(message.verb === "update") {
-        console.log("update for site: "+message);
+        $log.debug("update for site: "+message);
         updateSite(message.data);
         // $rootScope.$apply(function(){
           
@@ -213,12 +259,16 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
 
   });
 
+  angular.element($window).bind('resize', function () {
+    $log.debug('resize tiggered');
+  });
+
 
 });
 
-jumplink.cms.controller('RowController', function($scope, $rootScope) {
+jumplink.cms.controller('RowController', function($scope, $rootScope, SiteService) {
   $scope.rowIsHeader = function () {
-    return angular.isDefined($rootScope.active) && $rootScope.sites[$rootScope.active.index].header && $scope.index === 0;
+    return angular.isDefined($rootScope.active) && SiteService.getCurrentSite().header && $scope.index === 0;
   }
 });
 

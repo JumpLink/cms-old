@@ -20,15 +20,22 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'pascalprecht.translate'
   , 'Decorators' // WORKAROUND see workaround.js
   , 'angularSmoothscroll'
+  , 'chieffancypants.loadingBar'
   //, 'btford.socket-io'
  // , 'jumplink.cms.SocketController' 
 ]);
+
+// I just inject empty $anchorScroll that does nothing. I do this because I use angularSmoothscroll for thinks like that
+jumplink.cms.value('$anchorScroll', angular.noop);
 
 jumplink.cms.run(function ($rootScope, ConfigService) {
     ConfigService.setConfigHttp();
 });
 
-jumplink.cms.config(function ($translateProvider) {
+jumplink.cms.config(function ($translateProvider, cfpLoadingBarProvider) {
   $translateProvider.useUrlLoader('/translation');
   $translateProvider.preferredLanguage('en');
+
+  cfpLoadingBarProvider.includeSpinner = true;
+  cfpLoadingBarProvider.includeBar = true;
 });

@@ -1,8 +1,8 @@
 .col-md-2.hidden-sm.hidden-xs(ng-if="sidebarActive()")
   .bs-sidebar.hidden-print(role="complementary", data-offset-top="-80", bs-affix)
     ul.nav.bs-sidenav
-      li(ng-repeat="category in subcategories", bs-scrollspy, data-target="\#{{category.target}}")
+      li(ng-repeat="category in subcategories", jl-scrollspy, data-target="\#{{category.target}}", data-hash="{{child.target}}")
         a(smooth-scroll, target="{{category.target}}", offset="60") {{category.content.langs[$root.selectedLanguage]}}
         ul.nav(ng-if="category.children.length")
-          li(ng-repeat="child in category.children", bs-scrollspy, data-target="\#{{child.target}}")
+          li(ng-repeat="child in category.children", jl-scrollspy, data-target="\#{{child.target}}", data-hash="{{child.target}}")
             a(smooth-scroll, target="{{child.target}}", offset="60") {{child.content.langs[$root.selectedLanguage]}}

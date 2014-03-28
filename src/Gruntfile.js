@@ -88,6 +88,8 @@ module.exports = function (grunt) {
     //'bower_components/ng-iScroll/src/ng-iscroll.js',
     'bower_components/angular-smoothscroll/dist/scripts/*.js',
 
+    'bower_components/angular-loading-bar/build/loading-bar.js',
+
     // All of the rest of your app scripts imported here
     'general/js/angular/config.js',
     'general/js/**/*.js',

@@ -9,3 +9,7 @@ div(ng-class="{'container': $root.sites[$root.active.index].container, 'containe
   div(ng-class="{'col-md-10': sidebarActive(), 'col-md-12': !sidebarActive()}")
     //- show only if site header is active and row-index is 0, see ng-if
     span(ng-repeat="row in $root.sites[$root.active.index].rows", ng-if="!($root.sites[$root.active.index].header && $index === 0)", row="row", index="$index", class="{{$root.sites[$root.active.index].type}}")
+footer.cms-footer
+  div(ng-class="{'container': $root.sites[$root.active.index].container, 'container-fluid': !$root.sites[$root.active.index].container}")
+    p.pull-right
+      a(ng-click="smoothScrollPosition(0, true)") Back to top
