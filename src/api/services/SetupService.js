@@ -48,6 +48,7 @@ module.exports = {
             TRANS_CUR: 'Current translation',
             TRANS_TRAN: 'Translation',
             TRANS_KEY: 'Keyword',
+            FOOTER_BACK: 'Back to top'
           }
         }, 
         {
@@ -64,7 +65,7 @@ module.exports = {
             TRANS_CUR: 'Aktuelle Übersetzung',
             TRANS_TRAN: 'Übersetzung',
             TRANS_KEY: 'Schlüsselwort',
-
+            FOOTER_BACK: 'Zurück nach oben'
           }
         }
       ];

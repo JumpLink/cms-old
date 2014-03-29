@@ -17,7 +17,7 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
           if(typeof $rootScope.sites !== 'undefined' && typeof $rootScope.sites[0] !== 'undefined' && typeof $rootScope.sites[0].href !== 'undefined' && typeof $rootScope.sites[0].name !== 'undefined' ) {
             var navigation = '';
             for (var i = 0; i < $rootScope.sites.length && i < 20; i++) {
-              navigation += '<li data-match-route={{$root.sites['+i+'].href}}>  <a href="/#/{{$root.sites['+i+'].href}}"> {{$root.sites['+i+'].name}} </a> </li>';
+              navigation += '<li data-match-route={{$root.sites['+i+'].href}}>  <a href="#/{{$root.sites['+i+'].href}}"> {{$root.sites['+i+'].name}} </a> </li>';
             };
             $compile(navigation)(scope, function(cloned, scope) {
               iElement.find('#jl-navbar-nav').html(cloned);
@@ -84,6 +84,7 @@ jumplink.cms.directive('jlScrollspy', function($rootScope, debounce, dimensions,
             if(activeTarget === attr.target) {
               // set hash to current position
               var hash = activeElement.target.substring(1); // remove first #
+              $location.replace();
               $location.hash(hash);
               scope.$apply();
             }

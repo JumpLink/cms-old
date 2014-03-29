@@ -45,8 +45,8 @@ jumplink.cms.controller('BodyController', function($scope, $rootScope, ADMIN, Na
   $scope.bottomNavbarIsFixed = NavbarService.bottomNavbarIsFixed;
 });
 
-jumplink.cms.controller('HeadController', function() {
-
+jumplink.cms.controller('HeadController', function($rootScope) {
+  $rootScope.title = "JumpLink CMS";
 });
 
 jumplink.cms.controller('NavbarController', function() {
@@ -90,7 +90,7 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, Conten
 
 });
 
-jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $window, $log, SiteService, WindowService, cfpLoadingBar) {
+jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $window, $log, $location, SiteService, WindowService, cfpLoadingBar) {
 
   // If true all rows are rendered
   $rootScope.ready = false;
@@ -98,7 +98,7 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
   $rootScope.renderedRows = 0;
 
   angular.element($window).bind('resize', function () {
-    $log.debug('resize tiggered');
+    //$log.debug('resize tiggered');
     WindowService.autoPosition();
   });
 
@@ -154,15 +154,17 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
       
       if(error !== null) {
         $log.error(error);
-        // TODO redirect if active site not found
+        $location.path( "/404" );
+      } else {
+        $rootScope.title = active.site.name;
+        $rootScope.active = {
+          index: active.index,
+          name: active.site.name,
+          href: active.site.href
+        };
       }
   
-      //$rootScope.siteIndex = active.index;
-      $rootScope.active = {
-        index: active.index,
-        name: active.site.name,
-        href: active.site.href
-      };
+
     });
   }
 
@@ -200,8 +202,10 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
       }
     });
     // 
-    if(siteNotFound ) {
-      cb("not found", {site:null, index:sites.length});
+    if(siteNotFound) {
+      // TODO redirect to custom not found site
+      $location.path( "/login" );
+      cb("not found", null);
     }
   }
 
@@ -258,11 +262,6 @@ jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $
     }
 
   });
-
-  angular.element($window).bind('resize', function () {
-    $log.debug('resize tiggered');
-  });
-
 
 });
 

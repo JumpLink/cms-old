@@ -12,4 +12,4 @@ div(ng-class="{'container': $root.sites[$root.active.index].container, 'containe
 footer.cms-footer
   div(ng-class="{'container': $root.sites[$root.active.index].container, 'container-fluid': !$root.sites[$root.active.index].container}")
     p.pull-right
-      a(ng-click="smoothScrollPosition(0, true)") Back to top
+      a(ng-click="smoothScrollPosition(0, true)") {{ 'FOOTER_BACK' | translate }}

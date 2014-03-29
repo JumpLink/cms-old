@@ -179,7 +179,7 @@ jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
       , active: false
     }
 
-    var placeholder = LoremService.generator({units: 'words', count: 2});
+    var placeholder = LoremService.generator({units: 'words', count: 1});
 
     switch (type) {
       case 'featurette':
@@ -215,7 +215,7 @@ jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
     }
 
     if(defaults.content === null)
-      defaults.active = ContentService.getDefaults(type, null, placeholder);
+      defaults.content = ContentService.getDefaults(type, null, placeholder);
 
     return defaults;
   }
@@ -819,7 +819,6 @@ jumplink.cms.service("WindowService", function(RowService, $rootScope, $window, 
   var autoPosition = function () {
     var hash = $location.hash();
     if(angular.isDefined(hash) && hash !== '') {
-      console.log(hash);
       smoothScroll(hash, 60, true);
     } else {
       smoothScrollPosition(0, false);

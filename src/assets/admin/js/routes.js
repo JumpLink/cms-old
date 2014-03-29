@@ -13,10 +13,17 @@ jumplink.cms.config(['$routeProvider',
         templateUrl: 'admin/content/settings.jade'
         , controller: 'SettingsController'
       })
+      .when('/404', {
+        templateUrl: 'content/404.jade'
+        , controller: 'SiteController'
+      })
       .when('/:site', {
         templateUrl: 'content/site.jade'
         , controller: 'SiteController'
         , reloadOnSearch: false
       })
+      .otherwise({
+        redirectTo: '/404'
+      });
       ;
   }]);

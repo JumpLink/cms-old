@@ -232,18 +232,24 @@ module.exports = function (grunt) {
       dev: {
         files: [
           {
-          expand: true,
-          cwd: 'assets/user/styles/',
-          src: ['user.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }, {
-          expand: true,
-          cwd: 'assets/admin/styles/',
-          src: ['admin.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }
+            expand: true,
+            cwd: 'assets/user/styles/',
+            src: ['user.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }, {
+            expand: true,
+            cwd: 'assets/admin/styles/',
+            src: ['admin.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }, {
+            expand: true,
+            cwd: 'assets/admin/styles/',
+            src: ['signin.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }
         ]
       }
       , prod: {
@@ -252,18 +258,24 @@ module.exports = function (grunt) {
         },
         files: [
           {
-          expand: true,
-          cwd: 'assets/user/styles/',
-          src: ['user.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }, {
-          expand: true,
-          cwd: 'assets/admin/styles/',
-          src: ['admin.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }
+            expand: true,
+            cwd: 'assets/user/styles/',
+            src: ['user.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }, {
+            expand: true,
+            cwd: 'assets/admin/styles/',
+            src: ['admin.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }, {
+            expand: true,
+            cwd: 'assets/admin/styles/',
+            src: ['signin.less'],
+            dest: '.tmp/public/styles/',
+            ext: '.css'
+          }
         ]
       }
     },
