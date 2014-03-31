@@ -1,0 +1,307 @@
+/* external links
+ * source http://davidwalsh.name/external-links-css
+ */
+
+.symbolic-link {
+  // position:absolute;
+  font-family: FontAwesome;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  content: @fa-var-link;
+  opacity: 0.5;
+  padding-left: 3px;
+}
+
+a[href^="http://"],
+a[href^="https://"], 
+a[href^="//"]
+{
+    /* external link styles, use :before or :after if you want! */
+  &:after {
+    .symbolic-link();
+    content: @fa-var-external-link;
+  }
+}
+
+a[href^="https://alpha.app.net"],
+a[href^="http://alpha.app.net"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-adn;
+  }
+}
+
+a[href^="https://bitbucket.org"],
+a[href^="http://bitbucket.org"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-bitbucket;
+  }
+}
+
+a[href^="https://dribbble.com"],
+a[href^="http://dribbble.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-dribbble;
+  }
+}
+
+a[href^="http://www.flickr.com"],
+a[href^="https://www.flickr.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-flickr;
+  }
+}
+
+a[href^="http://github.com"],
+a[href^="https://github.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-github;
+  }
+}
+
+a[href^="http://www.pinterest.com"],
+a[href^="https://www.pinterest.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-pinterest;
+  }
+}
+
+a[href^="http://stackoverflow.com"],
+a[href^="https://stackoverflow.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-stack-overflow;
+  }
+}
+
+a[href^="http://twitter.com"],
+a[href^="https://twitter.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-twitter;
+  }
+}
+
+a[href^="http://www.weibo.com"],
+a[href^="https://www.weibo.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-weibo;
+  }
+}
+
+a[href^="http://www.youtube.com"],
+a[href^="https://www.youtube.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-youtube;
+  }
+}
+
+a[href^="http://play.google.com"],
+a[href^="https://play.google.com"],
+a[href^="http://www.android.com"],
+a[href^="https://www.android.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-android;
+  }
+}
+
+a[href*="bitcoin"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-btc;
+  }
+}
+
+a[href*="dropbox"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-dropbox;
+  }
+}
+
+a[href*="foursquare.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-foursquare;
+  }
+}
+
+a[href*="gittip.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-gittip;
+  }
+}
+
+a[href*="instagram.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-instagram;
+  }
+}
+
+a[href*="maxcdn.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-maxcdn;
+  }
+}
+
+a[href*="maxcdn.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-maxcdn;
+  }
+}
+
+a[href*="renren.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-renren;
+  }
+}
+
+a[href*="renren.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-trello;
+  }
+}
+
+a[href*="trello.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-renren;
+  }
+}
+
+a[href*="microsoft.com"],
+a[href*="live.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-windows;
+  }
+}
+
+a[href*="apple.com"],
+
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-apple;
+  }
+}
+
+a[href*="facebook.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-facebook;
+  }
+}
+
+a[href*="github.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-github;
+  }
+}
+
+a[href*="facebook.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-facebook;
+  }
+}
+
+a[href*="plus.google.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-google-plus;
+  }
+}
+
+a[href*="linkedin.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-linkedin;
+  }
+}
+
+a[href*="pagelines.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-pagelines;
+  }
+}
+
+a[href*="skype.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-skype;
+  }
+}
+
+a[href*="tumblr.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-tumblr;
+  }
+}
+
+a[href*="vimeo.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-vimeo-square;
+  }
+}
+
+a[href*="xing.com"]
+{
+  &:after {
+    .symbolic-link();
+    content: @fa-var-xing;
+  }
+}
+

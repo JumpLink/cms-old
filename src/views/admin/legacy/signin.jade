@@ -1,0 +1,26 @@
+doctype 5
+html
+  head
+    title:= title
+    //- Viewport mobile tag for sensible mobile support
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1")
+    link#style(rel="stylesheet", href="/styles/signin.css")
+  body
+    .container
+      .row
+        .col-sm-6.col-md-4.col-md-offset-4
+          h1.text-center.login-title Sign in to continue
+          .account-wall
+            img.profile-img(src='images/photo.png', alt='')
+            form.form-signin(action="/session/create", method="POST")
+              input.form-control(name="email", type='text', placeholder='Email', required='required', autofocus='autofocus')
+              input.form-control(name="password", type='password', placeholder='Password', required='required')
+              button.btn.btn-lg.btn-primary.btn-block(type='submit')
+                | Sign in
+              //- TODO see https://stackoverflow.com/questions/244882/what-is-the-best-way-to-implement-remember-me-for-a-website
+              //- label.checkbox.pull-left
+                //- input(type='checkbox', value='remember-me')
+                //- | Remember me
+              //- span.clearfix
+          //- TODO
+         //- a.text-center.new-account Create an account

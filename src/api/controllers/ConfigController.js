@@ -18,14 +18,38 @@
 module.exports = {
 
   setup: function (req, res, next) {
-    SetupService.config(function(error, result) {
-
-      //res.json(result);
-      Config.create(result, function (error, result) {
+    
+    async.waterfall([
+      function findAll (callback){
+        sails.log.debug("findAll");
+        Config.find({}, callback);
+      },
+      function removeEach(list, callback){
+        sails.log.debug("removeEach");
+        async.each(list, function remove (item, callback) {
+          sails.log.debug(item);
+          Config.destroy({id: item.id}, function (error, destroyed) {
+            sails.log.debug(destroyed);
+            callback(error);
+          })
+        }, callback);
+      },
+      function getNewSetup (callback){
+        sails.log.debug("getNewSetup");
+        SetupService.config(callback);
+      },
+      function createNewSetup (newValue, callback){
+        sails.log.debug("createNewSetup");
+        Config.create(newValue, callback);
+      },
+    ], function (err, result) {
+      sails.log.debug("done");
+      if(err)
+        res.json(err);
+      else
         res.json(result);
-      });
-
     });
+
   } 
 
   /**

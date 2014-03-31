@@ -11,3 +11,4 @@ column-wrapper.clearfix(ng-click="selectColumn(rowindex, index, column, $parent.
     a.btn(ng-if="column.button.active", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content.langs[$root.selectedLanguage]}}
   //- image for right position
   img(ng-if="imagePositionIs('right', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+img(ng-if="imagePositionIs('absolute', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}", style="position: absolute;")

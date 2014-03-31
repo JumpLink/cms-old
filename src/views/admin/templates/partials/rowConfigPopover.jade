@@ -19,6 +19,10 @@
             button.btn.btn-default(type="button", ng-disabled="$root.selected.row.columns.length >= 3", ng-click="addColumn();")
               .fa.fa-plus-circle
       .form-group
+        label Style
+        br
+        input.form-control(type="text", ng-model="$root.selected.row.style")
+      .form-group
         label Divider
         br
         toggle-switch(model='selected.row.divider')

@@ -197,6 +197,8 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
               case "bottum":
               case "left":
               case "right":
+              case "absolute":
+              default:
                 return image.position;
               break;
               case "flip":
@@ -204,9 +206,6 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
                   return "left";
                 else
                   return "right";
-              break;
-              default:
-                return null;
               break;
             }
         };
@@ -226,6 +225,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
             break;
             case "top":
             case "bottum":
+            case "absolute":
             default:
               return "0px";
             break;

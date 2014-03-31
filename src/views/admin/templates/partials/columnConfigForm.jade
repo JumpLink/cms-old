@@ -19,9 +19,9 @@
         toggle-switch(model='formColumn.button.active')
       .form-group
         label Size
-        input.form-control(ng-disabled="!formColumn.button.active", type="text", ng-model="formColumn.button.size")
+        input.form-control(ng-show="formColumn.button.active", type="text", ng-model="formColumn.button.size")
         label Type
-        input.form-control(ng-disabled="!formColumn.button.active", type="text", ng-model="formColumn.button.type")
+        input.form-control(ng-show="formColumn.button.active", type="text", ng-model="formColumn.button.type")
   .col-md-4
     form(role="form")
       .form-group
@@ -34,21 +34,21 @@
         label Size
         .input-group
           span.input-group-btn
-            button.btn.btn-default(ng-disabled="!formColumn.header.active", type="button", ng-click="formColumn.header.size = formColumn.header.size-1")
+            button.btn.btn-default(ng-show="formColumn.header.active", type="button", ng-click="formColumn.header.size = formColumn.header.size-1")
               .fa.fa-minus-circle
-          input.form-control(ng-disabled="!formColumn.header.active", type="text", ng-model="formColumn.header.size")
+          input.form-control(ng-show="formColumn.header.active", type="text", ng-model="formColumn.header.size")
           span.input-group-btn
-            button.btn.btn-default(ng-disabled="!formColumn.header.active", type="button", ng-click="formColumn.header.size  = formColumn.header.size+1")
+            button.btn.btn-default(ng-show="formColumn.header.active", type="button", ng-click="formColumn.header.size  = formColumn.header.size+1")
               .fa.fa-plus-circle
       hr
       .form-group
         .text-center: label Subtext
-        toggle-switch(model='formColumn.subtext.active')
+        toggle-switch.switch-danger(model='formColumn.subtext.active')
       br
       .form-group
         label Type
         br
-        select.form-control(ng-disabled="!formColumn.subtext.active", ng-Model="formColumn.subtext.type", name="string", required, ng-Required="string", ng-Options='type.value as type.label for type in $root.config.subtext.types') 
+        select.form-control(ng-show="formColumn.subtext.active", ng-Model="formColumn.subtext.type", name="string", required, ng-Required="string", ng-Options='type.value as type.label for type in $root.config.subtext.types') 
   .col-md-4
     form(role="form")    
       .form-group
@@ -56,7 +56,22 @@
         toggle-switch(model='formColumn.carousel.active')
       .form-group
         label Height
-        input.form-control(ng-disabled="!formColumn.carousel.active", type="text", ng-model="formColumn.carousel.height")
+        input.form-control(ng-show="formColumn.carousel.active", type="text", ng-model="formColumn.carousel.height")
         label Type
-        input.form-control(ng-disabled="!formColumn.carousel.active", type="text", ng-model="formColumn.carousel.type")
-      hr
+        input.form-control(ng-show="formColumn.carousel.active", type="text", ng-model="formColumn.carousel.type")
+  .col-md-4
+    form(role="form") 
+      .form-group
+        .text-center: label Image
+        toggle-switch(model='formColumn.image.active')
+      .form-group
+        label Position
+        input.form-control(ng-show="formColumn.image.active", type="text", ng-model="formColumn.image.position")
+        label Type
+        input.form-control(ng-show="formColumn.image.active", type="text", ng-model="formColumn.image.type")
+        label Src
+        input.form-control(ng-show="formColumn.image.active", type="text", ng-model="formColumn.image.src")
+        label width
+        input.form-control(ng-show="formColumn.image.active", type="number", ng-model="formColumn.image.width")
+        label height
+        input.form-control(ng-show="formColumn.image.active", type="number", ng-model="formColumn.image.height")

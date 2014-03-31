@@ -11,6 +11,8 @@ module.exports = {
 
   create: function(req, res, next) {
 
+    sails.log.debug(req);
+
     // Check for email and password in params sent via the form, if none
     // redirect the browser back to the sign-in form.
     if (!req.param('email') || !req.param('password')) {

@@ -114,6 +114,14 @@ module.exports = {
     config.navbar.type = "fixed-top"; // fixed-top | fixed-bottom | static-top | default (default has no own class)
     config.navbar.container = true;
 
+    config.navbar.brand = {
+      type: "image" // image | svg | text
+      , text: "Title"
+      , image: {
+        src: "/images/upload/brand.png"
+      }
+    }
+
     config.subtext.types = [
       {
         label: 'muted text'
