@@ -9,14 +9,20 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
 
-  create: function(req, res, next) {
+  signin: function(req, res, next) {
+    // req.locals not accessible in signin view, but req.locals is
+    res.locals.flash = _.clone(req.session.flash);
+    res.view('admin/legacy/signin');
+    req.session.flash = {};
+  }
 
-    sails.log.debug(req);
+  // try to create an authenticated session
+  , create: function(req, res, next) {
 
     // Check for email and password in params sent via the form, if none
     // redirect the browser back to the sign-in form.
     if (!req.param('email') || !req.param('password')) {
-      // return next({err: ["Password doesn't match password confirmation."]});
+      // return next({error: ["Password doesn't match password confirmation."]});
 
       var usernamePasswordRequiredError = [{
         name: 'usernamePasswordRequired',
@@ -27,7 +33,7 @@ module.exports = {
       // the key of usernamePasswordRequiredError
       // TODO Use json error function instead of json
       return res.json({
-        err: usernamePasswordRequiredError
+        error: usernamePasswordRequiredError
       });
     }
 
@@ -43,9 +49,12 @@ module.exports = {
           name: 'noAccount',
           message: 'The email address ' + req.param('email') + ' not found.'
         }]
-        return res.json({
-          err: noAccountError
-        });
+
+        req.session.flash = {
+          error: noAccountError
+        }
+
+        return res.redirect('signin');
       }
 
       // Compare password from the form params to the encrypted password of the user found.
@@ -56,21 +65,23 @@ module.exports = {
         if (!valid) {
           var usernamePasswordMismatchError = [{
             name: 'usernamePasswordMismatch',
-            message: 'Invalid username and password combination.'
+            message: 'The email or password that you entered is incorrect.'
           }]
 
-          // TODO Use json error function instead of json
-          return res.json({
-            err: usernamePasswordMismatchError
-          });
+          req.session.flash = {
+            error: usernamePasswordMismatchError
+          }
+
+          return res.redirect('signin');
         }
 
         // Log user in
         req.session.authenticated = true;
         req.session.User = user;
 
-        delete user.password;
-        return res.json({authenticated:true,user:user});
+        delete user.password; // TODO do this in model?
+        //return res.json({authenticated:true,user:user});
+        return res.redirect('admin');
 
       });
     });

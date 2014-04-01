@@ -41,7 +41,9 @@ module.exports.routes = {
   }
 
   , '/signin': {
-    view: 'admin/legacy/signin'
+    //view: 'admin/legacy/signin'
+    controller: 'SessionController',
+    action: 'signin'
   }
 
   /*

@@ -12,15 +12,10 @@ html
           h1.text-center.login-title Sign in to continue
           .account-wall
             img.profile-img(src='images/photo.png', alt='')
-            form.form-signin(action="/session/create", method="POST")
+            form.form-signin(class=flash && flash.error ?'has-error':'', action="/session/create", method="POST")
               input.form-control(name="email", type='text', placeholder='Email', required='required', autofocus='autofocus')
               input.form-control(name="password", type='password', placeholder='Password', required='required')
+              if flash && flash.error
+                p.text-danger= flash.error[0].message
               button.btn.btn-lg.btn-primary.btn-block(type='submit')
                 | Sign in
-              //- TODO see https://stackoverflow.com/questions/244882/what-is-the-best-way-to-implement-remember-me-for-a-website
-              //- label.checkbox.pull-left
-                //- input(type='checkbox', value='remember-me')
-                //- | Remember me
-              //- span.clearfix
-          //- TODO
-         //- a.text-center.new-account Create an account
