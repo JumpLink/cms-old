@@ -31,10 +31,11 @@ module.exports = {
 
       // Remember that err is the object being passed down (a.k.a. flash.err), whose value is another object with
       // the key of usernamePasswordRequiredError
-      // TODO Use json error function instead of json
-      return res.json({
+      req.session.flash = {
         error: usernamePasswordRequiredError
-      });
+      }
+
+      return res.redirect('signin');
     }
 
     // Try to find the user by there email address. 

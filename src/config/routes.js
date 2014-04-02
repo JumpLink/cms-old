@@ -37,7 +37,9 @@ module.exports.routes = {
   }
 
   , '/admin': {
-    view: 'admin/index'
+    //view: 'admin/index'
+    controller: 'AdminController',
+    action: 'view'
   }
 
   , '/signin': {

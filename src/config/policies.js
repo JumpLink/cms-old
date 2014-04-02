@@ -18,6 +18,41 @@ module.exports.policies = {
   // (`true` allows public access) 
   '*': true
 
+  , AdminController: {
+    '*': false
+    , 'view': "authenticated"
+  }
+
+  , ConfigController: {
+    '*': "authenticated"
+    , 'find': true
+  }
+
+  , SessionController: {
+    '*': false
+    , 'signin': true
+    , 'create': true
+    , 'destroy': "authenticated"
+  }
+
+  , SiteController: {
+    '*': "authenticated"
+    , 'find': true
+  }
+
+  , TranslationController: {
+    '*': "authenticated"
+    , 'find': true
+    , 'available': true
+  }
+
+  , UserController: {
+    '*': "authenticated"
+  }
+
+
+
+
   /*
 	// Here's an example of adding some policies to a controller
 	RabbitController: {
