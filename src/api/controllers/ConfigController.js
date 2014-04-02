@@ -21,36 +21,63 @@ module.exports = {
     
     async.waterfall([
       function findAll (callback){
-        sails.log.debug("findAll");
+        // sails.log.debug("findAll");
         Config.find({}, callback);
       },
-      function removeEach(list, callback){
-        sails.log.debug("removeEach");
-        async.each(list, function remove (item, callback) {
-          // sails.log.debug(item);
-          Config.destroy({id: item.id}, function (error, destroyed) {
-            // sails.log.debug(destroyed);
-            callback(error);
-          })
-        }, callback);
+      function getNewSetup (list, callback){
+        // sails.log.debug("getNewSetup");
+        SetupService.config(function (error, newValue) {
+          callback(error, list, newValue);
+        });
       },
-      function getNewSetup (callback){
-        sails.log.debug("getNewSetup");
-        SetupService.config(callback);
-      },
-      function createNewSetup (newValue, callback){
-        sails.log.debug("createNewSetup");
-        Config.create(newValue, callback);
+      function updateOrCreate(list, newValue, callback){
+        // sails.log.debug("update");
+        if(list.length > 0) {
+          newValue.id = list[0].id;
+          sails.log.debug( Config.update);
+          Config.update({id: newValue.id}, newValue, callback);
+        } else {
+          Config.update(newValue, callback);
+        }
       },
     ], function (err, result) {
-      sails.log.debug("done");
+      // sails.log.debug("done");
       if(err)
         res.json(err);
       else
         res.json(result);
     });
+  }
 
-  } 
+  , create: function (req, res, next) {
+    sails.log.debug("create");
+    // sails.log.debug(req.query);
+    // sails.log.debug(req.param);
+
+    // sails.log.debug(req);
+    
+    // var data = req.params.all();
+    // sails.log.debug(data);
+  }
+
+  , update: function (req, res, next) {    
+    var data = req.params.all();
+    async.waterfall([
+      function findAll (callback){
+        Config.find({}, callback);
+      },
+      function overwrite(list, callback){
+        data.id = list[0].id;
+        sails.log.debug( Config.update);
+        Config.update({id: data.id}, data, callback);
+      }
+    ], function (err, result) {
+      if(err)
+        res.json(err);
+      else
+        res.json(result);
+    });
+  }
 
   /**
    * Overrides for the settings in `config/controllers.js`

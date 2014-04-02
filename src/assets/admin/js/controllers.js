@@ -14,6 +14,17 @@ jumplink.cms.controller('AdminNavbarController', function($scope, $rootScope, $s
         });
 
       break;
+      case '/settings':
+
+        $sails.put("/config/", $rootScope.config, function (response) {
+          if(response != null && typeof(response) !== "undefined") {
+            console.log (response);
+          } else {
+            console.log ("Can't save translation");
+          }
+        });
+
+      break;
       default:
 
         $sails.put("/site/"+$rootScope.sites[$rootScope.active.index].id, $rootScope.sites[$rootScope.active.index], function (response) {

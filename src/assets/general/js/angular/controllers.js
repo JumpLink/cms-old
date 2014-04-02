@@ -28,25 +28,27 @@ jumplink.cms.controller('LanguageController', function ($scope, $rootScope, $tra
   // set default language
   $rootScope.$watch('config.languages.default', function (newValues, oldValues) {
 
-    // set to default language only if selectedLanguage is not choosen before
-    if(angular.isUndefined($rootScope.selectedLanguage)) {
+    if(angular.isDefined(newValues) && newValues.length >= 2) {
+      // set to default language only if selectedLanguage is not choosen before
+      if(angular.isUndefined($rootScope.selectedLanguage)) {
 
-      // if $rootScope.config.languages.default is defined and string-length greater than 2 and default language is one of the activated languages
-      if(angular.isDefined(newValues) && newValues.length >= 2 && findInArray($rootScope.config.languages.active, newValues)) {
-        $rootScope.selectedLanguage = newValues;
-      } else {
-        // fallback
-        if(angular.isDefined($rootScope.config) && angular.isDefined($rootScope.config.languages) && angular.isDefined($rootScope.config) && angular.isArray($rootScope.config.languages.active))
-          $rootScope.selectedLanguage = $rootScope.config.languages.active[0];
-        else
-          $rootScope.selectedLanguage = "en";
+        // if $rootScope.config.languages.default is defined and string-length greater than 2 and default language is one of the activated languages
+        if(findInArray($rootScope.config.languages.active, newValues)) {
+          $rootScope.selectedLanguage = newValues;
+        } else {
+          // fallback
+          if(angular.isDefined($rootScope.config) && angular.isDefined($rootScope.config.languages) && angular.isDefined($rootScope.config) && angular.isArray($rootScope.config.languages.active))
+            $rootScope.selectedLanguage = $rootScope.config.languages.active[0];
+          else
+            $rootScope.selectedLanguage = "en";
+        }
       }
-
     }
+
   });
 
   $rootScope.$watch('selectedLanguage', function (newValues, oldValues) {
-    if(typeof newValues !== 'undefined' && newValues.length >= 2) {
+    if(angular.isDefined(newValues) && newValues.length >= 2) {
       $translate.uses(newValues).then(function (key) {
         if(angular.isDefined($rootScope.config)) {
           rewriteLanugageList($rootScope.config.languages.active);

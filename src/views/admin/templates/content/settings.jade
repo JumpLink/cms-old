@@ -6,4 +6,10 @@ nav.navbar(class="navbar-{{$root.config.navbar.type}}", ng-class="{'navbar-inver
       .navbar-right
         language-select
 .container
-  | Work in progress..
+  form(role="form") 
+    .form-group
+      .text-center: label Activated Languages
+        select.form-control(multiple ng-multiple="true", ng-model="$root.config.languages.active", ng-options="lang for lang in $root.config.languages.available")
+    .form-group
+      .text-center: label Default Languages
+        select.form-control(ng-model="$root.config.languages.default", ng-options="lang for lang in $root.config.languages.active")
