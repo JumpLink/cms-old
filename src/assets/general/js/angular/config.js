@@ -38,4 +38,6 @@ jumplink.cms.config(function ($translateProvider, cfpLoadingBarProvider) {
 
   cfpLoadingBarProvider.includeSpinner = true;
   cfpLoadingBarProvider.includeBar = true;
+
+  // $locationProvider.html5Mode(true);
 });

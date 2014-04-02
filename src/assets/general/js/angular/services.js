@@ -724,7 +724,7 @@ jumplink.cms.service("WindowService", function(RowService, $rootScope, $window, 
     $timeout(function() {
       // anything you want can go here and will safely be run on the next digest.
       angular.element($window).triggerHandler(event);
-    })
+    });
   }
 
   /*

@@ -105,6 +105,7 @@ module.exports = {
       languages: {
         available: []
         , active: ['en', 'de']
+        , default: 'en'
       }
       , navbar: {}
       , subtext: {}

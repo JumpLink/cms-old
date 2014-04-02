@@ -4,46 +4,6 @@ jumplink.cms.directive("jsNavbar", function ($rootScope, $compile, $window, $loc
     , scope: {
       active: "="
     }
-    , compile: function(tElement, tAttributes) {
-
-      return function(scope, iElement) {
-
-        /*
-         * observe for "site" attribute, if it changed, rebuild the navigation
-         * Render Navigation
-         */
-        $rootScope.$watch('sites.length', function(newValue, oldValue, scope) {
-
-          if(typeof $rootScope.sites !== 'undefined' && typeof $rootScope.sites[0] !== 'undefined' && typeof $rootScope.sites[0].href !== 'undefined' && typeof $rootScope.sites[0].name !== 'undefined' ) {
-            var navigation = '';
-            for (var i = 0; i < $rootScope.sites.length && i < 20; i++) {
-              navigation += '<li data-match-route={{$root.sites['+i+'].href}}>  <a href="#/{{$root.sites['+i+'].href}}"> {{$root.sites['+i+'].name}} </a> </li>';
-            };
-            $compile(navigation)(scope, function(cloned, scope) {
-              iElement.find('#jl-navbar-nav').html(cloned);
-            });
-          }
-          
-        });
-
-        // $watch for currently "active" site, if it changed, reset the active class in the navigation 
-        scope.$watch('active', function(active) {
-          if(typeof active !== 'undefined' && typeof active.href !== 'undefined') {
-            var liElements = iElement[0].querySelectorAll('li[data-match-route]');
-            angular.forEach(liElements, function(li) {
-              var liElement = angular.element(li);
-              var pattern = liElement.attr('data-match-route');
-              if(active.href == pattern)
-                liElement.addClass('active');
-              else
-                liElement.removeClass('active');
-            });
-          } else {
-            // $log.debug('error on js-navbar directive: You need to set the "active" attribute');
-          }
-        });
-      }
-    }
     , templateUrl: 'partials/navbar.jade'
     , controller: 'NavbarController'
   }

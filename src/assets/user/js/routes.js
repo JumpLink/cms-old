@@ -10,9 +10,13 @@ jumplink.cms.config(['$routeProvider',
         , controller: 'SiteController'
         , reloadOnSearch: false
       })
-      .otherwise({
-        redirectTo: '/404'
+      .when('/', {
+        templateUrl: 'content/site.jade'
         , controller: 'SiteController'
+        , reloadOnSearch: false
+      })
+      .otherwise({
+        redirectTo: '/'
       });
       ;
   }]);

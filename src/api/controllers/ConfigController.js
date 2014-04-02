@@ -27,9 +27,9 @@ module.exports = {
       function removeEach(list, callback){
         sails.log.debug("removeEach");
         async.each(list, function remove (item, callback) {
-          sails.log.debug(item);
+          // sails.log.debug(item);
           Config.destroy({id: item.id}, function (error, destroyed) {
-            sails.log.debug(destroyed);
+            // sails.log.debug(destroyed);
             callback(error);
           })
         }, callback);
