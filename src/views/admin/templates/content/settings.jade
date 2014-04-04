@@ -3,13 +3,20 @@ nav.navbar(class="navbar-{{$root.config.navbar.type}}", ng-class="{'navbar-inver
     .navbar-header
       a.navbar-brand {{'BRAND_SETTINGS' | translate}}
     .collapse.navbar-collapse.navbar-ex1-collapse
-      .navbar-right
+      .navbar-form.navbar-right
         language-select
 .container
   form(role="form") 
     .form-group
       .text-center: label Activated Languages
-        select.form-control(multiple ng-multiple="true", ng-model="$root.config.languages.active", ng-options="lang for lang in $root.config.languages.available")
+      select.form-control(multiple ng-multiple="true", ng-model="$root.config.languages.active", ng-options="lang for lang in $root.config.languages.available")
     .form-group
       .text-center: label Default Languages
-        select.form-control(ng-model="$root.config.languages.default", ng-options="lang for lang in $root.config.languages.active")
+      select.form-control(ng-model="$root.config.languages.default", ng-options="lang for lang in $root.config.languages.active")
+    .form-group
+      .text-center: label navbar inverse
+      toggle-switch(model='$root.config.navbar.inverse')
+      .text-center: label navbar type
+      input.form-control(type="text", ng-model="$root.config.navbar.type")
+      .text-center: label navbar container
+      toggle-switch(model='$root.config.navbar.container')

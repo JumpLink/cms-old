@@ -9,15 +9,8 @@ var bcrypt = require('bcrypt');
 
 module.exports = {
 
-  signin: function(req, res, next) {
-    // req.locals not accessible in signin view, but req.locals is
-    res.locals.flash = _.clone(req.session.flash);
-    res.view('admin/legacy/signin');
-    req.session.flash = {};
-  }
-
   // try to create an authenticated session
-  , create: function(req, res, next) {
+  create: function(req, res, next) {
 
     // Check for email and password in params sent via the form, if none
     // redirect the browser back to the sign-in form.

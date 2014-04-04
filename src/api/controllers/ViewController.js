@@ -17,8 +17,21 @@
 
 module.exports = {
     
-  view: function(req, res, next) {
+  admin: function(req, res, next) {
     res.view('admin/index');
+  }
+
+  , signin: function(req, res, next) {
+    // req.locals not accessible in signin view, but req.locals is
+    res.locals.flash = _.clone(req.session.flash);
+    res.view('admin/legacy/signin');
+    req.session.flash = {};
+  }
+
+  , user: function(req, res, next) {
+    sails.log.debug('user-agent: ');
+    sails.log.debug(req.useragent);
+    res.view('user/index');
   }
 
   /**

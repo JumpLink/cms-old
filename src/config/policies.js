@@ -18,9 +18,11 @@ module.exports.policies = {
   // (`true` allows public access) 
   '*': true
 
-  , AdminController: {
+  , ViewController: {
     '*': false
-    , 'view': "authenticated"
+    , 'admin': "authenticated"
+    , 'user': "useragent"
+    , 'signin': true
   }
 
   , ConfigController: {
