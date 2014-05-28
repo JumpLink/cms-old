@@ -13,7 +13,7 @@ jumplink.cms = angular.module('jumplink.cms', [
   // , 'colorpicker.module'
   , 'angular-underscore'
   , 'toggle-switch'
-  , 'lrNotifier'
+  //, 'lrNotifier'
   // , 'snap'
   , 'angular-carousel'
   , 'contenteditable'
