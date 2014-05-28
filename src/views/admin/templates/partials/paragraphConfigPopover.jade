@@ -6,10 +6,12 @@
       .col-md-12
         form(role="form")
           .form-group
-            .text-center: label General
-            toggle-switch(model='selected.paragraph.active')
-            label Size
-            input.form-control(ng-disabled="!selected.column.button.active", type="text", ng-model="selected.column.button.size")
-            label Type
-            input.form-control(ng-disabled="!selected.column.button.active", type="text", ng-model="selected.column.button.type")
+            .text-center: label Lead
+            toggle-switch(model='selected.paragraph.lead')
+          .form-group
+            label Aligned
+            input.form-control(type="text", ng-model="selected.paragraph.aligned")
+          .form-group
+            label Color
+            input.form-control(type="text", ng-model="selected.paragraph.color")
           hr

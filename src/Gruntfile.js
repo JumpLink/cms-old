@@ -70,7 +70,7 @@ module.exports = function (grunt) {
     'bower_components/underscore/underscore.js',
     'bower_components/angular-underscore/angular-underscore.js',
     //'bower_components/angular-socket-io/socket.js',
-    'bower_components/angular-toggle-switch/angular-toggle-switch.js',
+    'bower_components/angular-bootstrap-toggle-switch/angular-toggle-switch.js',
     'bower_components/angular-translate/angular-translate.js',
     //'bower_components/angular-gettext/dist/angular-gettext.js', // dependencies to jQuery :(
     //'bower_components/revolunet-angular-carousel/dist/angular-mobile.js', // necessary? 

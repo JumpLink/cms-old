@@ -169,6 +169,51 @@ jumplink.cms.service("ParagraphService", function(ContentService) {
   }
 });
 
+jumplink.cms.service("ModalService", function(LoremService, ContentService) {
+  var getDefaults = function (type, replace) {
+    var defaults = {
+      type: "default"                                                 // 'default' | 'primary' | 'success' | 'info' | 'warning' | 'danger' | 'link'
+      , content: null
+      , title: null
+    }
+
+    var placeholderContent = LoremService.generator({count: 3});
+    var placeholderTitle = LoremService.generator({units: 'words', count: 2});
+
+    switch (type) {
+      case 'default':
+      default:
+      break;
+    }
+
+    // Set defaults if unset
+    if(replace !== null && angular.isDefined(replace)) {
+
+      if(angular.isDefined(replace.type))
+        defaults.type = replace.type;
+
+      if(angular.isDefined(replace.content))
+        defaults.content = ContentService.getDefaults(type, replace.content, placeholderContent);
+
+      if(angular.isDefined(replace.title))
+        defaults.title = ContentService.getDefaults(type, replace.title, placeholderTitle);
+
+    }
+
+    if(defaults.content === null)
+      defaults.content = ContentService.getDefaults(type, null, placeholderContent);
+
+    if(defaults.title === null)
+      defaults.title = ContentService.getDefaults(type, null, placeholderTitle);
+
+    return defaults;
+  }
+
+  return {
+    getDefaults: getDefaults
+  }
+});
+
 jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
   var getDefaults = function (type, replace) {
     var defaults = {
@@ -177,6 +222,7 @@ jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
       , size: 'default'                                               // 'default' | 'large' | 'small' | 'extra small'
       , href: "#"
       , active: false
+      , action: 'modal'
     }
 
     var placeholder = LoremService.generator({units: 'words', count: 1});
@@ -212,6 +258,9 @@ jumplink.cms.service("ButtonService", function(LoremService, ContentService) {
 
       if(angular.isDefined(replace.active))
         defaults.active = replace.active;
+
+      if(angular.isDefined(replace.action))
+        defaults.action = replace.action;
     }
 
     if(defaults.content === null)
@@ -489,7 +538,7 @@ jumplink.cms.service("CarouselService", function(SlideService) {
   }
 });
 
-jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, SubtextService, ImageService, CarouselService, ButtonService) {
+jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, SubtextService, ImageService, CarouselService, ButtonService, ModalService) {
   var getDefaults = function (type, replace) {
     var defaults = {
       header: {}
@@ -498,6 +547,7 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
       , image: {}
       , carousel: {}
       , button: {}
+      , modal: {}
       , paragraphs_active: true
       , type: type
     }
@@ -546,6 +596,8 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
       defaults.carousel = CarouselService.getDefaults(type, replace.carousel);
 
       defaults.button = ButtonService.getDefaults(type, replace.button);
+
+      defaults.modal = ModalService.getDefaults(type, replace.modal);
     } else {
 
       defaults.header = HeaderService.getDefaults(type, null);
@@ -557,6 +609,8 @@ jumplink.cms.service("ColumnService", function(ParagraphService, HeaderService, 
       defaults.carousel = CarouselService.getDefaults(type, null);
 
       defaults.button = ButtonService.getDefaults(type, null);
+
+      defaults.modal = ModalService.getDefaults(type, null);
 
     }
 

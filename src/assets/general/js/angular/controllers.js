@@ -87,22 +87,30 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, Conten
 
   $scope.subcategories = [];
 
-  var isSubcategory = function (row) {
-    return angular.isDefined(row.columns) && angular.isArray(row.columns) && angular.isDefined(row.columns[0].header) && row.columns[0].header.active === true && row.columns[0].header.subcategory === true;
+  var columnIsDefined = function (row) {
+    return angular.isDefined(row.columns) && angular.isArray(row.columns);
+  }
+
+  var isSubcategory = function (column) {
+    return angular.isDefined(column.header) && column.header.active === true && column.header.subcategory === true;
   }
 
   var setSubcategories = function (activeSiteIndex) {
-    angular.forEach(SiteService.getCurrentSite().rows, function(row, index){
-      if(isSubcategory(row)) {
+    angular.forEach(SiteService.getCurrentSite().rows, function(row, index) {
+      if(columnIsDefined(row)) {
         // if is top subcategory
-        if(row.columns[0].header.size <= 1) {
-          $scope.subcategories.push({target: ContentService.getID(row.columns[0].header.content), content: row.columns[0].header.content, children:[]});
-        // if is lower subcategory  
-        } else if(row.columns[0].header.size >= 2) {
-          if($scope.subcategories.length > 0) {
-            $scope.subcategories[$scope.subcategories.length - 1].children.push({target: ContentService.getID(row.columns[0].header.content), content: row.columns[0].header.content});
+        angular.forEach(row.columns, function(column, index) {
+          if(isSubcategory(column)) {
+            if(column.header.size <= 1) {
+              $scope.subcategories.push({target: ContentService.getID(column.header.content), content: column.header.content, children:[]});
+            // if is lower subcategory  
+            } else if(column.header.size >= 2) {
+              if($scope.subcategories.length > 0) {
+                $scope.subcategories[$scope.subcategories.length - 1].children.push({target: ContentService.getID(column.header.content), content: column.header.content});
+              }
+            }
           }
-        }
+        });
       }
     });
   }
@@ -333,4 +341,22 @@ jumplink.cms.controller('CarouselController', function($scope) {
       $scope.index--;
   }
 
+});
+
+
+jumplink.cms.controller('ColumnButtonController', function($scope, $rootScope, $modal) {
+
+  var buttonModal = $modal({title: $scope.modal.title.langs[$rootScope.selectedLanguage], content: $scope.modal.content.langs[$rootScope.selectedLanguage], show: false, template: 'partials/columnModal.jade'});
+
+  $scope.action = function () {
+    console.log($scope.button.action);
+    console.log($scope.modal);
+
+
+    
+    if($scope.button.action === "modal") {
+      buttonModal.show();
+    }
+
+  }
 });

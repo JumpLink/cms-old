@@ -1,15 +1,15 @@
 column-wrapper.clearfix(ng-click="selectColumn(rowindex, index, column, $parent.row, $parent.slideindex)")
   //- image for top position
-  img.img-responsive(ng-if="imagePositionIs('top', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
+  img.img-responsive.img-top(ng-if="imagePositionIs('top', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}")
   //- image for left position
-  img.img-responsive(ng-if="imagePositionIs('left', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+  img.img-responsive.img-left(ng-if="imagePositionIs('left', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
   //- div with col-md-7 for left and right images
   div(ng-class="{'col-md-7': imagePositionIs('left', column.image) || imagePositionIs('right', column.image) }", style="padding-top: {{getImageContainerPaddingTop(column.image)}}")
     column-header
     .paragraph-placeholder
     carousel(ng-if="column.carousel.active", carousel="column.carousel")
-    a.btn(ng-if="column.button.active", type="button", class="btn-{{column.button.type}}", ng-class="{'btn-lg':{{column.button.size=='large'}}, 'btn-sm':{{column.button.size=='small'}}, 'btn-xs':{{column.button.size=='extra small'}} }") {{column.button.content.langs[$root.selectedLanguage]}}
+    column-button(data-button="column.button", data-modal="column.modal")
   //- image for right position
-  img.img-responsive(ng-if="imagePositionIs('right', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
+  img.img-responsive.img-right(ng-if="imagePositionIs('right', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}} col-md-5")
 //- image for absolute position
-img(ng-if="imagePositionIs('absolute', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}", style="position: absolute;")
+img.img-responsive.img-absolute(ng-if="imagePositionIs('absolute', column.image)", ng-src="/images/{{column.image.src}}", class="img-{{column.image.type}}", style="position: absolute;")

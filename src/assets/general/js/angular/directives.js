@@ -404,3 +404,15 @@ jumplink.cms.directive("languageSelect", function () {
     , controller: 'LanguageController'
   }
 });
+
+jumplink.cms.directive("columnButton", function () {
+  return {
+    restrict: "E"
+    , scope: {
+      button: "="
+      , modal: "="
+    }
+    , templateUrl: 'partials/columnButton.jade'
+    , controller: 'ColumnButtonController'
+  }
+});
