@@ -129,12 +129,14 @@ jumplink.cms.controller('SidebarController', function($rootScope, $scope, Conten
 
 });
 
-jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $window, $log, $location, SiteService, WindowService, cfpLoadingBar) {
+jumplink.cms.controller('SiteController', function($rootScope, $scope, $sails, $routeParams, $window, $log, $location, SiteService, WindowService, cfpLoadingBar, PolicyService) {
 
   // If true all rows are rendered
   $rootScope.ready = false;
 
   $rootScope.renderedRows = 0;
+
+  $rootScope.changeContentAllowed = PolicyService.changeContentAllowed;
 
   angular.element($window).bind('resize', function () {
     //$log.debug('resize tiggered');
@@ -346,14 +348,13 @@ jumplink.cms.controller('CarouselController', function($scope) {
 
 jumplink.cms.controller('ColumnButtonController', function($scope, $rootScope, $modal) {
 
-  var buttonModal = $modal({title: $scope.modal.title.langs[$rootScope.selectedLanguage], content: $scope.modal.content.langs[$rootScope.selectedLanguage], show: false, template: 'partials/columnModal.jade'});
+  var buttonModal = $modal({html: true, title: $scope.modal.title, content: $scope.modal.content, show: false, template: 'partials/columnModal.jade'});
 
   $scope.action = function () {
     console.log($scope.button.action);
     console.log($scope.modal);
+    console.log(buttonModal);
 
-
-    
     if($scope.button.action === "modal") {
       buttonModal.show();
     }

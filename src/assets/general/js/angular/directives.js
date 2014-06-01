@@ -146,7 +146,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
 
       return function(scope, iElement, iAttributes) {
 
-        scope.changeContentAllowed = PolicyService.changeContentAllowed;
+        //scope.changeContentAllowed = PolicyService.changeContentAllowed;
 
         scope.getImagePosition = function (image) {
           if(typeof image == 'undefined' || typeof image.position == 'undefined' )
@@ -333,7 +333,7 @@ jumplink.cms.directive("column", function ($rootScope, $compile, PolicyService, 
         }
 
         var getParagraphHtml = function (index) {
-          return '<p ng-if="column.paragraphs_active" ng-click="selectParagraph('+index+', column.paragraphs['+index+'])" contenteditable="{{changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content.langs[$root.selectedLanguage]" ng-class="getParagrapClass('+index+')"></p>';
+          return '<p ng-if="column.paragraphs_active" ng-click="selectParagraph('+index+', column.paragraphs['+index+'])" contenteditable="{{$root.changeContentAllowed()}}" no-line-breaks="true" strip-br="true" select-non-editable="false" ng-model="column.paragraphs['+index+'].content.langs[$root.selectedLanguage]" ng-class="getParagrapClass('+index+')"></p>';
         }
 
         var addParagraphHtml = function () {
