@@ -90,8 +90,13 @@ module.exports = function (grunt) {
 
     'bower_components/angular-loading-bar/build/loading-bar.js',
 
+    '/bower_components/leaflet-dist/leaflet.js',
+    '/bower_components/angular-leaflet-directive/dist/angular-leaflet-directive.js',
+
     // All of the rest of your app scripts imported here
     'general/js/angular/config.js',
+    'general/js/angular/controllers.js',
+    'extensions/js/controllers/**/*.js',
     'general/js/**/*.js',
   ];
 
@@ -236,9 +241,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: 'assets/upload/jade/',
+            cwd: 'assets/extensions/jade/',
             src: ['**/*.jade'],
-            dest: '.tmp/public/upload/html/',
+            dest: '.tmp/public/extensions/html/',
             ext: '.html'
           }
         ]
@@ -250,9 +255,9 @@ module.exports = function (grunt) {
         files: [
           {
             expand: true,
-            cwd: 'assets/upload/jade/',
+            cwd: 'assets/extensions/jade/',
             src: ['**/*.jade'],
-            dest: '.tmp/public/upload/html/',
+            dest: '.tmp/public/extensions/html/',
             ext: '.html'
           }
         ]

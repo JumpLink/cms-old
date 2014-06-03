@@ -21,6 +21,7 @@ jumplink.cms = angular.module('jumplink.cms', [
   , 'Decorators' // WORKAROUND see workaround.js
   , 'angularSmoothscroll'
   , 'chieffancypants.loadingBar'
+  , 'leaflet-directive'
   //, 'btford.socket-io'
  // , 'jumplink.cms.SocketController' 
 ]);

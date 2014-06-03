@@ -37,6 +37,7 @@
     "angular-translate-loader-url": "0.1.*",
     "angular-motion": "0.3.*",
     "angular-smoothscroll": "*",
-    "angular-loading-bar": "0.3.*"
+    "angular-loading-bar": "0.3.*",
+    "angular-leaflet-directive": "~0.7.7"
   }
 }

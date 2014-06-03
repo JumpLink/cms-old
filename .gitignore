@@ -50,3 +50,4 @@ src/config/local.js
 # cms
 ########################
 src/assets/images/upload
+src/assets/extensions
