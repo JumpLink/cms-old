@@ -719,6 +719,8 @@ jumplink.cms.service("RowService", function(ColumnService) {
       , type: type
       , columns: []
       , style: {}
+      , template: null
+      , templateUrl: null
     }
 
     var columnLength = 1;
@@ -732,6 +734,8 @@ jumplink.cms.service("RowService", function(ColumnService) {
         columnLength = 3;
       break;
       case 'marketing-featurette':
+      break;
+      case 'template':
       break;
       case 'default':
       break;
@@ -750,6 +754,12 @@ jumplink.cms.service("RowService", function(ColumnService) {
 
       if(angular.isDefined(replace.style))
         defaults.style = replace.style;
+
+      if(angular.isDefined(replace.template))
+        defaults.template = replace.template;
+
+      if(angular.isDefined(replace.templateUrl))
+        defaults.templateUrl = replace.templateUrl;
 
       for (var i = 0; i < replace.columns.length; i++) {
         defaults.columns[i] = ColumnService.getDefaults(type, replace.columns[i]);

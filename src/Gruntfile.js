@@ -228,6 +228,37 @@ module.exports = function (grunt) {
       }
     },
 
+    jade: {
+      dev: {
+        options: {
+          pretty: true
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/upload/jade/',
+            src: ['**/*.jade'],
+            dest: '.tmp/public/upload/html/',
+            ext: '.html'
+          }
+        ]
+      }
+      , prod: {
+        options: {
+          pretty: false
+        },
+        files: [
+          {
+            expand: true,
+            cwd: 'assets/upload/jade/',
+            src: ['**/*.jade'],
+            dest: '.tmp/public/upload/html/',
+            ext: '.html'
+          }
+        ]
+      }
+    },
+
     less: {
       dev: {
         files: [
@@ -463,6 +494,7 @@ module.exports = function (grunt) {
     'clean:dev',
     'jst:dev',
     'less:dev',
+    'jade:dev',
     'copy:dev',    
     'coffee:dev'
   ]);
@@ -491,6 +523,7 @@ module.exports = function (grunt) {
     'clean:dev',
     'jst:dev',
     'less:prod',
+    'jade:prod',
     'copy:dev',
     'coffee:dev',
     'concat:js',
