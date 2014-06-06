@@ -1,5 +1,5 @@
 div(ng-if="column.header.active", class="h{{column.header.size}} {{column.type}}-heading")
   //- span(id="{{getID(column.header.content)}}", ng-class="{'anchor-fixed-navbar-top': topNavbarIsFixed()}")
-  span(id="{{getID(column.header.content)}}", contenteditable="{{changeContentAllowed()}}", no-line-breaks="true", strip-br="true", select-non-editable="false", ng-model="column.header.content.langs[$root.selectedLanguage]")
+  span(id="{{getID(column.header.content)}}", contenteditable="{{$root.changeContentAllowed()}}", no-line-breaks="true", strip-br="true", select-non-editable="false", ng-model="column.header.content.langs[$root.selectedLanguage]")
   | &nbsp;
   column-subtext

@@ -13,6 +13,9 @@
           span.input-group-btn
             button.btn.btn-default(type="button", ng-click="formColumn.paragraphs.length = formColumn.paragraphs.length + 1")
               .fa.fa-plus-circle
+        label HTML
+        .input-group
+          button.btn.btn-default(type="button", ng-click="editHtmlParagraphs(formColumn.paragraphs)") Edit
       hr
       .form-group
         .text-center: label Button

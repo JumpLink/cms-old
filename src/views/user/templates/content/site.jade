@@ -11,5 +11,7 @@ div(ng-class="{'container': $root.sites[$root.active.index].container, 'containe
     span(ng-repeat="row in $root.sites[$root.active.index].rows", ng-if="!($root.sites[$root.active.index].header && $index === 0)", row="row", index="$index", class="{{$root.sites[$root.active.index].type}}")
 footer.cms-footer
   div(ng-class="{'container': $root.sites[$root.active.index].container, 'container-fluid': !$root.sites[$root.active.index].container}")
-    p.pull-right
-      a(ng-click="smoothScrollPosition(0, true)") {{ 'FOOTER_BACK' | translate }}
+    span(row="$root.config.footer", index="0", class="footer")
+    .row
+      p.pull-right
+        a(ng-click="smoothScrollPosition(0, true)") {{ 'FOOTER_BACK' | translate }}

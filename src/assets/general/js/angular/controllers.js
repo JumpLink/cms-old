@@ -351,9 +351,9 @@ jumplink.cms.controller('ColumnButtonController', function($scope, $rootScope, $
   var buttonModal = $modal({html: true, title: $scope.modal.title, content: $scope.modal.content, show: false, template: 'partials/columnModal.jade'});
 
   $scope.action = function () {
-    console.log($scope.button.action);
-    console.log($scope.modal);
-    console.log(buttonModal);
+    // console.log($scope.button.action);
+    // console.log($scope.modal);
+    // console.log(buttonModal);
 
     if($scope.button.action === "modal") {
       buttonModal.show();

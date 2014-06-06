@@ -14,12 +14,46 @@ jumplink.cms.service("NavbarService", function($rootScope, ADMIN) {
   }
 });
 
-var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $sails, $http, $log) {
+var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $sails, $http, $log, RowService) {
+
+  var getDefaults = function (replace) {
+
+    var defaults = {
+      languages: null
+      , navbar: null
+      , subtext: null
+      , footer: null
+    }
+
+    // Set defaults if unset
+    if(angular.isDefined(replace) && replace !== null) {
+
+      if(angular.isDefined(replace.languages) && replace.languages !== null)
+        defaults.languages = replace.languages;
+
+      if(angular.isDefined(replace.navbar) && replace.navbar !== null)
+        defaults.navbar = replace.navbar;
+
+      if(angular.isDefined(replace.subtext) && replace.subtext !== null)
+        defaults.subtext = replace.subtext;
+
+      if(angular.isDefined(replace.footer) && replace.footer !== null)
+        defaults.footer = RowService.getDefaults('footer', replace.footer);
+    }
+
+    if(angular.isUndefined(replace.footer) || replace.footer === null)
+        defaults.footer = RowService.getDefaults('footer', null);
+
+    console.log(replace);
+    console.log(defaults);
+
+    return defaults;
+  }
 
   var getConfig = function() {
     $sails.get("/config", function (response) {
       if(angular.isDefined(response) && response !== null) {
-        return response[0];
+        return getDefaults(response[0]);
       } else {
         $log.error ("Can't load Config");
       }
@@ -29,7 +63,8 @@ var ConfigService = jumplink.cms.service("ConfigService", function($rootScope, $
   var setConfigHttp = function() {
     $http({ method: 'GET', url: '/config' }).success(function(data, status, headers, config) {
       if(angular.isDefined(data) && data !== null && status === 200) {
-        $rootScope.config = data[0];
+        $rootScope.config = data[0]; // WORKAROUND
+        $rootScope.config = getDefaults($rootScope.config);
       } else {
         $log.error ("Can't load Config, status: "+status);
       }

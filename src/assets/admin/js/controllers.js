@@ -64,7 +64,29 @@ jumplink.cms.controller('AdminNavbarController', function($scope, $rootScope, $s
   $scope.addSite = function () {
     if( angular.isDefined($rootScope.sites) )
       $rootScope.sites.push(SiteService.getDefaults("default", null, $rootScope.sites.length));
-    console.log($rootScope.sites[$rootScope.sites.length-1]);
+    //console.log($rootScope.sites[$rootScope.sites.length-1]);
+  }
+
+});
+
+jumplink.cms.controller('ColumnConfigFormController', function($scope, $rootScope, $modal) {
+
+  var htmlParagraphsModal = $modal({html: true, show: false, template: 'admin/partials/columnConfigHtmlModal.jade'});
+
+  htmlParagraphsModal.$scope.saveHtmlParagraphs = function () {
+    angular.forEach(htmlParagraphsModal.$scope.paragraphsCopy, function(value, key) {
+      htmlParagraphsModal.$scope.paragraphs[key].content = angular.copy(value.content);
+    });
+    //htmlParagraphsModal.$scope.paragraphs = angular.copy(htmlParagraphsModal.$scope.paragraphsCopy);
+    console.log('save');
+  }
+
+  $scope.editHtmlParagraphs = function (paragraphs) {
+    htmlParagraphsModal.$scope.paragraphs = paragraphs;
+    htmlParagraphsModal.$scope.paragraphsCopy = angular.copy(paragraphs);
+
+    // console.log(htmlParagraphsModal);
+    htmlParagraphsModal.show();
   }
 
 });
@@ -100,6 +122,8 @@ jumplink.cms.controller('TranslationController', function($scope, $rootScope, $s
       $scope.select.push({value: lang, label: $translate('LANGCODE_'+lang.toUpperCase())});
     });
   }
+
+  
 
   var getAvailableTranslation = function () {
       if(angular.isDefined($rootScope.config) && angular.isDefined($rootScope.config.languages.available) && $rootScope.config.languages.available !== null) {

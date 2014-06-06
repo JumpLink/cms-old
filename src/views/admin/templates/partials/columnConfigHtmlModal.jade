@@ -1,0 +1,12 @@
+.modal(tabindex='-1', role='dialog')
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type='button', ng-click='$hide()') ×
+        h4.modal-title
+          | HTML
+      .modal-body(ng-repeat="(key, paragraph) in paragraphsCopy")
+        textarea(class="form-control", rows="5", ng-model="paragraph.content.langs[$root.selectedLanguage]")
+      .modal-footer
+        button.btn.btn-default(type='button', ng-click='saveHtmlParagraphs()') {{'BTN_SAVE'|translate}}
+        button.btn.btn-default(type='button', ng-click='$hide()') {{'BTN_CLOSE'|translate}}

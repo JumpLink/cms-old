@@ -4,6 +4,6 @@
       .modal-header(ng-show='title')
         button.close(type='button', ng-click='$hide()') ×
         h4.modal-title(contenteditable="{{$root.changeContentAllowed()}}", no-line-breaks="true", strip-br="true", select-non-editable="false", ng-model="title.langs[$root.selectedLanguage]")
-      .modal-body(contenteditable="{{$root.changeContentAllowed()}}", no-line-breaks="true", strip-br="true", select-non-editable="false", ng-model="content.langs[$root.selectedLanguage]")
+      .modal-body(contenteditable="{{$root.changeContentAllowed()}}", no-line-breaks="false", strip-br="true", select-non-editable="false", ng-model="content.langs[$root.selectedLanguage]")
       .modal-footer
         button.btn.btn-default(type='button', ng-click='$hide()') {{'BTN_CLOSE'|translate}}

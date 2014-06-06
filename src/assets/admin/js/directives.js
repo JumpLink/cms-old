@@ -14,5 +14,6 @@ jumplink.cms.directive("columnConfigForm", function () {
       formColumn: "="
     }
     , templateUrl: 'admin/partials/columnConfigForm.jade'
+    , controller: 'ColumnConfigFormController'
   }
 });
