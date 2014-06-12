@@ -348,12 +348,13 @@ jumplink.cms.controller('CarouselController', function($scope) {
 
 jumplink.cms.controller('ColumnButtonController', function($scope, $rootScope, $modal) {
 
-  var buttonModal = $modal({html: true, title: $scope.modal.title, content: $scope.modal.content, show: false, template: 'partials/columnModal.jade'});
+  var buttonModal = $modal({html: true, title: '$scope.modal.title', content: '$scope.modal.content', show: false, template: 'partials/columnModal.jade'});
+
+  // WORKAROUND for this error: https://docs.angularjs.org/error/$sce/itype?p0=html
+  buttonModal.$scope.title = $scope.modal.title;
+  buttonModal.$scope.content = $scope.modal.content;
 
   $scope.action = function () {
-    // console.log($scope.button.action);
-    // console.log($scope.modal);
-    // console.log(buttonModal);
 
     if($scope.button.action === "modal") {
       buttonModal.show();
